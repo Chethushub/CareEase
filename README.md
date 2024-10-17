@@ -41,6 +41,11 @@ Run the development server to start the application locally:
 npm run dev
 ```
 
+## Contributing
 
+Create a branch with your name before pushing any code to this repo
 
+## Appendix
 
+If you get any errors while setting up this repo.
+Feel free to open an issue.
