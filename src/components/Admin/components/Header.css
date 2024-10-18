@@ -1,0 +1,57 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+  position: relative; /* Needed to position the left image */
+}
+
+.left-image {
+  position: absolute;
+  left: -15px; /* Adjust this value based on the size of the image */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.search-input {
+  padding: 10px 10px 10px 40px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  margin-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  background: url('./images/search.png') no-repeat 10px center;
+  background-size: 20px;
+  display: block;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 10px;
+}
+
+.user-profile span {
+  font-size: 14px;
+}
+
+.user-role {
+  margin-top: 0%;
+  font-size: xx-small;
+  font-weight: lighter;
+}
+
+img {
+  margin-right: 10px;
+}

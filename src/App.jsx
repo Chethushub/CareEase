@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import Sample from './components/Sample'
+import Dashboard from './components/Admin/Dashboard'
 import './App.css'
 
 function App() {
 
   return (
     <>
-      <Sample/>
+      <Dashboard/>
     </>
   )
 }
