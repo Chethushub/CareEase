@@ -1,15 +1,15 @@
 import React from 'react';
-import Sidebar from './Sidebar';
-import Header from './Header';
-import MainContent from './MainContent';
+import Sidebar from '/src/components/components/Sidebar';
+import Header from '/src/components/components/Header';
+import MainContent from '/src/components//components/MainContent';
 import './DashboardLayout.css';
 
 const DashboardLayout = () => {
   return (
     <div className="dashboard-layout">
-      <Sidebar />
+      <Sidebar activeItem="Dashboard"/>
       <div className="main-section">
-        <Header />
+        <Header title="Dashboard"/>
         <MainContent />
       </div>
     </div>
