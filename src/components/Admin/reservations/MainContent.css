@@ -1,0 +1,126 @@
+.reservations-main {
+    padding: 20px;
+  }
+
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .appointments-info {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .calendar-icon {
+    margin-right: 10px;
+    font-size: 20px;
+  }
+  
+  .date-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .prev-date, .next-date {
+    border: none;
+    background: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .filters {
+    display: flex;
+    align-items: center;
+  }
+  
+  .doctor-filter {
+    padding: 8px;
+    margin-right: 10px;
+    font-size: 16px;
+  }
+  
+  .filter-btn {
+    padding: 8px 12px;
+    background-color: #ddd;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .appointments-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two doctor columns */
+    grid-gap: 20px;
+  }
+  
+  .doctor-appointments {
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  .doctor-info {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .patients-info {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .appointment-slot {
+    margin-bottom: 20px;
+  }
+  
+  .time-slot {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .patient-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  .patient-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .patient-name {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .appointment-time, .treatment {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .status {
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 12px;
+    background-color: #f0f0f0;
+    font-weight: bold;
+    border-radius: 10px; 
+    padding: 10px; 
+  }
+  
+
+
+  
