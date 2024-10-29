@@ -42,7 +42,7 @@ nav ul {
   padding: 0;
 }
 
-nav li {
+nav NavLink {
   padding: 10px 0;
   cursor: pointer;
   color: #333;
@@ -51,12 +51,12 @@ nav li {
   font-weight: bolder;
 }
 
-nav li:hover {
+nav NavLink:hover {
   color: #000;
   font-weight: bold;
 }
 
-nav li.active {
+nav NavLink.active {
   background-color: #ffffff;
   font-weight: bold;
   border-radius: 10px; 

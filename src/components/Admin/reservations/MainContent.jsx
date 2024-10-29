@@ -27,7 +27,7 @@ const MainContent = () => {
       <div className="appointments-grid">
         <div className="doctor-appointments">
           <div className="doctor-info" style={{display:'inline-block'}}>
-          <img src="/src/public/icons/Profile_icon.svg" alt="Profile"/>
+          <img src="public/icons/Profile_icon.svg" alt="Profile"/>
             <span className="doctor-name">Dr Mohan das</span><br/>
             <span className="patients-info">Today's appointment <strong>6 patient(s)</strong></span>
           </div>

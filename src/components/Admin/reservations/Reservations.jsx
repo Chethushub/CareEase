@@ -1,10 +1,10 @@
 import React from 'react';
-import Sidebar from '/src/components/components/Sidebar';
-import Header from '/src/components/components/Header';
+import Sidebar from '/src/components/ui/Sidebar';
+import Header from '/src/components/ui/Header';
 import MainContent from './MainContent';
 import './Reservation.css';
 
-const DashboardLayout = () => {
+const Reservation = () => {
   return (
     <div className="dashboard-layout">
       <Sidebar activeItem="Reservations"/>
@@ -16,4 +16,4 @@ const DashboardLayout = () => {
   );
 };
 
-export default DashboardLayout;
+export default Reservation;

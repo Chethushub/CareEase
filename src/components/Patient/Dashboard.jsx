@@ -1,7 +1,7 @@
 import React from "react";
-import PtSidebar from "/src/components/components/PtSidebar";
-import PtHeader from "/src/components/components/PtHeader";
-import PtMainDashboard from "/src/components/components/PtMainContent";
+import PtSidebar from "/src/components/ui/PtSidebar";
+import PtHeader from "/src/components/ui/PtHeader";
+import PtMainDashboard from "/src/components/ui/PtMainContent";
 
 function PatientDashboard() {
   return (

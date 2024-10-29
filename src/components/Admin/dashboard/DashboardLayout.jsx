@@ -1,7 +1,7 @@
 import React from 'react';
-import Sidebar from '/src/components/components/Sidebar';
-import Header from '/src/components/components/Header';
-import MainContent from '/src/components//components/MainContent';
+import Sidebar from '/src/components/ui/Sidebar';
+import Header from '/src/components/ui/Header';
+import MainContent from '/src/components/ui/MainContent';
 import './DashboardLayout.css';
 
 const DashboardLayout = () => {
