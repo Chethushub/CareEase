@@ -5,7 +5,7 @@ const Header = ({title}) => {
   return (
     <div className="header">
       <img src="./icons/left-arrow-circle-icon.svg" alt="Left Arrow" className="left-image"/>
-      <h2 style={{fontWeight: 'bolder', fontSize: '30px'}}>{title}</h2>
+      <h2 style={{padding: "2px 6px 2px 12px" ,fontWeight: 'bold', fontSize: '26px'}}>{title}</h2>
       <div className="header-actions">
         <input type="text" placeholder="Search" className="search-input" />
         <img src="./icons/Icons.svg" alt="Icons"/>

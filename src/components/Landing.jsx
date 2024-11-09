@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { FaHeartbeat, FaBed, FaCalendarAlt } from 'react-icons/fa';
 
 const Sample = () => {
@@ -13,9 +14,23 @@ const Sample = () => {
           <p className="text-lg md:text-xl mb-6">
             Streamlining patient care and hospital management with innovative solutions.
           </p>
-          <button className="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-8 rounded-md shadow-lg transition duration-300">
-            Get Started
-          </button>
+
+          <h2 className="text-xl md:text-2xl font-semibold mb-4">
+            Get Started as
+          </h2>
+
+          <NavLink to="/admin-dashboard" className="px-4">
+            <button  className="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-8 rounded-md shadow-lg transition duration-300">
+              Admin
+            </button>
+          </NavLink>
+
+          <NavLink to="/patient-dashboard" className="px-4">
+            <button  className="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-8 rounded-md shadow-lg transition duration-300">
+              Patient
+            </button>
+          </NavLink>
+
         </div>
       </section>
 

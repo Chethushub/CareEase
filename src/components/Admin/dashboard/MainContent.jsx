@@ -1,7 +1,7 @@
 import React from 'react';
 import './MainContent.css';
 
-const MainContent = () => {
+const Dashboard = () => {
   return (
     <div className="main-content">
       <h3 style={{fontWeight:'bolder',marginBottom:'5px'}}>Good Morning, User Name!</h3>
@@ -19,4 +19,4 @@ const MainContent = () => {
   );
 };
 
-export default MainContent;
+export default Dashboard;

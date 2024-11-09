@@ -1,22 +1,24 @@
-import { useState } from "react";
-import Dashboard from "./components/Admin/dashboard/Dashboard";
-import Reservation from "./components/Admin/reservations/Reservations"
-import PatientDashboard from "./components/Patient/Dashboard";
+import react from "react";
+import Landing from "./components/Landing"
+
+import Dashboard from "./components/Admin/dashboard/MainContent";
+import Reservation from "./components/Admin/reservations/MainContent"
+
+import PatientDashboard from "./components/Patient/Dashboard/PtMainContent";
 import "./App.css";
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
     <>
-    <Router>
-      <Routes>
-        <Route path='/' element={<Dashboard />}/>
-        <Route path='/admin-reservations' element={<Reservation />}/>
+        <Routes>
+          <Route path='/' element={<Landing />} />
 
+          <Route path='/admin-dashboard' element={<Dashboard />} />
+          <Route path='/admin-reservations' element={<Reservation />} />
 
-        <Route path='/patient' element={<PatientDashboard />}/>
-      </Routes>
-    </Router>
+          <Route path='/patient-dashboard' element={<PatientDashboard />} />
+        </Routes>
     </>
   );
 }

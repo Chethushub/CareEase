@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import './Sidebar.css';
 import { NavLink } from 'react-router-dom';
 
-const Sidebar = () => {
-  const [activeItem, setActiveItem] = useState('Dashboard');
+const Sidebar = ({activeItem}) => {
 
   return (
     <div className="sidebar">
-      <div className="logo">LOGO</div>
+      <NavLink to="/">
+        <div className="logo">LOGO</div>
+      </NavLink>
+
       <div className="hospital-name">
-        <NavLink to="/patient" className="flex items-center">
+        <NavLink to="/patient-dashboard" className="flex items-center">
           <button className="flex items-center">
             <img src="./icons/Hospital-icon.svg" alt="Hospital" className="mr-2" />
             Hospital Name
@@ -20,10 +22,10 @@ const Sidebar = () => {
       <nav>
         <ul>
           <NavLink
-            to="/"
+            to="/admin-dashboard"
             className={`${activeItem === 'Dashboard' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
-            onClick={() => setActiveItem('Dashboard')}
+            // onClick={() => setActiveItem('Dashboard')}
           >
             <img src="./icons/dashboard.svg" alt="Dashboard" className="mr-2" /> Dashboard
           </NavLink>
@@ -34,7 +36,7 @@ const Sidebar = () => {
             to="/admin-reservations"
             className={`${activeItem === 'Reservations' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
-            onClick={() => setActiveItem('Reservations')}
+            // onClick={() => setActiveItem('Reservations')}
           >
             <img src="./icons/reservation.svg" alt="Reservations" className="mr-2" /> Reservations
           </NavLink>
@@ -43,7 +45,7 @@ const Sidebar = () => {
             to="/admin-beds"
             className={`${activeItem === 'Beds' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
-            onClick={() => setActiveItem('Beds')}
+            // onClick={() => setActiveItem('Beds')}
           >
             <img src="./icons/beds.svg" alt="Beds" className="mr-2" /> Beds availability
           </NavLink>
@@ -52,7 +54,7 @@ const Sidebar = () => {
             to="/admin-staff"
             className={`${activeItem === 'Staff' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
-            onClick={() => setActiveItem('Staff')}
+            // onClick={() => setActiveItem('Staff')}
           >
             <img src="./icons/staff.svg" alt="Staff" className="mr-2" /> Staff List
           </NavLink>
@@ -61,7 +63,7 @@ const Sidebar = () => {
             to="/admin-treatment"
             className={`${activeItem === 'Treatment' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
-            onClick={() => setActiveItem('Treatment')}
+            // onClick={() => setActiveItem('Treatment')}
           >
             <img src="./icons/dashboard.svg" alt="Treatment" className="mr-2" /> Treatment
           </NavLink>
@@ -72,7 +74,7 @@ const Sidebar = () => {
             to="/admin-sales"
             className={`${activeItem === 'Sales' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
-            onClick={() => setActiveItem('Sales')}
+            // onClick={() => setActiveItem('Sales')}
           >
             <img src="./icons/reports.svg" alt="Sales" className="mr-2" /> Sales
           </NavLink>
@@ -83,7 +85,7 @@ const Sidebar = () => {
             to="/admin-reports"
             className={`${activeItem === 'Reports' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
-            onClick={() => setActiveItem('Reports')}
+            // onClick={() => setActiveItem('Reports')}
           >
             <img src="./icons/reports.svg" alt="Reports" className="mr-2" /> Reports
           </NavLink>
@@ -92,7 +94,7 @@ const Sidebar = () => {
             to="/admin-support"
             className={`${activeItem === 'Support' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
-            onClick={() => setActiveItem('Support')}
+            // onClick={() => setActiveItem('Support')}
           >
             <img src="./icons/support.svg" alt="Support" className="mr-2" /> Customer Support
           </NavLink>
