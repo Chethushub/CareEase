@@ -3,6 +3,12 @@
   background-color: #f0f0f0;
   padding: 20px;
   border-right: 1px solid #ddd;
+  position: relative;
+  transition: width 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 90px; /* Adjust width as desired when collapsed */
 }
 
 .logo {
@@ -56,13 +62,11 @@ nav NavLink:hover {
   font-weight: bold;
 }
 
-nav NavLink.active {
-  background-color: #ffffff;
-  font-weight: bold;
-  border-radius: 10px; 
-  padding: 10px; 
-}
-
-img {
-  margin-right: 10px; 
+.left-image {
+  position: absolute;
+  top: 10px; /* Adjusts the distance from the top */
+  right: -20px; /* Adjusts the distance from the right, positioning it partly outside */
+  transform: translateY(0);
+  cursor: pointer;
+  z-index: 1;
 }
