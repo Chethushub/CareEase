@@ -2,10 +2,24 @@ import React, { useState } from 'react';
 import './Sidebar.css';
 import { NavLink } from 'react-router-dom';
 
-const Sidebar = ({activeItem}) => {
+const Sidebar = ({ activeItem }) => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
 
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+      <div className="toggle-button" onClick={toggleSidebar}>
+      <img 
+  src="./icons/left-arrow-circle-icon.svg" 
+  alt="Left Arrow" 
+  className="absolute top-4 right-[-20px] transform cursor-pointer z-10"
+/>
+
+      </div>
+
       <NavLink to="/">
         <div className="logo">LOGO</div>
       </NavLink>
@@ -14,7 +28,7 @@ const Sidebar = ({activeItem}) => {
         <NavLink to="/patient-dashboard" className="flex items-center">
           <button className="flex items-center">
             <img src="./icons/Hospital-icon.svg" alt="Hospital" className="mr-2" />
-            Hospital Name
+            {!isCollapsed && 'Hospital Name'}
           </button>
         </NavLink>
       </div>
@@ -24,81 +38,72 @@ const Sidebar = ({activeItem}) => {
           <NavLink
             to="/admin-dashboard"
             className={`${activeItem === 'Dashboard' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
-             text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
-            // onClick={() => setActiveItem('Dashboard')}
+             text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >
-            <img src="./icons/dashboard.svg" alt="Dashboard" className="mr-2" /> Dashboard
+            <img src="./icons/dashboard.svg" alt="Dashboard" className="mr-2" /> {!isCollapsed && 'Dashboard'}
           </NavLink>
 
-          <div className="section-header font-bold text-gray-600 my-4">Clinic</div>
+          {!isCollapsed && <div className="section-header font-bold text-gray-600 my-4">Clinic</div>}
 
           <NavLink
             to="/admin-reservations"
             className={`${activeItem === 'Reservations' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
-             text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
-            // onClick={() => setActiveItem('Reservations')}
+             text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >
-            <img src="./icons/reservation.svg" alt="Reservations" className="mr-2" /> Reservations
+            <img src="./icons/reservation.svg" alt="Reservations" className="mr-2" /> {!isCollapsed && 'Reservations'}
           </NavLink>
 
           <NavLink
             to="/admin-beds"
             className={`${activeItem === 'Beds' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
-             text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
-            // onClick={() => setActiveItem('Beds')}
+             text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >
-            <img src="./icons/beds.svg" alt="Beds" className="mr-2" /> Beds availability
+            <img src="./icons/beds.svg" alt="Beds" className="mr-2" /> {!isCollapsed && 'Beds availability'}
           </NavLink>
 
           <NavLink
             to="/admin-staff"
             className={`${activeItem === 'Staff' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
-             text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
-            // onClick={() => setActiveItem('Staff')}
+             text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >
-            <img src="./icons/staff.svg" alt="Staff" className="mr-2" /> Staff List
+            <img src="./icons/staff.svg" alt="Staff" className="mr-2" /> {!isCollapsed && 'Staff List'}
           </NavLink>
 
           <NavLink
             to="/admin-treatment"
             className={`${activeItem === 'Treatment' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
-             text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
-            // onClick={() => setActiveItem('Treatment')}
+             text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >
-            <img src="./icons/dashboard.svg" alt="Treatment" className="mr-2" /> Treatment
+            <img src="./icons/treatment.svg" alt="Treatment" className="mr-2" /> {!isCollapsed && 'Treatment'}
           </NavLink>
 
-          <div className="section-header font-bold text-gray-600 my-4">Finance</div>
+          {!isCollapsed && <div className="section-header font-bold text-gray-600 my-4">Finance</div>}
 
           <NavLink
             to="/admin-sales"
             className={`${activeItem === 'Sales' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
-             text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
-            // onClick={() => setActiveItem('Sales')}
+             text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >
-            <img src="./icons/reports.svg" alt="Sales" className="mr-2" /> Sales
+            <img src="./icons/reports.svg" alt="Sales" className="mr-2" /> {!isCollapsed && 'Sales'}
           </NavLink>
 
-          <div className="section-header font-bold text-gray-600 my-4">Others</div>
+          {!isCollapsed && <div className="section-header font-bold text-gray-600 my-4">Others</div>}
 
           <NavLink
             to="/admin-reports"
             className={`${activeItem === 'Reports' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
-             text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
-            // onClick={() => setActiveItem('Reports')}
+             text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >
-            <img src="./icons/reports.svg" alt="Reports" className="mr-2" /> Reports
+            <img src="./icons/reports.svg" alt="Reports" className="mr-2" /> {!isCollapsed && 'Reports'}
           </NavLink>
 
           <NavLink
             to="/admin-support"
             className={`${activeItem === 'Support' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
-             text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
-            // onClick={() => setActiveItem('Support')}
+             text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >
-            <img src="./icons/support.svg" alt="Support" className="mr-2" /> Customer Support
+            <img src="./icons/support.svg" alt="Support" className="mr-2" /> {!isCollapsed && 'Customer Support'}
           </NavLink>
-
         </ul>
       </nav>
     </div>
