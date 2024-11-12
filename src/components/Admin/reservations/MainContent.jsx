@@ -14,7 +14,7 @@ const timeslots = [
 
 // Header component with filter functionality
 const Header = ({ date, onPreviousDate, onNextDate, totalReservations, onFilterChange }) => (
-  <div className="bg-100 p-4 flex flex-col space-y-2">
+  <div className="bg-gray-100 p-4 flex flex-col space-y-2">
     <div className="flex items-center justify-between">
       <h2 className="text-2xl font-bold text-black">Calendar</h2>
     </div>
