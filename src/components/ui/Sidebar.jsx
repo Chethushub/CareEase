@@ -12,11 +12,11 @@ const Sidebar = ({ activeItem }) => {
   return (
     <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
       <div className="toggle-button" onClick={toggleSidebar}>
-      <img 
-  src="./icons/left-arrow-circle-icon.svg" 
-  alt="Left Arrow" 
-  className="absolute top-4 right-[-20px] transform cursor-pointer z-10"
-/>
+        <img
+          src={isCollapsed ? "./icons/right-arrow-circle-icon.svg" : "./icons/left-arrow-circle-icon.svg"}
+          alt="Toggle Arrow"
+          className="absolute top-4 right-[-20px] transform cursor-pointer z-10"
+        />
 
       </div>
 
@@ -84,7 +84,7 @@ const Sidebar = ({ activeItem }) => {
             className={`${activeItem === 'Sales' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >
-            <img src="./icons/reports.svg" alt="Sales" className="mr-2" /> {!isCollapsed && 'Sales'}
+            <img src="./icons/bills.svg" alt="Sales" className="mr-2" /> {!isCollapsed && 'Bills'}
           </NavLink>
 
           {!isCollapsed && <div className="section-header font-bold text-gray-600 my-4">Others</div>}
@@ -94,7 +94,7 @@ const Sidebar = ({ activeItem }) => {
             className={`${activeItem === 'Reports' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >
-            <img src="./icons/reports.svg" alt="Reports" className="mr-2" /> {!isCollapsed && 'Reports'}
+            <img src="./icons/report.svg" alt="Reports" className="mr-2" /> {!isCollapsed && 'Reports'}
           </NavLink>
 
           <NavLink

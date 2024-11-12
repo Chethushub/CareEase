@@ -141,7 +141,7 @@ const Reservation = () => {
                   <span className="absolute top-1 right-2 text-xs text-white bg-blue-500 px-2 py-1 rounded-full">
                     {appointment.status}
                   </span>
-                  
+
                   {/* Display patient name, problem, and appointment time */}
                   <span className="block text-sm font-bold">{appointment.patient}</span>
                   <span className="block text-xs text-gray-600 mt-1">{appointment.problem}</span>
