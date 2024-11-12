@@ -1,9 +1,14 @@
-// DoctorsTable.js
-import React from 'react';
+import React, { useState } from 'react';
 
 const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-const DoctorsTable = ({ doctorsData }) => {
+const DoctorsTable = ({ doctorsData, onDeleteDoctor }) => {
+  const [showDeleteMenu, setShowDeleteMenu] = useState(null); // Track which doctor menu is open
+
+  const toggleDeleteMenu = (index) => {
+    setShowDeleteMenu(showDeleteMenu === index ? null : index);
+  };
+
   return (
     <div className="w-full p-4 overflow-x-auto bg-white text-black">
       <table className="w-full min-w-[600px] table-auto border-collapse">
@@ -49,8 +54,29 @@ const DoctorsTable = ({ doctorsData }) => {
                   {doctor.type}
                 </button>
               </td>
-              <td className="px-4 py-2">
-                <button className="text-xl text-white">•••</button>
+              <td className="relative px-4 py-2">
+                {/* Options Button */}
+                <button
+                  onClick={() => toggleDeleteMenu(index)}
+                  className="text-xl text-black focus:outline-none"
+                >
+                  •••
+                </button>
+                
+                {/* Delete Menu */}
+                {showDeleteMenu === index && (
+                  <div className="absolute right-0 mt-2 w-24 bg-white border border-gray-300 rounded shadow-lg z-10">
+                    <button
+                      onClick={() => {
+                        onDeleteDoctor(doctor.email);
+                        setShowDeleteMenu(null);
+                      }}
+                      className="w-full px-4 py-2 text-left text-red-600 hover:bg-gray-100"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
               </td>
             </tr>
           ))}

@@ -1,4 +1,3 @@
-// AdminStaffList.js
 import React, { useState } from 'react';
 import './Admin-staff.css';
 import DoctorsTable from './DoctorsTable';
@@ -20,6 +19,11 @@ export default function AdminStaffList() {
     setShowAddDoctorDrawer(false);
   };
 
+  // Delete doctor function
+  const handleDeleteDoctor = (email) => {
+    setDoctors(doctors.filter((doctor) => doctor.email !== email));
+  };
+
   const filteredDoctors = doctors.filter((doctor) => {
     const matchesType = filters.type ? doctor.type === filters.type : true;
     const matchesTreatment = filters.assignedTreatment ? doctor.assignedTreatment === filters.assignedTreatment : true;
@@ -38,13 +42,11 @@ export default function AdminStaffList() {
   return (
     <div className="admin-staff-list">
       <div className="flex justify-between items-center p-4">
-        {/* Left Side: Icon and Doctor Count */}
         <div className="flex items-center">
           <img src="./icons/treatment.svg" alt="Treatment" className="mr-2" />
           <h1 className="text-lg font-bold">Doctors Available: {filteredDoctors.length}</h1>
         </div>
 
-        {/* Right Side: Filter, Add Doctor */}
         <div className="flex items-center gap-4">
           <button
             onClick={() => setShowFilters(!showFilters)}
@@ -61,7 +63,6 @@ export default function AdminStaffList() {
         </div>
       </div>
 
-      {/* Filters Dropdown */}
       {showFilters && (
         <div className="filters bg-white p-4 shadow-md rounded-md mb-4">
           <div className="flex gap-4">
@@ -102,10 +103,9 @@ export default function AdminStaffList() {
         </div>
       )}
 
-      {/* Doctors Table with Filters */}
-      <DoctorsTable doctorsData={filteredDoctors} />
+      {/* Pass the delete handler to DoctorsTable */}
+      <DoctorsTable doctorsData={filteredDoctors} onDeleteDoctor={handleDeleteDoctor} />
 
-      {/* Right-side sliding drawer for Add Doctor */}
       <div className={`drawer ${showAddDoctorDrawer ? 'open' : ''}`}>
         <div className="drawer-content p-6 bg-white shadow-lg">
           <AddDoctor onAddDoctor={handleAddDoctor} />
