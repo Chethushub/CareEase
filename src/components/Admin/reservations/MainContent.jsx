@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FaUserMd, FaCheckCircle } from 'react-icons/fa';
 
 const initialAppointments = [
   { doctor: 'Dr. Jane Smith', patientName: 'Aarav Kumar', time: '9:30 AM', date: '2024-11-10', type: 'Dental Checkup', problem: 'Toothache', status: 'Finished' },
@@ -49,23 +50,38 @@ const Header = ({ date, onPreviousDate, onNextDate, totalReservations, onFilterC
       </div>
 
       <div className="flex items-center space-x-4">
+        {/* Date Navigation */}
         <div className="text-lg font-semibold text-gray-400 gap-2 flex">
           <button onClick={onPreviousDate}>&lt;</button>
           <span className="text-gray-600">{date.toDateString()}</span>
           <button onClick={onNextDate}>&gt;</button>
         </div>
-        <select className="border border-gray-300 rounded-md p-2 bg-white text-gray-700" onChange={(e) => onFilterChange('doctor', e.target.value)}>
-          <option value="">All Doctors</option>
-          <option>Dr. Shekar Nayak</option>
-          <option>Dr. John Doe</option>
-          <option>Dr. Jane Smith</option>
-        </select>
-        <select className="border border-gray-300 rounded-md p-2 bg-white text-gray-700" onChange={(e) => onFilterChange('status', e.target.value)}>
-          <option value="">All Statuses</option>
-          <option value="Finished">Finished</option>
-          <option value="Doing Treatment">Doing Treatment</option>
-          <option value="Registered">Registered</option>
-        </select>
+
+        <div className="relative inline-flex items-center">
+          <FaUserMd className="absolute left-3 text-blue-700" />
+          <select
+            className="border border-gray-300 rounded-md p-2 pl-10 bg-white text-gray-700"
+            onChange={(e) => onFilterChange('doctor', e.target.value)}
+          >
+            <option value="">All Doctors</option>
+            <option>Dr. Shekar Nayak</option>
+            <option>Dr. John Doe</option>
+            <option>Dr. Jane Smith</option>
+          </select>
+        </div>
+
+        <div className="relative inline-flex items-center">
+          <FaCheckCircle className="absolute left-3 text-blue-700" />
+          <select
+            className="border border-gray-300 rounded-md p-2 pl-10 bg-white text-gray-700"
+            onChange={(e) => onFilterChange('status', e.target.value)}
+          >
+            <option value="">All Status</option>
+            <option value="Finished">Finished</option>
+            <option value="Doing Treatment">Doing Treatment</option>
+            <option value="Registered">Registered</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
