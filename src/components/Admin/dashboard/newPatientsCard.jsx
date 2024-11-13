@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react';
 import { FaUserPlus } from 'react-icons/fa';
 import initialData from './data';
+import { motion } from "framer-motion"
+
 
 const NewPatientsCard = ({ timeframe, onTimeframeChange }) => {
   const newPatientCount = useMemo(
@@ -10,7 +12,7 @@ const NewPatientsCard = ({ timeframe, onTimeframeChange }) => {
   const oldPatientCount = initialData.newPatients.length - newPatientCount;
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200">
+    <motion.div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200" whileHover={{ scale: 1.01}}>
       <div className="flex justify-between items-center mb-4">
         <h4 className="text-lg font-semibold text-blue-800 flex items-center gap-2">
           <FaUserPlus /> New Patients
@@ -25,7 +27,7 @@ const NewPatientsCard = ({ timeframe, onTimeframeChange }) => {
         <p className="text-sm text-gray-500">New Patients</p>
         <p className="text-sm text-gray-500">{oldPatientCount} Old Patients</p>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

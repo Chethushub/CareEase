@@ -17,9 +17,14 @@ const Treatment = () => {
   return (
     <div className="treatment-container">
       <h1 className="header">Treatments</h1>
-      <div className="tab-container">
-        <button className="tab active">Active Treatment</button>
-        <button className="tab">Inactive Treatment</button>
+      <div className="tab-container flex justify-between">
+        <div>
+          <button className="tab active">Active Treatment</button>
+          <button className="tab">Inactive Treatment</button>
+        </div>
+        <div className=''>
+          <button className="button add-treatment">+ Add Treatment</button>
+        </div>
       </div>
       <table className="treatment-table">
         <thead>
@@ -45,7 +50,6 @@ const Treatment = () => {
           ))}
         </tbody>
       </table>
-      <button className="add-treatment">+ Add Treatment</button>
     </div>
   );
 };

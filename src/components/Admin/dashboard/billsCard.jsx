@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { FaRupeeSign } from 'react-icons/fa';
 import initialData from './data';
+import { motion } from 'framer-motion'
 
 const BillsCard = ({ timeframe, onTimeframeChange }) => {
   const sortedBills = useMemo(() => {
@@ -28,7 +29,7 @@ const BillsCard = ({ timeframe, onTimeframeChange }) => {
   }), [sortedBills, timeframe.bills]);
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200">
+    <motion.div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200" whileHover={{ scale: 1.01 }}>
       <div className="flex justify-between items-center mb-4">
         <h4 className="text-lg font-semibold text-blue-800 flex items-center gap-2">
           <FaRupeeSign /> Bills
@@ -38,7 +39,8 @@ const BillsCard = ({ timeframe, onTimeframeChange }) => {
           <button onClick={() => onTimeframeChange('bills', 'months')} className={`px-2 py-1 rounded ${timeframe.bills === 'months' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}>Months</button>
         </div>
       </div>
-      <Bar data={billData} options={{ scales: { x: { title: { display: true, text: 'Timeframe' } }, y: { title: { display: true, text: 'Amount' } } } }} />    </div>
+      <Bar data={billData} options={{ scales: { x: { title: { display: true, text: 'Timeframe' } }, y: { title: { display: true, text: 'Amount' } } } }} />    
+      </motion.div>
   );
 };
 

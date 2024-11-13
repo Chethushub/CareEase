@@ -46,7 +46,7 @@ function MainLayout() {
           <Sidebar activeItem={activeItem} />
           <div className="main-section">
             <Header title={title} />
-            <div className='overflow-y-auto h-full'>
+            <div className='overflow-y-auto'>
               <App />
             </div>
           </div>
@@ -58,7 +58,7 @@ function MainLayout() {
           <PtSidebar activeItem={activeItem} />
           <div className="main-section">
             <PtHeader title={title} />
-            <div className='overflow-y-auto h-full'>
+            <div className='overflow-y-auto'>
               <App />
             </div>
           </div>
