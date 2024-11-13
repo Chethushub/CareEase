@@ -3,7 +3,7 @@ import Landing from "./components/Landing";
 
 import Dashboard from "./components/Admin/dashboard/MainContent";
 import Reservation from "./components/Admin/reservations/MainContent";
-import AdminStaffList from "./components/Admin-staff-list/Admin-staff-list";
+import AdminStaffList from "./components/Admin/Admin-staff-list/Admin-staff-list";
 import Treatment from "./components/Admin/treatment/mainContent";
 // import Beds from "./components/Admin/BedsAvaliablity/main";
 // import Bills from "./components/Admin/bills/main";
