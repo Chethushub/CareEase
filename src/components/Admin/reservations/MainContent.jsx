@@ -114,10 +114,19 @@ const Reservation = () => {
   const handleNextDate = () => setDate(new Date(date.setDate(date.getDate() + 1)));
   const handleAddPatient = (doctor, time) => { setSelectedSlot({ doctor, time }); setShowAddModal(true); };
   const handleAddPatientSubmit = (data) => {
-    const newAppointment = { ...data, time: selectedSlot.time, doctor: selectedSlot.doctor, type: 'General Checkup', status: 'Registered', date: date.toISOString().split('T')[0] };
+    const newAppointment = {
+      patient: data.name,
+      time: selectedSlot.time,
+      doctor: selectedSlot.doctor,
+      type: 'General Checkup',
+      problem: data.problem,
+      status: 'Registered',
+      date: date.toISOString().split('T')[0]
+    };
     setAppointments([...appointments, newAppointment]);
     setShowAddModal(false);
   };
+  
   const handleFilterChange = (key, value) => setFilters({ ...filters, [key]: value });
 
   return (
@@ -149,7 +158,7 @@ const Reservation = () => {
                 </div>
               ) : (
                 <div key={idx} className="p-6 rounded-md text-center cursor-pointer group relative" onClick={() => handleAddPatient(doctor, time)}>
-                  <span className="text-2xl text-blue-600 hidden group-hover:block absolute inset-0 m-auto">+</span>
+                  <span className="text-2xl text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out">+</span>
                 </div>
               );
             })}
