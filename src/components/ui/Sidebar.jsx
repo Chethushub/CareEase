@@ -21,7 +21,7 @@ const Sidebar = ({ activeItem }) => {
       </div>
 
       <NavLink to="/">
-        <div className="logo">LOGO</div>
+        <div className="logo">CareEase</div>
       </NavLink>
 
       <div className="hospital-name">
