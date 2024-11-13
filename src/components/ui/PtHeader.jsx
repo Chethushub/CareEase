@@ -4,7 +4,7 @@ import './PtHeader.css';
 const Header = ({title}) => {
   return (
     <div className="header">
-      <img src="./icons/left-arrow-circle-icon.svg" alt="Left Arrow" className="left-image"/>
+      {/* <img src="./icons/left-arrow-circle-icon.svg" alt="Left Arrow" className="left-image"/> */}
       <h2 style={{padding: "2px 6px 2px 12px" ,fontWeight: 'bold', fontSize: '26px'}}>{title}</h2>
       <div className="header-actions">
         <input type="text" placeholder="Search" className="search-input" />

@@ -1,20 +1,73 @@
-import React from 'react';
-import './MainContent.css';
+import React, { useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
+import AppointmentsCard from './appointmentsCard';
+import BillsCard from './billsCard';
+import PatientDepartmentsCard from './patientDepartmentsCard';
+import TreatmentRatingsCard from './treatmentRatingsCard';
+import NewPatientsCard from './newPatientsCard';
+import BedOccupancyCard from './bedOccupancyCard';
+import initialData from './data';
+
+import {
+  Chart as ChartJS, Tooltip, Legend, ArcElement, CategoryScale, LinearScale, PointElement, LineElement, BarElement
+} from 'chart.js';
+
+ChartJS.register(Tooltip, Legend, ArcElement, CategoryScale, LinearScale, PointElement, LineElement, BarElement);
 
 const Dashboard = () => {
-  return (
-    <div className="main-content">
-      <h3 style={{fontWeight:'bolder',marginBottom:'5px'}}>Good Morning, User Name!</h3>
-      <p style={{fontWeight:'lighter'}}>Friday, November 14, 2024</p>
-      <div className="dashboard-cards">
- 
-        <div className="card appointments">Appointments</div>
-        <div className="card patient-department">Patient Department</div>
+  const [searchQuery, setSearchQuery] = useState('');
+  const [timeframe, setTimeframe] = useState({
+    bills: 'weeks',
+    appointment: 'weeks',
+    newPatients: 'weeks',
+  });
 
-        <div className="card small-card bills">Bills</div>
-        <div className="card small-card popular-treatments">Popular Treatments</div>
-        <div className="card small-card beds-availability">Beds Availability</div>
-      </div>
+  const handleTimeframeChange = (key, value) => {
+    setTimeframe((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const getDate = () => {
+    const date = new Date();
+    const weekday = date.toLocaleString('default', { weekday: 'long' });
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'short' });
+    const year = date.getFullYear();
+    return `Today is ${weekday}, ${day}-${month}-${year}`;
+  };
+
+  const handleSearchChange = (e) => setSearchQuery(e.target.value);
+
+  return (
+    <div className="dashboard bg-gray-100 min-h-screen p-6">
+      <header className="flex justify-between items-center mb-6">
+        <div>
+          <h3 className="text-2xl font-bold text-gray-800">Good Morning! Ram</h3>
+          <p className="text-sm font-bold text-gray-500">{getDate()}</p>
+        </div>
+        <div className="relative">
+          <input
+            type="search"
+            className="rounded-lg p-2 bg-white shadow-sm"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+        </div>
+      </header>
+
+      <motion.div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+        <AppointmentsCard timeframe={timeframe} onTimeframeChange={handleTimeframeChange} />
+        <BillsCard timeframe={timeframe} onTimeframeChange={handleTimeframeChange} />
+      </motion.div>
+
+      <motion.div  className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
+        <PatientDepartmentsCard />
+        <motion.div  className="grid grid-rows-1 lg:grid-rows-2 gap-4">
+          <TreatmentRatingsCard />
+          <NewPatientsCard timeframe={timeframe} onTimeframeChange={handleTimeframeChange} />
+        </motion.div >
+        <BedOccupancyCard />
+      </motion.div >
     </div>
   );
 };
