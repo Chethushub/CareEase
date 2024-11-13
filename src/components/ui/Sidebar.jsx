@@ -15,7 +15,7 @@ const Sidebar = ({ activeItem }) => {
         <img
           src={isCollapsed ? "./icons/right-arrow-circle-icon.svg" : "./icons/left-arrow-circle-icon.svg"}
           alt="Toggle Arrow"
-          className="absolute top-4 right-[-20px] transform cursor-pointer z-10"
+          className="absolute top-6 right-[-14px] transform cursor-pointer z-10"
         />
 
       </div>

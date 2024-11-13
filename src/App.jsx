@@ -16,6 +16,7 @@ import { Route, Routes } from 'react-router-dom';
 function App() {
   return (
     <>
+    <div className="bg-[#f3f4f6]">
       <Routes>
         <Route path='/' element={<Landing />} />
         <Route path='/admin-dashboard' element={<Dashboard />} />
@@ -27,6 +28,7 @@ function App() {
         <Route path='/patient-dashboard' element={<PatientDashboard />} />
         <Route path='/patient-book-appointment' element={<BookAppointment />} />
       </Routes>
+    </div>
     </>
   );
 }

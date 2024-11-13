@@ -35,7 +35,7 @@ const Sample = () => {
       </section>
 
       {/* Features Section */}
-      <section className="container mx-auto py-16 px-6 md:px-12">
+      <section className="container bg-[#f3f4f6] mx-auto py-16 px-6 md:px-12">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-800 text-center mb-8">
           Our Key Features
         </h2>
