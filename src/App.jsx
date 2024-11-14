@@ -10,6 +10,7 @@ import Treatment from "./components/Admin/treatment/mainContent";
 
 import PatientDashboard from "./components/Patient/Dashboard/PtMainContent";
 import BookAppointment from "./components/Patient/appointment/mainContent";
+import PatientSchedules from "./components/Patient/PatientSchedules/mainContent";
 import "./App.css";
 import { Route, Routes } from 'react-router-dom';
 
@@ -27,6 +28,7 @@ function App() {
         <Route path='/admin-beds' element={<Beds />} /> */}
         <Route path='/patient-dashboard' element={<PatientDashboard />} />
         <Route path='/patient-book-appointment' element={<BookAppointment />} />
+        <Route path="patient-schedules" element={<PatientSchedules/>}/>
       </Routes>
     </div>
     </>
