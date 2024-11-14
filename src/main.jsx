@@ -42,14 +42,16 @@ function MainLayout() {
       {!isAdminRoute && !isPatientRoute && <App />}
 
       {isAdminRoute && (
-        <div className="dashboard-layout">
+        <div className="dashboard-layout ">
           <Sidebar activeItem={activeItem} />
+        
           <div className="main-section">
             <Header title={title} />
-            <div className='overflow-y-auto'>
+            <div className='overflow-y-auto '>
               <App />
             </div>
           </div>
+          
         </div>
       )}
 

@@ -22,7 +22,10 @@ const PtSidebar = ({ activeItem }) => {
         />
       </div>
       <NavLink to="/">
-        <div className="logo">LOGO</div>
+        <div className="logo flex items-center">
+          <img src="./icons/logo.svg" alt="Logo" className='h-16 w-16' />
+          <p>{!isCollapsed && 'CareEase'}</p>
+        </div>
       </NavLink>
 
       <nav>
