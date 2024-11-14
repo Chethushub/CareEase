@@ -83,7 +83,7 @@ const Sidebar = ({ activeItem }) => {
           {!isCollapsed && <div className="section-header font-bold text-gray-600 my-4">Finance</div>}
 
           <NavLink
-            to="/admin-sales"
+            to="/admin-bills"
             className={`${activeItem === 'Sales' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >

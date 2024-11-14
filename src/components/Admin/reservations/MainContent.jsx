@@ -50,7 +50,6 @@ const Header = ({ date, onPreviousDate, onNextDate, totalReservations, onFilterC
       </div>
 
       <div className="flex items-center space-x-4">
-        {/* Date Navigation */}
         <div className="text-lg font-semibold text-gray-400 gap-2 flex">
           <button onClick={onPreviousDate}>&lt;</button>
           <span className="text-gray-600">{date.toDateString()}</span>
@@ -140,7 +139,7 @@ const AddPatientModal = ({ onClose, onSubmit }) => {
   );
 };
 
-// Updated Reservation component with 15-minute intervals
+// Reservation component
 const Reservation = () => {
   const [date, setDate] = useState(new Date('2024-11-10'));
   const [appointments, setAppointments] = useState(initialAppointments);
@@ -167,25 +166,16 @@ const Reservation = () => {
 
   const handleAddPatientSubmit = (data) => {
     const newAppointment = {
-<<<<<<< HEAD
-      patient: data.name,
-      time: selectedSlot.time,
-      doctor: selectedSlot.doctor,
-      type: 'General Checkup',
-      problem: data.problem,
-=======
       ...data,
       time: selectedSlot.time,
       doctor: selectedSlot.doctor,
       type: 'General Checkup',
->>>>>>> aabe5f9a965e1e37692d00720495c936f4cca928
       status: 'Registered',
       date: date.toISOString().split('T')[0]
     };
     setAppointments([...appointments, newAppointment]);
     setShowAddModal(false);
   };
-  
   const handleFilterChange = (key, value) => setFilters({ ...filters, [key]: value });
 
   return (
@@ -233,10 +223,6 @@ const Reservation = () => {
                   <span className="text-xs text-gray-500 mt-1">{appointment.time}</span>
                 </div>
               ) : (
-<<<<<<< HEAD
-                <div key={idx} className="p-6 rounded-md text-center cursor-pointer group relative" onClick={() => handleAddPatient(doctor, time)}>
-                  <span className="text-2xl text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out">+</span>
-=======
                 <div
                   key={idx}
                   className="py-[50px] rounded-md  text-center cursor-pointer group relative"
@@ -245,7 +231,6 @@ const Reservation = () => {
                   <span className="text-2xl  text-blue-600 hidden group-hover:block  absolute inset-0 m-auto top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                     +
                   </span>
->>>>>>> aabe5f9a965e1e37692d00720495c936f4cca928
                 </div>
               );
             })}

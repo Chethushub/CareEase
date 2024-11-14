@@ -1,5 +1,6 @@
 import React from "react";
 import Landing from "./components/Landing";
+import SignUp from "./components/signin";
 
 import Dashboard from "./components/Admin/dashboard/MainContent";
 import Reservation from "./components/Admin/reservations/MainContent";
@@ -20,12 +21,17 @@ function App() {
     <div className="bg-[#f3f4f6]">
       <Routes>
         <Route path='/' element={<Landing />} />
-        <Route path='/admin-dashboard' element={<Dashboard />} />
+        <Route path='/signup' element={<SignUp />} />
+
+        <Route path='/admin' element={<Dashboard />} />
+        <Route path='/admin-dashboard'  element={<Dashboard />} />
         <Route path='/admin-reservations' element={<Reservation />} />
         <Route path='/admin-staff' element={<AdminStaffList />} />
         <Route path='/admin-treatment' element={<Treatment />} />
-        {/* <Route path='/admin-sales' element={<Bills />} />
-        <Route path='/admin-beds' element={<Beds />} /> */}
+        {/* <Route path='/admin-bills' element={<Bills />} /> */}
+        {/* <Route path='/admin-beds' element={<Beds />} /> */}
+
+        <Route path='/patient' element={<PatientDashboard />} />
         <Route path='/patient-dashboard' element={<PatientDashboard />} />
         <Route path='/patient-book-appointment' element={<BookAppointment />} />
         <Route path="patient-schedules" element={<PatientSchedules/>}/>

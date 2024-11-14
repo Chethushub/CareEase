@@ -13,6 +13,7 @@ function MainLayout() {
   const location = useLocation();
 
   const routeMap = {
+    "/admin": { activeItem: "Dashboard", title: "Dashboard" },
     "/admin-dashboard": { activeItem: "Dashboard", title: "Dashboard" },
     "/admin-reservations": { activeItem: "Reservations", title: "Reservations" },
     "/admin-beds": { activeItem: "Beds", title: "Beds Availability" },
