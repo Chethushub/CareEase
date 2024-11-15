@@ -18,12 +18,9 @@ const Main = () => {
 
   return (
     <div>
-      {/* Background blur and overlay */}
       {active !== 0 && <div className="overlay" onClick={closeCard}></div>}
 
-      {/* Main content */}
       <div className={active !== 0 ? "main blurred" : "main"}>
-        {/* Main page content */}
         <div className="main-head">
           <div className="revenue">
             <img className="revenue-img" src="./icons/revenue.svg" alt="Revenue" />
