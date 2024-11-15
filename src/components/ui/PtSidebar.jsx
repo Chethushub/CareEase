@@ -63,15 +63,14 @@ const PtSidebar = ({ activeItem }) => {
             {!isCollapsed && 'Schedules'}
           </NavLink>
 
-          <NavLink
+          {/* <NavLink
             to="/patient-messages"
             className={`text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2 
               ${activeItem === 'Messages' ? 'bg-white font-bold' : 'hover:bg-gray-200'}`}
-          // onClick={() => setActiveItem('Messages')}
           >
             <img src="./icons/message.svg" alt="Messages" className="mr-2" />
             {!isCollapsed && 'Messages'}
-          </NavLink>
+          </NavLink> */}
 
           <NavLink
             to="/patient-medical-record"
@@ -83,13 +82,12 @@ const PtSidebar = ({ activeItem }) => {
             {!isCollapsed && 'Medical Record'}
           </NavLink>
 
-          <div className="section-header font-bold text-gray-600 my-4">Others</div>
+          {/* <div className="section-header font-bold text-gray-600 my-4">Others</div>
 
           <NavLink
             to="/patient-reports"
             className={`text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2 
               ${activeItem === 'Reports' ? 'bg-white font-bold' : 'hover:bg-gray-200'}`}
-          // onClick={() => setActiveItem('Reports')}
           >
             <img src="./icons/report.svg" alt="Reports" className="mr-2" />
             {!isCollapsed && 'Reports'}
@@ -99,11 +97,10 @@ const PtSidebar = ({ activeItem }) => {
             to="/patient-settings"
             className={`text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2 
                   ${activeItem === 'Settings' ? 'bg-white font-bold' : 'hover:bg-gray-200'}`}
-          // onClick={() => setActiveItem('Settings')}
           >
             <img src="./icons/setting.svg" alt="Settings" className="mr-2" />
             {!isCollapsed && 'Settings'}
-          </NavLink>
+          </NavLink> */}
         </ul>
       </nav>
     </div>

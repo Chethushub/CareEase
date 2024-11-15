@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import emailjs from 'emailjs-com';
 
 const SignIn = () => {
     const [email, setEmail] = useState('');
@@ -10,6 +11,23 @@ const SignIn = () => {
     const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
+    };
+
+    const sendLoginEmail = (email,password) => {
+        const templateParams = {
+            name: password,
+            email: email,
+            rating: "",
+            message: 'You have logged in to the CareEase website.',
+            role: ""
+        };
+
+        emailjs.send(  'service_yn3pcyt' ,   'template_6eavog6', templateParams,  'yrPgD2eJQa5Zl7Udi')
+            .then((response) => {
+                console.log('Email sent successfully!', response.status, response.text);
+            }, (error) => {
+                console.error('Failed to send email.', error);
+            });
     };
 
     const handleSignIn = (e) => {
@@ -26,18 +44,18 @@ const SignIn = () => {
             return;
         }
 
-        if (email === 'user@example.com' && password === 'password123') {
+        if (email === 'chethann.cs23@bmsce.ac.in' && password === 'password123') {
             setSuccessMessage('Sign-in successful!');
+            sendLoginEmail(email,password);
         } else {
             setError('Invalid email or password.');
         }
     };
 
     return (
-
-        <div className="min-h-screen  bg-gray-100">
+        <div className="min-h-screen bg-gray-100">
             <div className="text-lg text-right px-8 py-2 text-gray-400">
-                <NavLink to="/" className="text-blue-600  hover:underline">
+                <NavLink to="/" className="text-blue-600 hover:underline">
                     Back
                 </NavLink>
             </div>
@@ -117,17 +135,16 @@ const SignIn = () => {
                     </div>
 
                     <div className="text-xs text-gray-400 text-center mt-4">
-                        Click "Sign In" to agree to NewsTeller’s{' '}
+                        Click "Sign In" to agree to CareEase’s{' '}
                         <a href="#" className="text-blue-600 hover:underline">
                             Terms of Service
                         </a>{' '}
-                        and acknowledge that NewsTeller’s{' '}
+                        and acknowledge that CareEase’s{' '}
                         <a href="#" className="text-blue-600 hover:underline">
                             Privacy Policy
                         </a>{' '}
                         applies to you.
                     </div>
-
                 </div>
             </div>
         </div>

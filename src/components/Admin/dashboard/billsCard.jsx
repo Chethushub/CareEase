@@ -35,12 +35,24 @@ const BillsCard = ({ timeframe, onTimeframeChange }) => {
           <FaRupeeSign /> Bills
         </h4>
         <div className="flex space-x-2">
-          <button onClick={() => onTimeframeChange('bills', 'weeks')} className={`px-2 py-1 rounded ${timeframe.bills === 'weeks' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}>Weeks</button>
-          <button onClick={() => onTimeframeChange('bills', 'months')} className={`px-2 py-1 rounded ${timeframe.bills === 'months' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}>Months</button>
+          <button
+            onClick={() => onTimeframeChange('bills', 'weeks')}
+            className={`px-2 py-1 rounded ${timeframe.bills === 'weeks' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}>
+            Weeks
+          </button>
+          <button
+            onClick={() => onTimeframeChange('bills', 'months')}
+            className={`px-2 py-1 rounded ${timeframe.bills === 'months' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}>
+            Months
+          </button>
         </div>
       </div>
-      <Bar data={billData} options={{ scales: { x: { title: { display: true, text: 'Timeframe' } }, y: { title: { display: true, text: 'Amount' } } } }} />    
-      </motion.div>
+      
+      <Bar
+        data={billData}
+        options={{ scales: { x: { title: { display: true, text: 'Timeframe' } }, y: { title: { display: true, text: 'Amount' } } } }}
+      />
+    </motion.div>
   );
 };
 

@@ -90,23 +90,23 @@ const Sidebar = ({ activeItem }) => {
             <img src="./icons/bills.svg" alt="Sales" className="mr-2" /> {!isCollapsed && 'Bills'}
           </NavLink>
 
-          {!isCollapsed && <div className="section-header font-bold text-gray-600 my-4">Others</div>}
+          {/* {!isCollapsed && <div className="section-header font-bold text-gray-600 my-4">Others</div>} */}
 
-          <NavLink
+          {/* <NavLink
             to="/admin-reports"
             className={`${activeItem === 'Reports' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >
             <img src="./icons/report.svg" alt="Reports" className="mr-2" /> {!isCollapsed && 'Reports'}
-          </NavLink>
+          </NavLink> */}
 
-          <NavLink
+          {/* <NavLink
             to="/admin-support"
             className={`${activeItem === 'Support' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >
             <img src="./icons/support.svg" alt="Support" className="mr-2" /> {!isCollapsed && 'Customer Support'}
-          </NavLink>
+          </NavLink> */}
         </ul>
       </nav>
     </div>

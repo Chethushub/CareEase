@@ -6,7 +6,14 @@ const Sample = () => {
   return (
     <div className="bg-gray-50 min-h-screen">
       <section className="bg-blue-600 text-white py-20">
+
+
         <div className="container mx-auto px-6 md:px-12 text-center">
+
+          <div className="items-center flex justify-center cursor-pointer">
+            <img src="./icons/logo.svg" alt="Logo" className='h-24 w-24 items-center' />
+          </div>
+
           <h1 className="text-3xl md:text-5xl font-bold mb-4">
             Welcome to CareEase
           </h1>
