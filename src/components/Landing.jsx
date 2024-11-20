@@ -5,9 +5,15 @@ import { FaHeartbeat, FaBed, FaCalendarAlt } from 'react-icons/fa';
 const Sample = () => {
   return (
     <div className="bg-gray-50 min-h-screen">
-      {/* Hero Section */}
       <section className="bg-blue-600 text-white py-20">
+
+
         <div className="container mx-auto px-6 md:px-12 text-center">
+
+          <div className="items-center flex justify-center cursor-pointer">
+            <img src="./icons/logo.svg" alt="Logo" className='h-24 w-24 items-center' />
+          </div>
+
           <h1 className="text-3xl md:text-5xl font-bold mb-4">
             Welcome to CareEase
           </h1>
@@ -19,14 +25,14 @@ const Sample = () => {
             Get Started as
           </h2>
 
-          <NavLink to="/admin-dashboard" className="px-4">
-            <button  className="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-8 rounded-md shadow-lg transition duration-300">
+          <NavLink to="/admin" className="px-4">
+            <button className="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-8 rounded-md shadow-lg transition duration-300">
               Admin
             </button>
           </NavLink>
 
-          <NavLink to="/patient-dashboard" className="px-4">
-            <button  className="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-8 rounded-md shadow-lg transition duration-300">
+          <NavLink to="/patient" className="px-4">
+            <button className="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-8 rounded-md shadow-lg transition duration-300">
               Patient
             </button>
           </NavLink>
@@ -35,12 +41,12 @@ const Sample = () => {
       </section>
 
       {/* Features Section */}
-      <section className="container mx-auto py-16 px-6 md:px-12">
+      <section className="container bg-[#f3f4f6] mx-auto py-16 px-6 md:px-12">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-800 text-center mb-8">
           Our Key Features
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Feature 1 */}
+
           <div className="bg-white shadow-lg rounded-lg p-6 text-center transition duration-300 transform hover:scale-105">
             <FaHeartbeat className="text-blue-600 text-4xl mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2 text-gray-800">Real-Time Queue Updates</h3>
@@ -48,7 +54,7 @@ const Sample = () => {
               Keep track of patient queues with live updates, reducing wait times and improving patient flow.
             </p>
           </div>
-          {/* Feature 2 */}
+
           <div className="bg-white shadow-lg rounded-lg p-6 text-center transition duration-300 transform hover:scale-105">
             <FaBed className="text-blue-600 text-4xl mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2 text-gray-800">Bed Availability Tracking</h3>
@@ -56,7 +62,7 @@ const Sample = () => {
               Monitor and manage bed availability efficiently to ensure optimal usage and faster patient admissions.
             </p>
           </div>
-          {/* Feature 3 */}
+
           <div className="bg-white shadow-lg rounded-lg p-6 text-center transition duration-300 transform hover:scale-105">
             <FaCalendarAlt className="text-blue-600 text-4xl mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2 text-gray-800">Online Appointment Scheduling</h3>
@@ -67,7 +73,6 @@ const Sample = () => {
         </div>
       </section>
 
-      {/* Call-to-Action Section */}
       <section className="bg-blue-600 text-white py-16">
         <div className="container mx-auto px-6 md:px-12 text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-4">
@@ -76,13 +81,14 @@ const Sample = () => {
           <p className="mb-6">
             Join CareEase today and experience a revolution in hospital management.
           </p>
-          <button className="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-8 rounded-md shadow-lg transition duration-300">
-            Sign Up Now
-          </button>
+          <NavLink to="/signup" className="px-4">
+            <button className="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-8 rounded-md shadow-lg transition duration-300">
+              Sign Up Now
+            </button>
+          </NavLink>
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="bg-gray-800 text-white py-6">
         <div className="container mx-auto px-6 md:px-12 text-center">
           <p className="text-sm">&copy; {new Date().getFullYear()} CareEase. All rights reserved.</p>

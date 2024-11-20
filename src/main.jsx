@@ -13,6 +13,7 @@ function MainLayout() {
   const location = useLocation();
 
   const routeMap = {
+    "/admin": { activeItem: "Dashboard", title: "Dashboard" },
     "/admin-dashboard": { activeItem: "Dashboard", title: "Dashboard" },
     "/admin-reservations": { activeItem: "Reservations", title: "Reservations" },
     "/admin-beds": { activeItem: "Beds", title: "Beds Availability" },
@@ -42,14 +43,16 @@ function MainLayout() {
       {!isAdminRoute && !isPatientRoute && <App />}
 
       {isAdminRoute && (
-        <div className="dashboard-layout">
+        <div className="dashboard-layout ">
           <Sidebar activeItem={activeItem} />
+        
           <div className="main-section">
             <Header title={title} />
-            <div className='overflow-y-auto h-full'>
+            <div className='overflow-y-auto '>
               <App />
             </div>
           </div>
+          
         </div>
       )}
 
@@ -58,7 +61,7 @@ function MainLayout() {
           <PtSidebar activeItem={activeItem} />
           <div className="main-section">
             <PtHeader title={title} />
-            <div className='overflow-y-auto h-full'>
+            <div className='overflow-y-auto'>
               <App />
             </div>
           </div>

@@ -18,7 +18,7 @@ const Treatment = () => {
     <div className="treatment-container">
       <h1 className="header">Treatments</h1>
       <div className="tab-container">
-        <div className='group-button'>
+        <div className='group-button flex gap-2'>
         <button className="tab active">Active Treatment</button>
         <button className="tab">Inactive Treatment</button>
         </div>

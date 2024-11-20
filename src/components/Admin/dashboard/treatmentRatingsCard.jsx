@@ -1,10 +1,12 @@
 import React from 'react';
 import { FaStar } from 'react-icons/fa';
 import initialData from './data';
+import { motion } from "framer-motion"
+
 
 const TreatmentRatingsCard = () => {
   return (
-    <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200">
+    <motion.div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200" whileHover={{ scale: 1.01 }}>
       <h4 className="text-lg font-semibold text-blue-800 flex items-center gap-2">
         <FaStar /> Treatment Ratings
       </h4>
@@ -18,7 +20,7 @@ const TreatmentRatingsCard = () => {
           </li>
         ))}
       </ul>
-    </div>
+    </motion.div>
   );
 };
 

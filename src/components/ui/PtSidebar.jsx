@@ -18,11 +18,14 @@ const PtSidebar = ({ activeItem }) => {
         <img
           src={isCollapsed ? "./icons/right-arrow-circle-icon.svg" : "./icons/left-arrow-circle-icon.svg"}
           alt="Toggle Arrow"
-          className="absolute top-4 right-[-20px] transform cursor-pointer z-10"
+          className="absolute top-6 right-[-14px] transform cursor-pointer z-10"
         />
       </div>
       <NavLink to="/">
-        <div className="logo">LOGO</div>
+        <div className="logo flex items-center">
+          <img src="./icons/logo.svg" alt="Logo" className='h-16 w-16' />
+          <p>{!isCollapsed && 'CareEase'}</p>
+        </div>
       </NavLink>
 
       <nav>
@@ -60,15 +63,14 @@ const PtSidebar = ({ activeItem }) => {
             {!isCollapsed && 'Schedules'}
           </NavLink>
 
-          <NavLink
+          {/* <NavLink
             to="/patient-messages"
             className={`text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2 
               ${activeItem === 'Messages' ? 'bg-white font-bold' : 'hover:bg-gray-200'}`}
-          // onClick={() => setActiveItem('Messages')}
           >
             <img src="./icons/message.svg" alt="Messages" className="mr-2" />
             {!isCollapsed && 'Messages'}
-          </NavLink>
+          </NavLink> */}
 
           <NavLink
             to="/patient-medical-record"
@@ -80,13 +82,12 @@ const PtSidebar = ({ activeItem }) => {
             {!isCollapsed && 'Medical Record'}
           </NavLink>
 
-          <div className="section-header font-bold text-gray-600 my-4">Others</div>
+          {/* <div className="section-header font-bold text-gray-600 my-4">Others</div>
 
           <NavLink
             to="/patient-reports"
             className={`text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2 
               ${activeItem === 'Reports' ? 'bg-white font-bold' : 'hover:bg-gray-200'}`}
-          // onClick={() => setActiveItem('Reports')}
           >
             <img src="./icons/report.svg" alt="Reports" className="mr-2" />
             {!isCollapsed && 'Reports'}
@@ -96,11 +97,10 @@ const PtSidebar = ({ activeItem }) => {
             to="/patient-settings"
             className={`text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2 
                   ${activeItem === 'Settings' ? 'bg-white font-bold' : 'hover:bg-gray-200'}`}
-          // onClick={() => setActiveItem('Settings')}
           >
             <img src="./icons/setting.svg" alt="Settings" className="mr-2" />
             {!isCollapsed && 'Settings'}
-          </NavLink>
+          </NavLink> */}
         </ul>
       </nav>
     </div>

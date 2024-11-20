@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
+import {motion} from "framer-motion";
 import { FaCalendarAlt } from 'react-icons/fa';
 import initialData from './data';
+import { div } from 'framer-motion/client';
 
 const AppointmentsCard = ({ timeframe, onTimeframeChange }) => {
   const appointmentData = useMemo(() => ({
@@ -16,17 +18,20 @@ const AppointmentsCard = ({ timeframe, onTimeframeChange }) => {
   }), [timeframe.appointment]);
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200">
-      <div className="flex justify-between items-center mb-4">
-        <h4 className="text-lg font-semibold text-blue-800 flex items-center gap-2">
-          <FaCalendarAlt /> Appointments
-        </h4>
-        <div className="flex space-x-2">
-          <button onClick={() => onTimeframeChange('appointment', 'weeks')} className={`px-2 py-1 rounded ${timeframe.appointment === 'weeks' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}>Weeks</button>
-          <button onClick={() => onTimeframeChange('appointment', 'months')} className={`px-2 py-1 rounded ${timeframe.appointment === 'months' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}>Months</button>
+    <div>
+      <motion.div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200" whileHover={{ scale: 1.01 }}>
+        <div className="flex justify-between items-center mb-4">
+          <h4 className="text-lg font-semibold text-blue-800 flex items-center gap-2">
+            <FaCalendarAlt /> Appointments
+          </h4>
+          <div className="flex space-x-2">
+            <button onClick={() => onTimeframeChange('appointment', 'weeks')} className={`px-2 py-1 rounded ${timeframe.appointment === 'weeks' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}>Weeks</button>
+            <button onClick={() => onTimeframeChange('appointment', 'months')} className={`px-2 py-1 rounded ${timeframe.appointment === 'months' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}>Months</button>
+          </div>
         </div>
-      </div>
-      <Line data={appointmentData} options={{ scales: { x: { title: { display: true, text: 'Timeframe' } }, y: { title: { display: true, text: 'Appointments' } } } }} />    </div>
+        <Line data={appointmentData} options={{ scales: { x: { title: { display: true, text: 'Timeframe' } }, y: { title: { display: true, text: 'Appointments' } } } }} />
+      </motion.div>
+    </div>
   );
 };
 
