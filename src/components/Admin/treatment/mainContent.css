@@ -1,88 +1,77 @@
-.treatment-container {
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 8px;
-    max-width: 900px;
-    margin: 20px auto;
-  }
-  
-  .header {
-    text-align: center;
-  }
-  
-  .filter-container {
-    margin-bottom: 10px;
-  }
-  
-  input[type="text"], input[type="number"] {
-    padding: 8px;
-    margin: 8px 0;
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .add-treatment-container {
-    margin: 20px 0;
-  }
+.treatment-container{
+  margin: 10px;
+}
 
-  .button {
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .add-treatment-btn {
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .add-treatment-btn:hover {
-    background-color: #0056b3;
-  }
-  
-  .tab-container {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .tab {
-    padding: 10px 20px;
-    margin: 0 5px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .tab.active {
-    background-color: #0056b3;
-  }
-  
-  .treatment-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  .treatment-table th, .treatment-table td {
-    padding: 12px;
-    text-align: left;
-  }
-  
-  .treatment-table th {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .badge {
-    padding: 4px 10px;
-    border-radius: 5px;
-  }
+
+.tab-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.tabs {
+  display: inline-flex; 
+  gap: 8px;
+}
+
+.tab, .add-treatment {
+  padding: 10px 20px;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.tab {
+  background-color: #007bff;
+}
+
+.tab:hover {
+  background-color: #0056b3;
+}
+
+.tab.active {
+  background-color: #004494;
+}
+
+.add-treatment {
+  background-color: #28a745;
+}
+
+.add-treatment:hover {
+  background-color: #218838;
+}
+
+.treatment-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.treatment-table th, .treatment-table td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.treatment-table th {
+  background-color: #007bff;
+  color: white;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 5px;
+}
+
+.badge.single {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.badge.multiple {
+  background-color: #f8d7da;
+  color: #721c24;
+}
