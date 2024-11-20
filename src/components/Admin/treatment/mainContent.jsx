@@ -18,8 +18,11 @@ const Treatment = () => {
     <div className="treatment-container">
       <h1 className="header">Treatments</h1>
       <div className="tab-container">
+        <div className='group-button'>
         <button className="tab active">Active Treatment</button>
         <button className="tab">Inactive Treatment</button>
+        </div>
+        <button className="add-treatment">+ Add Treatment</button>
       </div>
       <table className="treatment-table">
         <thead>
@@ -45,7 +48,7 @@ const Treatment = () => {
           ))}
         </tbody>
       </table>
-      <button className="add-treatment">+ Add Treatment</button>
+      
     </div>
   );
 };
