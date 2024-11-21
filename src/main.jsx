@@ -6,6 +6,8 @@ import Sidebar from "./components/ui/Sidebar"
 import Header from "./components/ui/Header"
 import PtSidebar from "./components/ui/PtSidebar"
 import PtHeader from "./components/ui/PtHeader"
+
+import Navbar from "./components/navbar"
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 
 
@@ -40,19 +42,28 @@ function MainLayout() {
 
   return (
     <>
-      {!isAdminRoute && !isPatientRoute && <App />}
+      {!isAdminRoute && !isPatientRoute && (
+        // <div className="dashboard-layout ">
+          <div className="main-section">
+            <Navbar />
+            <div className='overflow-y-auto '>
+              <App />
+            </div>
+          {/* </div> */}
+        </div>
+      )}
 
       {isAdminRoute && (
         <div className="dashboard-layout ">
           <Sidebar activeItem={activeItem} />
-        
+
           <div className="main-section">
             <Header title={title} />
             <div className='overflow-y-auto '>
               <App />
             </div>
           </div>
-          
+
         </div>
       )}
 
