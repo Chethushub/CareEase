@@ -41,8 +41,13 @@ const Navbar = () => {
             <nav className={`sticky top-0 z-10 transition-all duration-300 ${isScrolled ? 'bg-blue-900 bg-opacity-90 shadow-md' : 'bg-gradient-to-r from-blue-700 to-green-600'}`}>
                 <div className="container mx-auto flex justify-between items-center p-2">
                     <NavLink to="/">
-                        <div className="text-center cursor-pointer">
+                        <div className=" flex items-center text-center cursor-pointer">
                             <img className="h-14" src="./icons/logo.svg" alt="Logo" />
+                            <span
+                                className="font-bold text-3xl text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-500">
+                                CareEase
+                            </span>
+
                         </div>
                     </NavLink>
 

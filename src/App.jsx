@@ -1,6 +1,7 @@
 import React from "react";
 import Landing from "./components/Landing";
-import SignUp from "./components/signin";
+import SignIn from "./components/signin";
+import SignUp from "./components/signup";
 
 import Dashboard from "./components/Admin/dashboard/MainContent";
 import Reservation from "./components/Admin/reservations/MainContent";
@@ -21,6 +22,7 @@ function App() {
     <div className="bg-[#f3f4f6]">
       <Routes>
         <Route path='/' element={<Landing />} />
+        <Route path='/signin' element={<SignIn />} />
         <Route path='/signup' element={<SignUp />} />
 
         <Route path='/admin' element={<Dashboard />} />

@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import emailjs from 'emailjs-com';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
-const SignIn = () => {
+
+const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [role, setRole] = useState('patient'); 
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -17,7 +21,22 @@ const SignIn = () => {
         return emailRegex.test(email);
     };
 
-    const handleSignIn = (e) => {
+    const sendSignUpEmail = (email, role) => {
+        const templateParams = {
+            email: email,
+            message: `You have successfully signed up to CareEase as a ${role}. Welcome aboard!`,
+        };
+
+        emailjs.send('service_yn3pcyt', 'template_6eavog6', templateParams, 'yrPgD2eJQa5Zl7Udi')
+            .then((response) => {
+                console.log('Email sent successfully!', response.status, response.text);
+            })
+            .catch((error) => {
+                console.error('Failed to send email.', error);
+            });
+    };
+
+    const handleSignUp = (e) => {
         e.preventDefault();
         setError('');
         setSuccessMessage('');
@@ -26,25 +45,18 @@ const SignIn = () => {
             setError('Please enter a valid email address.');
             return;
         }
-
         if (password.length < 6) {
             setError('Password should be at least 6 characters long.');
             return;
         }
+        if (password !== confirmPassword) {
+            setError('Passwords do not match.');
+            return;
+        }
 
-        setSuccessMessage(`Sign-in successful as ${role}. Redirecting...`);
-        setTimeout(() => {
-            if (role === 'admin') {
-                navigate('/admin'); 
-            } else {
-                navigate('/patient'); 
-            }
-        }, 2000);
-    };
+        setSuccessMessage(`Sign-up successful as a ${role}. Redirecting to your dashboard...`);
+        sendSignUpEmail(email, role);
 
-    const handleGoogleSuccess = (credentialResponse) => {
-        console.log('Google Sign-In Success:', credentialResponse);
-        setSuccessMessage('Signed in successfully with Google.');
         setTimeout(() => {
             if (role === 'admin') {
                 navigate('/admin');
@@ -54,19 +66,27 @@ const SignIn = () => {
         }, 2000);
     };
 
+    const handleGoogleSuccess = (credentialResponse) => {
+        console.log('Google Sign-Up Success:', credentialResponse);
+        setSuccessMessage('Signed up successfully with Google.');
+        setTimeout(() => {
+            navigate('/patient'); 
+        }, 2000);
+    };
+
     const handleGoogleFailure = () => {
-        setError('Google Sign-In failed. Please try again.');
+        setError('Google Sign-Up failed. Please try again.');
     };
 
     return (
         <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
-            <div className="min-h-[95vh] p-10 bg-gray-100">
+            <div className="min-h-[95vh] p-8 bg-gray-100">
 
                 <div className="flex flex-col justify-center items-center">
                     <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
                         <div className="text-center mb-6">
-                            <h2 className="text-3xl font-bold mb-2">Welcome Back</h2>
-                            <p className="text-gray-600">Access your account</p>
+                            <h2 className="text-3xl font-bold mb-2">Join CareEase</h2>
+                            <p className="text-gray-600">Sign up as an Admin or Patient</p>
                         </div>
 
                         {error && (
@@ -81,10 +101,8 @@ const SignIn = () => {
                             </div>
                         )}
 
-                        <div className='my-4'>
-                            <label className="block text-center text-gray-600 font-medium mb-2">
-                                Signin as
-                            </label>
+                        <div className="w-full my-4">
+                            <label className="block text-center font-medium text-gray-600 mb-2">Account Type</label>
                             <select
                                 value={role}
                                 onChange={(e) => setRole(e.target.value)}
@@ -96,11 +114,8 @@ const SignIn = () => {
                         </div>
 
                         <GoogleLogin
-                            clientId="YOUR_GOOGLE_CLIENT_ID"
-                            buttonText="Sign In with Google"
                             onSuccess={handleGoogleSuccess}
-                            onFailure={handleGoogleFailure}
-                            cookiePolicy={'single_host_origin'}
+                            onError={handleGoogleFailure}
                             className="w-full"
                         />
 
@@ -108,8 +123,7 @@ const SignIn = () => {
                             <span className="text-gray-600">or</span>
                         </div>
 
-                        <form onSubmit={handleSignIn} className="space-y-4">
-
+                        <form onSubmit={handleSignUp} className="space-y-4">
                             <input
                                 type="email"
                                 value={email}
@@ -133,12 +147,28 @@ const SignIn = () => {
                                     {showPassword ? <AiFillEyeInvisible size={20} /> : <AiFillEye size={20} />}
                                 </button>
                             </div>
+                            <div className="relative">
+                                <input
+                                    type={showConfirmPassword ? 'text' : 'password'}
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-600"
+                                    placeholder="Confirm Password"
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute right-3 top-2 text-gray-500"
+                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                >
+                                    {showConfirmPassword ? <AiFillEyeInvisible size={20} /> : <AiFillEye size={20} />}
+                                </button>
+                            </div>
 
                             <button
                                 type="submit"
                                 className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700"
                             >
-                                Sign In
+                                Sign Up
                             </button>
                         </form>
 
@@ -146,18 +176,18 @@ const SignIn = () => {
 
                         <div className="text-center mt-4 text-sm text-gray-500">
                             <p>
-                                Don't have an account?{' '}
+                                Already have an account?{' '}
                                 <button
-                                    onClick={() => navigate('/signup')}
+                                    onClick={() => navigate('/signin')}
                                     className="text-blue-600 hover:underline"
                                 >
-                                    Sign Up
+                                    Sign in
                                 </button>
                             </p>
                         </div>
 
                         <div className="text-xs text-gray-400 text-center mt-4">
-                            By signing in, you agree to CareEase’s{' '}
+                            By signing up, you agree to CareEase’s{' '}
                             <a href="#" className="text-blue-600 hover:underline">
                                 Terms of Service
                             </a>{' '}
@@ -174,4 +204,4 @@ const SignIn = () => {
     );
 };
 
-export default SignIn;
+export default SignUp;
