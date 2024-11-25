@@ -4,7 +4,6 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import emailjs from 'emailjs-com';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
-
 const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -21,13 +20,28 @@ const SignUp = () => {
         return emailRegex.test(email);
     };
 
-    const sendSignUpEmail = (email, role) => {
+    const sendSignUpEmail = (email, password, role) => {
+        const extractName = (email) => {
+            const extractedname = email.split("@")[0]; 
+            return extractedname; 
+            // return name.replace(/[0-9]/g, ""); 
+        };
+    
+        const maskPassword = (password) => {
+            return password.slice(0, 2) + "**";
+        };
+    
+        const extractedname = extractName(email);
+        const maskedPassword = maskPassword(password); 
+    
         const templateParams = {
+            name: extractedname, 
             email: email,
+            password: maskedPassword, 
             message: `You have successfully signed up to CareEase as a ${role}. Welcome aboard!`,
         };
 
-        emailjs.send('service_yn3pcyt', 'template_6eavog6', templateParams, 'yrPgD2eJQa5Zl7Udi')
+        emailjs.send('service_yn3pcyt', 'template_309zrj9', templateParams, 'yrPgD2eJQa5Zl7Udi')
             .then((response) => {
                 console.log('Email sent successfully!', response.status, response.text);
             })
@@ -54,8 +68,8 @@ const SignUp = () => {
             return;
         }
 
-        setSuccessMessage(`Sign-up successful as a ${role}. Redirecting to your dashboard...`);
-        sendSignUpEmail(email, role);
+        setSuccessMessage(`Sign-up successful as a ${role}. \n Redirecting to your dashboard...`);
+        sendSignUpEmail(email, password, role);
 
         setTimeout(() => {
             if (role === 'admin') {
@@ -68,7 +82,8 @@ const SignUp = () => {
 
     const handleGoogleSuccess = (credentialResponse) => {
         console.log('Google Sign-Up Success:', credentialResponse);
-        setSuccessMessage('Signed up successfully with Google.');
+        setSuccessMessage(`Signed up successfully with Google as a ${role}. \n Redirecting to your dashboard...`);
+        sendSignUpEmail(email, password, role);
         setTimeout(() => {
             navigate('/patient'); 
         }, 2000);
@@ -79,7 +94,7 @@ const SignUp = () => {
     };
 
     return (
-        <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+        <GoogleOAuthProvider clientId="831306327105-m96jpip3d7lm0d0mfpnkeha44lv0jt3k.apps.googleusercontent.com">
             <div className="min-h-[95vh] p-8 bg-gray-100">
 
                 <div className="flex flex-col justify-center items-center">

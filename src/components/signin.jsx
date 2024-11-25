@@ -32,7 +32,7 @@ const SignIn = () => {
             return;
         }
 
-        setSuccessMessage(`Sign-in successful as ${role}. Redirecting...`);
+        setSuccessMessage(`Sign-in successful as ${role}. \n Redirecting...`);
         setTimeout(() => {
             if (role === 'admin') {
                 navigate('/admin'); 
@@ -44,7 +44,7 @@ const SignIn = () => {
 
     const handleGoogleSuccess = (credentialResponse) => {
         console.log('Google Sign-In Success:', credentialResponse);
-        setSuccessMessage('Signed in successfully with Google.');
+        setSuccessMessage(`Signed in successfully with Google as ${role}. \n Redirecting...`);
         setTimeout(() => {
             if (role === 'admin') {
                 navigate('/admin');
@@ -59,7 +59,7 @@ const SignIn = () => {
     };
 
     return (
-        <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+        <GoogleOAuthProvider clientId="831306327105-m96jpip3d7lm0d0mfpnkeha44lv0jt3k.apps.googleusercontent.com">
             <div className="min-h-[95vh] p-10 bg-gray-100">
 
                 <div className="flex flex-col justify-center items-center">
@@ -96,7 +96,7 @@ const SignIn = () => {
                         </div>
 
                         <GoogleLogin
-                            clientId="YOUR_GOOGLE_CLIENT_ID"
+                            clientId="831306327105-m96jpip3d7lm0d0mfpnkeha44lv0jt3k.apps.googleusercontent.com"
                             buttonText="Sign In with Google"
                             onSuccess={handleGoogleSuccess}
                             onFailure={handleGoogleFailure}
