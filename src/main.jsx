@@ -33,6 +33,7 @@ function MainLayout() {
     "/patient-medical-record": { activeItem: "Medical-record", title: "Medical Record" },
     "/patient-settings": { activeItem: "Settings", title: "Settings" },
     "/patient-reports": { activeItem: "Reports", title: "Reports" },
+    "/patient-profile": { activeItem: "Profile", title: "Profile" },
   };
 
   const { activeItem = "Dashboard", title = "Dashboard" } = routeMap[location.pathname] || {};
