@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const doctorsData = [
+// Dummy data in case of fetch failure
+const dummyDoctorsData = [
   {
     name: "Dr Mohan Das",
     specialty: "Dentist",
@@ -12,56 +13,53 @@ const doctorsData = [
     qualifications: "MBBS, MS (Ortho)",
   },
   {
-    name: "Dr Mohan Das",
-    specialty: "Dentist",
-    experience: "20 years",
+    name: "Dr Priya Kumar",
+    specialty: "Cardiologist",
+    experience: "15 years",
     hospital: "City Hospital",
-    languages: ["Kannada"],
+    languages: ["Kannada", "English"],
     availability: "Available Tomorrow",
-    address: "14TH Cross Road, 212, Sri Nitturu Srinivasarao Rd, 3rd Block, Bengaluru, 560011",
-    qualifications: "MBBS, MS (Ortho)",
+    address: "12TH Cross Road, 220, Malleswaram, Bengaluru, 560003",
+    qualifications: "MBBS, MD (Cardiology)",
   },
-  
 ];
-const DetailedDoctorView = ({ doctor, onBack }) => (
-  <div className="p-6 bg-white rounded-lg shadow-md">
-    <button onClick={onBack} className="text-blue-500 mb-4">&larr; Back to Doctors List</button>
-    <div className="flex items-start gap-4">
-      <div className="w-24 h-24 rounded-full bg-gray-300 flex-shrink-0">
-        <img
-          src="./icons/profile-placeholder.png"
-          alt="Doctor Profile"
-          className="w-full h-full object-cover rounded-full"
-        />
-      </div>
-      <div>
-        <h3 className="text-2xl font-bold">{doctor.name}</h3>
-        <p className="text-gray-500 text-sm">{doctor.specialty} | {doctor.experience} experience</p>
-        <p className="text-gray-500 text-sm">{doctor.qualifications}</p>
-        <p className="text-gray-500 text-sm">Languages: {doctor.languages.join(", ")}</p>
-        <p className="text-gray-500 text-sm">Hospital: {doctor.hospital}</p>
-        <p className="text-gray-500 text-sm">Address: {doctor.address}</p>
-      </div>
-    </div>
-    <div className="mt-4">
-      <h4 className="text-lg font-semibold">About {doctor.name}</h4>
-      <p className="text-gray-500 text-sm mt-2">
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry...
-      </p>
-    </div>
-  </div>
-);
 
 const PatientAppointmentPage = () => {
+  const [doctorsData, setDoctorsData] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
-  
-  //for filter
+  const [isBooking, setIsBooking] = useState(false);
+  const [appointmentDetails, setAppointmentDetails] = useState({
+    date: "",
+    time: "",
+    reason: "",
+  });
+
   const [hospitalFilter, setHospitalFilter] = useState("");
   const [availabilityFilter, setAvailabilityFilter] = useState("");
   const [experienceFilter, setExperienceFilter] = useState("");
   const [languageFilter, setLanguageFilter] = useState("");
 
-  //for applying filters to the doctors data
+  // Fetch doctors data
+  useEffect(() => {
+    const fetchDoctorsData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/doctors");
+        if (response.ok) {
+          const data = await response.json();
+          setDoctorsData(data);
+        } else {
+          throw new Error("Failed to fetch doctor data");
+        }
+      } catch (error) {
+        console.error("Error fetching doctor data:", error);
+        // Use dummy data if fetch fails
+        setDoctorsData(dummyDoctorsData);
+      }
+    };
+
+    fetchDoctorsData();
+  }, []);
+
   const filteredDoctors = doctorsData.filter((doctor) => {
     return (
       (hospitalFilter === "" || doctor.hospital === hospitalFilter) &&
@@ -71,13 +69,43 @@ const PatientAppointmentPage = () => {
     );
   });
 
+  const handleBookAppointment = async () => {
+    if (!appointmentDetails.date || !appointmentDetails.time || !appointmentDetails.reason) {
+      alert("Please fill out all fields.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/api/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          doctor: selectedDoctor.name,
+          hospital: selectedDoctor.hospital,
+          date: appointmentDetails.date,
+          time: appointmentDetails.time,
+          reason: appointmentDetails.reason,
+        }),
+      });
+
+      if (response.ok) {
+        alert("Appointment booked successfully!");
+        setIsBooking(false);
+        setAppointmentDetails({ date: "", time: "", reason: "" });
+      } else {
+        alert("Failed to book appointment.");
+      }
+    } catch (error) {
+      console.error("Error booking appointment:", error);
+      alert("An error occurred while booking the appointment.");
+    }
+  };
+
   return (
     <div className="flex bg-gray-100 min-h-screen">
       {/* Filters Section */}
       <div className="w-1/5 p-4 bg-white shadow-md">
-        {/* Filters Header */}
         <div className="text-lg font-bold mb-4">Filters</div>
-
         {/* Hospital Filter */}
         <div className="flex justify-between items-center p-3 bg-gray-100 rounded-lg">
           <span className="text-sm font-medium text-gray-600">Hospital</span>
@@ -91,8 +119,7 @@ const PatientAppointmentPage = () => {
             <option value="City Hospital">City Hospital</option>
           </select>
         </div>
-
-        {/* Availability Filter */}
+        {/* Other Filters */}
         <div className="flex justify-between items-center p-3 bg-gray-100 rounded-lg">
           <span className="text-sm font-medium text-gray-600">Availability</span>
           <select
@@ -105,8 +132,6 @@ const PatientAppointmentPage = () => {
             <option value="Available Tomorrow">Available Tomorrow</option>
           </select>
         </div>
-
-        {/* Experience Filter */}
         <div className="flex justify-between items-center p-3 bg-gray-100 rounded-lg">
           <span className="text-sm font-medium text-gray-600">Experience</span>
           <select
@@ -120,8 +145,6 @@ const PatientAppointmentPage = () => {
             <option value="20">20+ years</option>
           </select>
         </div>
-
-        {/* Language Filter */}
         <div className="flex justify-between items-center p-3 bg-gray-100 rounded-lg">
           <span className="text-sm font-medium text-gray-600">Language</span>
           <select
@@ -138,20 +161,45 @@ const PatientAppointmentPage = () => {
 
       {/* Main Content Section */}
       <div className="w-4/5 p-6">
-        {/* Conditional Rendering: Show Details or List */}
         {selectedDoctor ? (
-          <DetailedDoctorView
-            doctor={selectedDoctor}
-            onBack={() => setSelectedDoctor(null)}
-          />
+          <>
+            {/* Doctor Details */}
+            <div className="p-6 bg-white rounded-lg shadow-md">
+              <button onClick={() => setSelectedDoctor(null)} className="text-blue-500 mb-4">
+                &larr; Back to Doctors List
+              </button>
+              <div className="flex items-start gap-4">
+                <div className="w-24 h-24 rounded-full bg-gray-300 flex-shrink-0">
+                  <img
+                    src="./icons/profile-placeholder.png"
+                    alt="Doctor Profile"
+                    className="w-full h-full object-cover rounded-full"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold">{selectedDoctor.name}</h3>
+                  <p className="text-gray-500 text-sm">
+                    {selectedDoctor.specialty} | {selectedDoctor.experience} experience
+                  </p>
+                  <p className="text-gray-500 text-sm">{selectedDoctor.qualifications}</p>
+                  <p className="text-gray-500 text-sm">Languages: {selectedDoctor.languages.join(", ")}</p>
+                  <p className="text-gray-500 text-sm">Hospital: {selectedDoctor.hospital}</p>
+                  <p className="text-gray-500 text-sm">Address: {selectedDoctor.address}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsBooking(true)}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg mt-4"
+              >
+                Book Appointment
+              </button>
+            </div>
+          </>
         ) : (
           <>
-            {/* Doctors List Header */}
             <h2 className="text-lg font-semibold text-gray-600 mb-4">
               Doctors (Showing {filteredDoctors.length} of {doctorsData.length})
             </h2>
-
-            {/* Doctors List */}
             <div className="grid gap-4">
               {filteredDoctors.map((doctor, index) => (
                 <div
@@ -173,24 +221,64 @@ const PatientAppointmentPage = () => {
                         {doctor.specialty} | {doctor.experience} exp
                       </p>
                       <p className="text-gray-500 text-sm">{doctor.hospital}</p>
-                      <p className="text-gray-500 text-sm">
-                        {doctor.languages.join(", ")}
-                      </p>
+                      <p className="text-gray-500 text-sm">{doctor.languages.join(", ")}</p>
                     </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="flex items-center gap-1 text-sm text-black mb-2">
-                      <span className="w-2 h-2 bg-black rounded-full inline-block"></span>
-                      {doctor.availability}
-                    </p>
-                    <button className="px-4 py-2 bg-[#F4F4F4] text-black rounded-lg shadow-sm">
-                      Book Appointment
-                    </button>
                   </div>
                 </div>
               ))}
             </div>
           </>
+        )}
+
+        {/* Booking Modal */}
+        {isBooking && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="p-6 bg-white rounded-lg shadow-lg">
+              <h2 className="text-lg font-bold mb-4">Book Appointment with {selectedDoctor.name}</h2>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Date</label>
+                  <input
+                    type="date"
+                    value={appointmentDetails.date}
+                    onChange={(e) => setAppointmentDetails({ ...appointmentDetails, date: e.target.value })}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Time</label>
+                  <input
+                    type="time"
+                    value={appointmentDetails.time}
+                    onChange={(e) => setAppointmentDetails({ ...appointmentDetails, time: e.target.value })}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Reason</label>
+                  <textarea
+                    value={appointmentDetails.reason}
+                    onChange={(e) => setAppointmentDetails({ ...appointmentDetails, reason: e.target.value })}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  ></textarea>
+                </div>
+              </div>
+              <div className="mt-4 flex justify-end gap-4">
+                <button
+                  onClick={() => setIsBooking(false)}
+                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg shadow-sm"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleBookAppointment}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-sm"
+                >
+                  Book Appointment
+                </button>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>
