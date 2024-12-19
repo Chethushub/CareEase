@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const PrescriptionOrders = () => {
-  const prescriptions = [
-    { id: '004495', date: '2021-01-02', type: 'Prescription', status: 'Completed' },
-    { id: '004949', date: '2020-02-06', type: 'Prescription', status: 'Completed' },
-    { id: '005994', date: '2020-03-07', type: 'Prescription', status: 'Completed' },
-    { id: '009955', date: '2020-06-10', type: 'Prescription', status: 'Completed' },
-    { id: '009886', date: '2020-07-02', type: 'Prescription', status: 'Completed' },
-  ];
+  const [prescriptions, setPrescriptions] = useState([]);
+
+  useEffect(() => {
+    const fetchPrescriptions = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/prescriptions');
+        const data = await response.json();
+        setPrescriptions(data);
+      } catch (error) {
+        console.error('Error fetching prescriptions:', error);
+      }
+    };
+
+    fetchPrescriptions();
+  }, []);
 
   return (
     <div className="bg-white shadow rounded-lg p-6">
@@ -25,7 +33,7 @@ const PrescriptionOrders = () => {
           {prescriptions.map((order, index) => (
             <tr key={index} className="hover:bg-gray-100">
               <td className="p-2 border-b">{order.id}</td>
-              <td className="p-2 border-b">{order.date}</td>
+              <td className="p-2 border-b">{new Date(order.date).toLocaleDateString()}</td>
               <td className="p-2 border-b">{order.type}</td>
               <td className="p-2 border-b">{order.status}</td>
             </tr>

@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Appointments = () => {
-  const appointments = [
-    { type: 'Therapist', dateTime: '2021-05-20/13:00', status: 'Scheduled' },
-    { type: 'Dentist', dateTime: '2021-05-17/10:45', status: 'Scheduled' },
-    { type: 'Antibody Assay', dateTime: '2021-05-10/09:00', status: 'Confirmed' },
-    { type: 'Bacterial Seeding', dateTime: '2021-05-09/15:15', status: 'Confirmed' },
-    { type: 'Dentist', dateTime: '2021-04-28/11:10', status: 'Confirmed' },
-    { type: 'Therapist', dateTime: '2021-04-22/14:20', status: 'Confirmed' },
-  ];
+  const [appointments, setAppointments] = useState([]);
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      const response = await fetch('http://localhost:5000/api/appointments');
+      const data = await response.json();
+      setAppointments(data);
+    };
+
+    fetchAppointments();
+  }, []);
 
   return (
     <div className="bg-white shadow rounded-lg p-6">
