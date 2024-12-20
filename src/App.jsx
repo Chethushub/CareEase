@@ -37,8 +37,8 @@ function App() {
         <Route path='/patient' element={<PatientDashboard />} />
         <Route path='/patient-dashboard' element={<PatientDashboard />} />
         <Route path='/patient-book-appointment' element={<BookAppointment />} />
-        <Route path="patient-schedules" element={<PatientSchedules/>}/>
-        <Route path="patient-profile" element={<PatientProfile/>}/>
+        <Route path="/patient-schedules" element={<PatientSchedules/>}/>
+        <Route path="/patient-profile" element={<PatientProfile/>}/>
       </Routes>
     </div>
     </>

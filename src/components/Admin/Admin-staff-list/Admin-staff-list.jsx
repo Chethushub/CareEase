@@ -1,34 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Admin-staff.css';
 import DoctorsTable from './DoctorsTable';
 import AddDoctor from './AddDoctor';
 
+import axios from 'axios'
+
+const BACKEND_URL = "http://localhost:5000"
+
 export default function AdminStaffList() {
-  const [doctors, setDoctors] = useState([
-    { profile: './icons/Profile_icon.svg', name: 'Mohan Das', role: 'Dentist', email: 'abcd@gmail.com', days: [true, true, true, true, true, true, true], assignedTreatment: "Dentist", type: 'Part-Time' },
-    { profile: './icons/Profile_icon.svg', name: 'John Doe', role: 'Surgeon', email: 'john@example.com', days: [true, true, false, false, true, true, false], assignedTreatment: "Surgery", type: 'Full-Time' },
-    // Additional dummy data if necessary
-  ]);
+  const [doctors, setDoctors] = useState(null);  
+
+    useEffect(() => {
+      const fetchDoctors = async () => {
+        try {
+          const response = await axios.get(`${BACKEND_URL}/api/doctors`);
+          setDoctors(response.data);
+          console.log('Doctor details fetched successfully:', response.data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchDoctors();
+    }, []);
 
   const [showAddDoctorDrawer, setShowAddDoctorDrawer] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  const [filters, setFilters] = useState({ type: '', assignedTreatment: '' });
+  const [filters, setFilters] = useState({ id:'', type: '', assignedTreatment: '' });
 
-  const handleAddDoctor = (newDoctor) => {
-    setDoctors([...doctors, newDoctor]);
-    setShowAddDoctorDrawer(false);
+  const handleAddDoctor = async (newDoctor) => {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/api/doctors`, newDoctor);
+      setDoctors([...doctors, response.data]);
+      setShowAddDoctorDrawer(false);
+      console.log("Doctor added successfully:", response.data);
+    } catch (error) {
+      console.error("Error adding doctor:", error);
+      alert("There was an error adding the doctor. Please try again.");
+    }
   };
+  
 
-  // Delete doctor function
-  const handleDeleteDoctor = (email) => {
-    setDoctors(doctors.filter((doctor) => doctor.email !== email));
-  };
 
-  const filteredDoctors = doctors.filter((doctor) => {
+  const handleDeleteDoctor = async (id,name) => {
+    console.log(`Deleting doctor: ${id}, ${name}`);
+
+    if (window.confirm(`Are you sure you want to delete ${name}?`)) {
+      if (!id || !name) {
+        console.error("Invalid doctor data:", { id, name });
+        return; 
+      }
+      try {
+          console.log(`Doctor with ID ${id} and name ${name} are requesting to deleted.`);
+          await axios.delete(`${BACKEND_URL}/api/doctors/${id}`);
+          setDoctors(doctors.filter((doctor) => doctor._id !== id)); 
+          console.log(`Doctor with ID ${id} and name ${name} deleted.`);
+      } catch (error) {
+          console.error(`Error deleting doctor with ID ${id}:`, error);
+      }
+    }
+};
+
+
+
+  const filteredDoctors = (doctors || []).filter((doctor) => {
     const matchesType = filters.type ? doctor.type === filters.type : true;
     const matchesTreatment = filters.assignedTreatment ? doctor.assignedTreatment === filters.assignedTreatment : true;
     return matchesType && matchesTreatment;
   });
+
+  console.log("filteredDoctors: ", filteredDoctors);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -44,7 +84,7 @@ export default function AdminStaffList() {
       <div className="flex justify-between items-center p-4">
         <div className="flex items-center">
           <img src="./icons/treatment.svg" alt="Treatment" className="mr-2" />
-          <h1 className="text-lg font-bold">Doctors Available: {filteredDoctors.length}</h1>
+          <h1 className="text-lg text-gray-400 font-bold">Doctors Available: {filteredDoctors.length}</h1>
         </div>
 
         <div className="flex items-center gap-4">
@@ -103,8 +143,7 @@ export default function AdminStaffList() {
         </div>
       )}
 
-      {/* Pass the delete handler to DoctorsTable */}
-      <DoctorsTable doctorsData={filteredDoctors} onDeleteDoctor={handleDeleteDoctor} />
+    <DoctorsTable doctorsData={filteredDoctors} onDeleteDoctor={handleDeleteDoctor} />
 
       <div className={`drawer ${showAddDoctorDrawer ? 'open' : ''}`}>
         <div className="drawer-content p-6 bg-white shadow-lg">
