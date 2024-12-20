@@ -71,16 +71,15 @@ const PtSidebar = ({ activeItem }) => {
             <img src="./icons/message.svg" alt="Messages" className="mr-2" />
             {!isCollapsed && 'Messages'}
           </NavLink> */}
-
+{/* 
           <NavLink
             to="/patient-medical-record"
             className={`text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2 
               ${activeItem === 'Medical-record' ? 'bg-white font-bold' : 'hover:bg-gray-200'}`}
-          // onClick={() => setActiveItem('Medical-record')}
           >
             <img src="./icons/medrec.svg" alt="Medical Record" className="mr-2" />
             {!isCollapsed && 'Medical Record'}
-          </NavLink>
+          </NavLink> */}
 
           {/* <div className="section-header font-bold text-gray-600 my-4">Others</div>
 

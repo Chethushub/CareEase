@@ -1,4 +1,7 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
+import axios  from "axios";
+
+const BACKEND_URL = "http://localhost:5000"
 
 const Beds = () => {
   const bedData = [
@@ -9,7 +12,7 @@ const Beds = () => {
     { id: "B005", department: "Cardiology", status: "Available", patient: "John Doe", age: 45, condition: "Stable", lastUpdated: "2023-10-01" },
   ];
 
-  return (
+    return (
     <div className="bg-white h-screen">
       <div className="p-4 space-x-5">
         <button className="bg-blue-500 text-white rounded-lg px-5">Search</button>
@@ -73,6 +76,6 @@ const Beds = () => {
       </div>
     </div>
   );
-};
-
+ ;
+}
 export default Beds;
