@@ -63,7 +63,7 @@ const Beds = () => {
 
       <div className="overflow-x-auto">
         <table className="table-auto w-full">
-          <caption className="text-lg font-semibold mb-2">
+          <caption className="text-2xl font-semibold mb-4">
             Bed Management Table
           </caption>
           <thead>
@@ -76,29 +76,28 @@ const Beds = () => {
               <th className="px-10">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody >
             {bedData.map((bed) => (
-              <tr key={bed.id}>
+              <tr key={bed.id} className="mx-2 my-6">
                 <td className="px-14">{bed.bedid}</td>
                 <td className="px-14">{bed.department}</td>
                 <td className="px-14">{bed.status}</td>
                 <td className="px-14">
-                  <span>{bed.patient}
-                    {console.log(bed.patient)}
+                  <span>{bed.patient?.name}
                   </span>
-                  <p className="text-gray-500 text-sm">
-                    Age: {bed.patient?.age}, Condition: {bed.patient?.condition}
+                  <p className="text-gray-500 text-xs">
+                    Age: {bed.patient?.age}, Problem: {bed.patient?.problem},
                   </p>
                 </td>
                 <td className="px-14">
                   {new Date(bed.lastupdated).toLocaleString()}
                 </td>
-                <td className="px-14">
+                <td className="px-14 py-4">
                   <button
                     onClick={() => openCard(1)}
-                    className="bg-blue-600 text-white px-3 rounded-md"
+                    className="bg-blue-600 text-white px-4  py-1 rounded-md"
                   >
-                    Edit Bed Details
+                    Edit
                   </button>
                 </td>
               </tr>
