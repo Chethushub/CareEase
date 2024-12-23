@@ -1,24 +1,47 @@
-import React,{useState,useEffect} from "react";
-import axios  from "axios";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const BACKEND_URL = "http://localhost:5000"
+const BACKEND_URL = "http://localhost:5000";
 
 const Beds = () => {
-  const bedData = [
-    { id: "B001", department: "Cardiology", status: "Available", patient: "John Doe", age: 45, condition: "Stable", lastUpdated: "2023-10-01" },
-    { id: "B002", department: "Cardiology", status: "Available", patient: "John Doe", age: 45, condition: "Stable", lastUpdated: "2023-10-01" },
-    { id: "B003", department: "Cardiology", status: "Not Available", patient: "John Doe", age: 45, condition: "Stable", lastUpdated: "2023-10-01" },
-    { id: "B004", department: "Cardiology", status: "Available", patient: "John Doe", age: 45, condition: "Stable", lastUpdated: "2023-10-01" },
-    { id: "B005", department: "Cardiology", status: "Available", patient: "John Doe", age: 45, condition: "Stable", lastUpdated: "2023-10-01" },
-  ];
+  const [bedData, setBedData] = useState([]);
+  const [active, setActive] = useState(0);
+  // const [bedStatus, setBedStatus] = useState("Not Available");
 
-    return (
+  const openCard = (cardId) => {
+    setActive(cardId);
+  };
+
+  const closeCard = () => {
+    setActive(0);
+  };
+
+  useEffect(() => {
+    const fetchBedData = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_URL}/api/beds`);
+        console.log(response.data);
+        setBedData(response.data);
+      } catch (err) {
+        console.error("Error fetching bed data:", err);
+      }
+    };
+
+    fetchBedData();
+  }, []);
+
+  return (
     <div className="bg-white h-screen">
       <div className="p-4 space-x-5">
-        <button className="bg-blue-500 text-white rounded-lg px-5">Search</button>
-        <button className="bg-blue-100 text-blue-700 rounded-lg px-5">Export CSV</button>
-        <button className="bg-blue-100 text-blue-700 rounded-lg px-5">Export PDF</button>
-        <button className="bg-blue-500 text-white rounded-lg px-5">Edit BED Details</button>
+        <button className="bg-blue-500 text-white rounded-lg px-5">
+          Search
+        </button>
+        <button className="bg-blue-100 text-blue-700 rounded-lg px-5">
+          Export CSV
+        </button>
+        <button className="bg-blue-100 text-blue-700 rounded-lg px-5">
+          Export PDF
+        </button>
       </div>
 
       <div className="flex space-x-10">
@@ -40,7 +63,9 @@ const Beds = () => {
 
       <div className="overflow-x-auto">
         <table className="table-auto w-full">
-          <caption className="text-lg font-semibold mb-2">Bed Management Table</caption>
+          <caption className="text-lg font-semibold mb-2">
+            Bed Management Table
+          </caption>
           <thead>
             <tr>
               <th className="px-10">Bed ID</th>
@@ -54,18 +79,25 @@ const Beds = () => {
           <tbody>
             {bedData.map((bed) => (
               <tr key={bed.id}>
-                <td className="px-14">{bed.id}</td>
+                <td className="px-14">{bed.bedid}</td>
                 <td className="px-14">{bed.department}</td>
                 <td className="px-14">{bed.status}</td>
                 <td className="px-14">
-                  <p>{bed.patient}</p>
+                  <span>{bed.patient}
+                    {console.log(bed.patient)}
+                  </span>
                   <p className="text-gray-500 text-sm">
-                    Age: {bed.age}, Condition: {bed.condition}
+                    Age: {bed.patient?.age}, Condition: {bed.patient?.condition}
                   </p>
                 </td>
-                <td className="px-14">{bed.lastUpdated}</td>
                 <td className="px-14">
-                  <button className="bg-blue-600 text-white px-3 rounded-md">
+                  {new Date(bed.lastupdated).toLocaleString()}
+                </td>
+                <td className="px-14">
+                  <button
+                    onClick={() => openCard(1)}
+                    className="bg-blue-600 text-white px-3 rounded-md"
+                  >
                     Edit Bed Details
                   </button>
                 </td>
@@ -73,9 +105,10 @@ const Beds = () => {
             ))}
           </tbody>
         </table>
+        {active === 1 && <Edit />}
       </div>
     </div>
   );
- ;
-}
+};
+
 export default Beds;
