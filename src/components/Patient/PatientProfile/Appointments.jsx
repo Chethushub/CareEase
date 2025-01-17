@@ -8,7 +8,10 @@ const Appointments = () => {
       try {
         const response = await fetch('http://localhost:5000/api/appointments');
         const data = await response.json();
+        console.log("db data ", data);
         setAppointments(data);
+        console.log("appointments ", appointments);
+        console.log("appt length", appointments.length);
       } catch (error) {
         console.error('Error fetching appointments:', error);
 
@@ -45,7 +48,8 @@ const Appointments = () => {
                 <td className="p-2 border-b">{appointment.status}</td>
               </tr>
             ))
-          ) : (
+          ) 
+          : (
             <tr>
               <td className="p-2 border-b" colSpan="3" align="center">
                 No appointments available
