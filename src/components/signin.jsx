@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import axios from 'axios'
+
+const BACKEND_URL = "http://localhost:5000"
 
 const SignIn = () => {
     const [email, setEmail] = useState('');
@@ -12,9 +15,77 @@ const SignIn = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate();
 
+    const [patientSignInData, setpatientSignInData] = useState();
+
     const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
+    };
+
+    useEffect(() => {
+        const fetchPatientSinginData = async () => {
+          try {
+            const response = await axios.get(`${BACKEND_URL}/api/patients/getPasswordEmail`);
+              setpatientSignInData(response.data);
+              
+              response.data.forEach((patient, index) => {
+                console.log(`Patient ${index + 1}:`, patient);
+              });
+              
+          } catch (error) {
+            console.error("Error fetching patient data:", error);
+          }
+        };
+    
+        fetchPatientSinginData();
+      }, []);
+
+
+
+
+    const verifySignup = (email, password) => {
+        if (!patientSignInData) {
+            console.log("No patient data available");
+            return;
+        }
+    
+        const matchedPatient = patientSignInData.find((patient) => 
+            patient.email === email && patient.password === password
+        );
+
+        const matchedEmail = patientSignInData.find((patient) => patient.email === email);
+
+
+        console.log("Input email: " + email + " & password: " + password)
+
+        console.log("Matched patient: ", matchedPatient);
+
+        
+        if (matchedPatient) {
+            console.log("Email found in database");
+            console.log("Sign-in approved");
+            setSuccessMessage(`Sign-in successful as a ${role}. Redirecting...`);
+            
+            setTimeout(() => {
+                const userId = matchedPatient._id;
+
+                console.log(userId)
+
+                navigate(role === 'admin' ? '/admin' : `/patient/${userId}`);
+            }, 2000);
+
+        } else {
+
+            if(matchedEmail) {
+                console.log("email matched " + email)
+                setError("Invalid  password.");
+            } else {
+                setError("Invalid email or password.");
+            }
+
+            console.log("Signup Rejected");
+
+        }
     };
 
     const handleSignIn = (e) => {
@@ -32,14 +103,7 @@ const SignIn = () => {
             return;
         }
 
-        setSuccessMessage(`Sign-in successful as ${role}. \n Redirecting...`);
-        setTimeout(() => {
-            if (role === 'admin') {
-                navigate('/admin'); 
-            } else {
-                navigate('/patient'); 
-            }
-        }, 2000);
+        verifySignup(email, password);
     };
 
     const handleGoogleSuccess = (credentialResponse) => {
