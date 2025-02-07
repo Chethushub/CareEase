@@ -1,14 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Appointments = () => {
-  const appointments = [
-    { type: 'Therapist', dateTime: '2021-05-20/13:00', status: 'Scheduled' },
-    { type: 'Dentist', dateTime: '2021-05-17/10:45', status: 'Scheduled' },
-    { type: 'Antibody Assay', dateTime: '2021-05-10/09:00', status: 'Confirmed' },
-    { type: 'Bacterial Seeding', dateTime: '2021-05-09/15:15', status: 'Confirmed' },
-    { type: 'Dentist', dateTime: '2021-04-28/11:10', status: 'Confirmed' },
-    { type: 'Therapist', dateTime: '2021-04-22/14:20', status: 'Confirmed' },
-  ];
+  const [appointments, setAppointments] = useState([]);
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/appointments');
+        const data = await response.json();
+        console.log("db data ", data);
+        setAppointments(data);
+        console.log("appointments ", appointments);
+        console.log("appt length", appointments.length);
+      } catch (error) {
+        console.error('Error fetching appointments:', error);
+
+        // Dummy data in case of error
+        const dummyData = [
+          { type: 'Consultation', dateTime: '2024-12-18 10:00 AM', status: 'Scheduled' },
+          { type: 'Follow-up', dateTime: '2024-12-19 02:00 PM', status: 'Completed' },
+          { type: 'Emergency', dateTime: '2024-12-20 08:30 AM', status: 'Cancelled' },
+        ];
+        setAppointments(dummyData);
+      }
+    };
+
+    fetchAppointments();
+  }, []);
 
   return (
     <div className="bg-white shadow rounded-lg p-6">
@@ -22,13 +40,22 @@ const Appointments = () => {
           </tr>
         </thead>
         <tbody>
-          {appointments.map((appointment, index) => (
-            <tr key={index} className="hover:bg-gray-100">
-              <td className="p-2 border-b">{appointment.type}</td>
-              <td className="p-2 border-b">{appointment.dateTime}</td>
-              <td className="p-2 border-b">{appointment.status}</td>
+          {appointments.length > 0 ? (
+            appointments.map((appointment, index) => (
+              <tr key={index} className="hover:bg-gray-100">
+                <td className="p-2 border-b">{appointment.type}</td>
+                <td className="p-2 border-b">{appointment.dateTime}</td>
+                <td className="p-2 border-b">{appointment.status}</td>
+              </tr>
+            ))
+          ) 
+          : (
+            <tr>
+              <td className="p-2 border-b" colSpan="3" align="center">
+                No appointments available
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>
