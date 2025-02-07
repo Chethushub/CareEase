@@ -1,15 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+import axios from "axios";
+
+const BACKEND_URL = "http://localhost:5000"
 
 const BedsAvailability = () => {
   const [bedData, setBedData] = useState([
-    { id: "B001", department: "Cardiology", status: "green", patient: "John Doe", age: 45, condition: "Stable", lastUpdated: "2023-10-01" },
-    { id: "B002", department: "Neurology", status: "red", patient: "Jane Smith", age: 60, condition: "Critical", lastUpdated: "2023-10-02" },
-    { id: "B003", department: "Oncology", status: "yellow", patient: "Michael Johnson", age: 50, condition: "Under Observation", lastUpdated: "2023-10-03" },
-    { id: "B004", department: "Pediatrics", status: "green", patient: "Emily Brown", age: 8, condition: "Healthy", lastUpdated: "2023-10-04" },
-    { id: "B005", department: "Orthopedics", status: "red", patient: "David Wilson", age: 30, condition: "Recovering", lastUpdated: "2023-10-05" },
-    { id: "B006", department: "Emergency", status: "yellow", patient: "Sarah White", age: 35, condition: "Critical", lastUpdated: "2023-10-06" },
-    { id: "B007", department: "General", status: "green", patient: "Kevin Lee", age: 28, condition: "Stable", lastUpdated: "2023-10-07" },
+    { bedid: "B001", department: "Cardiology", status: "Not Available", patient: { name: "John Doe", problem: "Heart Condition", age: 45 }, condition: "Stable", lastUpdated: "2023-10-01" },
+    { bedid: "B002", department: "Neurology", status: "Not Available", patient: { name: "Jane Smith", problem: "Stroke", age: 60 }, condition: "Critical", lastUpdated: "2023-10-02" },
+    { bedid: "B003", department: "Oncology", status: "Not Available", patient: { name: "Michael Johnson", problem: "Cancer", age: 50 }, condition: "Under Observation", lastUpdated: "2023-10-03" },
+    { bedid: "B004", department: "Pediatrics", status: "Available", patient: { name: "Emily Brown", problem: "Asthma", age: 8 }, condition: "Healthy", lastUpdated: "2023-10-04" },
+    { bedid: "B005", department: "Orthopedics", status: "Not Available", patient: { name: "David Wilson", problem: "Fracture", age: 30 }, condition: "Recovering", lastUpdated: "2023-10-05" },
+    { bedid: "B006", department: "Emergency", status: "Not Available", patient: { name: "Sarah White", problem: "Accident", age: 35 }, condition: "Critical", lastUpdated: "2023-10-06" },
+    { bedid: "B007", department: "General", status: "Available", patient: { name: "Kevin Lee", problem: "Fever", age: 28 }, condition: "Stable", lastUpdated: "2023-10-07" }
   ]);
+  
 
   const [selectedBed, setSelectedBed] = useState(null);
   const [newPatientName, setNewPatientName] = useState("");
@@ -20,21 +25,42 @@ const BedsAvailability = () => {
 
   // Save updated details
   const handleSaveDetails = () => {
+    // if(!selectedBed) return;
+
     const updatedBedData = bedData.map((bed) =>
-      bed.id === selectedBed.id
+      bed.bedid === selectedBed.id
         ? {
             ...bed,
-            patient: newPatientName,
-            age: newAge,
-            condition: newCondition,
+            patient: { ...bed.patient, name: newPatientName, age: newAge, problem: newCondition },
             department: newDepartment,
-            lastUpdated: new Date().toISOString().split("T")[0], // Today's date
+            lastUpdated: new Date().toISOString().split("T")[0], 
           }
         : bed
     );
     setBedData(updatedBedData);
-    setSelectedBed(null); // Close modal
+    setSelectedBed(null); 
   };
+
+  
+
+  useEffect(() => {
+    const fetchBedData = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_URL}/api/beds`);
+        console.log("DB data:", response.data);
+        setBedData(response.data);
+      } catch (err) {
+        console.error("Error fetching bed data:", err);
+      }
+    };
+
+    fetchBedData();
+  }, []);
+
+  useEffect(() => {
+    console.log("Updated bedData:", bedData);
+  }, [bedData]);
+  
 
   // Export table to print
   const handlePrint = () => {
@@ -79,10 +105,10 @@ const BedsAvailability = () => {
                 .map(
                   (bed) => `
                 <tr>
-                  <td>${bed.id}</td>
+                  <td>${bed.bedid}</td>
                   <td>${bed.department}</td>
                   <td>${bed.status.charAt(0).toUpperCase() + bed.status.slice(1)}</td>
-                  <td>${bed.patient} (Age: ${bed.age}, Condition: ${bed.condition})</td>
+                  <td>${bed.patient.name} (Age: ${bed.patient.age}, Condition: ${bed.patient.problem})</td>
                   <td>${bed.lastUpdated}</td>
                 </tr>
               `
@@ -98,13 +124,19 @@ const BedsAvailability = () => {
     printWindow.print();
   };
 
-  // Filter table based on search query
-  const filteredData = bedData.filter(
-    (bed) =>
-      bed.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  
+  const filteredData = bedData.filter((bed) => {
+    console.log(bed)
+    console.log(bed.bedid); 
+
+
+    return (
+      bed.bedid.toLowerCase().includes(searchQuery.toLowerCase()) ||
       bed.department.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      bed.patient.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+      bed.patient.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
+  
 
   return (
     <div className="p-6">
@@ -125,18 +157,25 @@ const BedsAvailability = () => {
         </button>
       </div>
 
+
       {/* Summary Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="bg-white p-4 shadow rounded flex flex-col items-center">
-          <p className="text-xl font-bold text-red-500">120</p>
-          <p className="text-gray-500">Occupied Beds</p>
+        <p className="text-xl font-bold text-red-500">
+            {bedData.filter((bed) => bed.status !== "Available").length}
+        </p>          
+        <p className="text-gray-500">Occupied Beds</p>
         </div>
         <div className="bg-white p-4 shadow rounded flex flex-col items-center">
-          <p className="text-xl font-bold text-green-500">40</p>
+          <p className="text-xl font-bold text-green-500">
+            {bedData.filter((bed) => bed.status === "Available").length}
+          </p>
           <p className="text-gray-500">Available Beds</p>
         </div>
         <div className="bg-white p-4 shadow rounded flex flex-col items-center">
-          <p className="text-xl font-bold">160</p>
+          <p className="text-xl font-bold">
+            {bedData.filter((bed) => bed.bedid).length}
+          </p>
           <p className="text-gray-500">Total Beds</p>
         </div>
       </div>
@@ -156,24 +195,20 @@ const BedsAvailability = () => {
           </thead>
           <tbody>
             {filteredData.map((bed) => (
-              <tr key={bed.id} className="border-b">
-                <td className="px-4 py-2">{bed.id}</td>
+              <tr key={bed.bedid} className="border-b">
+                <td className="px-4 py-2">{bed.bedid}</td>
                 <td className="px-4 py-2">{bed.department}</td>
                 <td className="px-4 py-2">
                   <span
                     className={`inline-block w-3 h-3 rounded-full ${
-                      bed.status === "green"
-                        ? "bg-green-500"
-                        : bed.status === "red"
-                        ? "bg-red-500"
-                        : "bg-yellow-500"
+                      bed.status === "Available" ? "bg-green-500" : "bg-red-500"
                     }`}
                   ></span>
                 </td>
                 <td className="px-4 py-2">
-                  <div>{bed.patient}</div>
+                  <div>{bed.patient.name}</div>
                   <div className="text-sm text-gray-500">
-                    Age: {bed.age}, Condition: {bed.condition}
+                    Age: {bed.patient.age}, Condition: {bed.patient.problem}
                   </div>
                 </td>
                 <td className="px-4 py-2">{bed.lastUpdated}</td>
@@ -182,9 +217,9 @@ const BedsAvailability = () => {
                     className="px-4 py-2 bg-blue-500 text-white rounded"
                     onClick={() => {
                       setSelectedBed(bed);
-                      setNewPatientName(bed.patient);
-                      setNewAge(bed.age);
-                      setNewCondition(bed.condition);
+                      setNewPatientName(bed.patient.name);
+                      setNewAge(bed.patient.age);
+                      setNewCondition(bed.patient.problem);
                       setNewDepartment(bed.department);
                     }}
                   >
