@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import emailjs from 'emailjs-com';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
+import axios from 'axios';
+
+const BACKEND_URL = "http://localhost:5000"
+
 const SignUp = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -15,20 +17,31 @@ const SignUp = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate();
 
+    const [patientData, setPatientData] = useState({
+    name: '', age: '', phone: '', email: '', password: '', gender: '', address: '', problem: '', habits: {}
+    });
+
+    const handleChange = (e) => setPatientData({ ...patientData, [e.target.name]: e.target.value });
+
+    useEffect(() => {
+        console.log("Updated patientData.name: ", patientData.name);
+    }, [patientData.name]);
+
     const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     };
 
+
+
     const sendSignUpEmail = (email, password, role) => {
         const extractName = (email) => {
             const extractedname = email.split("@")[0]; 
             return extractedname; 
-            // return name.replace(/[0-9]/g, ""); 
         };
     
         const maskPassword = (password) => {
-            return password.slice(0, 2) + "**";
+            return password.slice(0, 2) + "******";
         };
     
         const extractedname = extractName(email);
@@ -55,37 +68,73 @@ const SignUp = () => {
         setError('');
         setSuccessMessage('');
 
-        if (!validateEmail(email)) {
+        if (!validateEmail(patientData.email)) {
             setError('Please enter a valid email address.');
             return;
         }
-        if (password.length < 6) {
+        if (patientData.password.length < 6) {
             setError('Password should be at least 6 characters long.');
             return;
         }
-        if (password !== confirmPassword) {
+        if (patientData.password !== confirmPassword) {
             setError('Passwords do not match.');
             return;
         }
 
-        setSuccessMessage(`Sign-up successful as a ${role}. \n Redirecting to your dashboard...`);
-        sendSignUpEmail(email, password, role);
+        const extractedName = patientData.email.split('@')[0];
 
-        setTimeout(() => {
-            if (role === 'admin') {
-                navigate('/admin');
-            } else {
-                navigate('/patient');
-            }
-        }, 2000);
+        
+        const updatedPatientData = {
+            ...patientData,
+            name: patientData.email.split('@')[0]
+        };
+
+
+        console.log("extractedName: " + extractedName)
+
+        console.log("extractedName: " + updatedPatientData.name);
+        handleSubmit(updatedPatientData);
+
+
+    };
+
+    const handleSubmit = async (updatedData) => {
+
+        console.log('Patient data before submitting:', updatedData);
+
+        try {
+            const patientResponse = await axios.post(`${BACKEND_URL}/api/patients`,
+                JSON.stringify(updatedData),{ headers: { 'Content-Type': 'application/json' } }
+            );
+
+            console.log('Patient added successfully:', patientResponse.data);
+            console.log('Patient _id:', patientResponse._id);
+
+            setSuccessMessage(`Sign-up successful as a ${role}. \n Redirecting to your dashboard...`);
+            sendSignUpEmail(updatedData.email, updatedData.password, role);
+    
+            setTimeout(() => {
+                if (role === 'admin') {
+                    navigate('/admin');
+                } else {
+                    navigate(`/patient/${patientResponse.data._id}`);
+                }
+            }, 2000);
+        } catch (error) {
+            console.error('Error adding patient:', error);
+        }
     };
 
     const handleGoogleSuccess = (credentialResponse) => {
         console.log('Google Sign-Up Success:', credentialResponse);
         setSuccessMessage(`Signed up successfully with Google as a ${role}. \n Redirecting to your dashboard...`);
-        sendSignUpEmail(email, password, role);
+        sendSignUpEmail(patientData.email, patientData.password, role);
         setTimeout(() => {
-            navigate('/patient'); 
+            if (role === 'admin') {
+                navigate('/admin');
+            } else {
+                navigate(`/patient/${patientData._id}`);
+            }
         }, 2000);
     };
 
@@ -141,16 +190,18 @@ const SignUp = () => {
                         <form onSubmit={handleSignUp} className="space-y-4">
                             <input
                                 type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                name='email'
+                                value={patientData.email}
+                                onChange={handleChange}
                                 className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-600"
                                 placeholder="Email"
                             />
                             <div className="relative">
                                 <input
                                     type={showPassword ? 'text' : 'password'}
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    name="password"
+                                    value={patientData.password}
+                                    onChange={handleChange}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-600"
                                     placeholder="Password"
                                 />

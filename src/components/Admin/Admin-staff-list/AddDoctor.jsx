@@ -4,7 +4,7 @@ const AddDoctor = ({ onAddDoctor }) => {
   const [doctor, setDoctor] = useState({
     profile: '',
     name: '',
-    role: '',
+    specialization: '',
     email: '',
     days: [false, false, false, false, false, false, false],
     assignedTreatment: '',
@@ -30,7 +30,7 @@ const AddDoctor = ({ onAddDoctor }) => {
     setDoctor({
       profile: '',
       name: '',
-      role: '',
+      specialization: '',
       email: '',
       days: [false, false, false, false, false, false, false],
       assignedTreatment: '',
@@ -54,15 +54,16 @@ const AddDoctor = ({ onAddDoctor }) => {
           />
         </div>
         <div>
-          <label className="block font-semibold">Role</label>
+          <label className="block font-semibold">specialization</label>
           <input
             type="text"
-            name="role"
-            value={doctor.role}
+            name="specialization"
+            value={doctor.specialization}
             onChange={handleInputChange}
             className="w-full px-3 py-2 border rounded-md"
           />
         </div>
+
         <div>
           <label className="block font-semibold">Email</label>
           <input

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 const DoctorsTable = ({ doctorsData, onDeleteDoctor }) => {
-  const [showDeleteMenu, setShowDeleteMenu] = useState(null); // Track which doctor menu is open
+  const [showDeleteMenu, setShowDeleteMenu] = useState(null); 
 
   const toggleDeleteMenu = (index) => {
     setShowDeleteMenu(showDeleteMenu === index ? null : index);
@@ -13,7 +13,7 @@ const DoctorsTable = ({ doctorsData, onDeleteDoctor }) => {
     <div className="w-full p-4 overflow-x-auto bg-white text-black">
       <table className="w-full min-w-[600px] table-auto border-collapse">
         <thead>
-          <tr className="text-left text-gray-400 uppercase">
+          <tr className="text-left text-black uppercase">
             <th className="px-4 py-2">Name</th>
             <th className="px-4 py-2">Contact</th>
             <th className="px-4 py-2">Working Days</th>
@@ -27,7 +27,7 @@ const DoctorsTable = ({ doctorsData, onDeleteDoctor }) => {
             <tr key={index} className="border-b border-gray-700">
               <td className="px-4 py-2">
                 <span className="flex">
-                  <img src={doctor.profile} alt="Profile" className="w-8 h-8 rounded-full mr-2" />
+                  <img src={doctor.profile || "./icons/Profile_icon.svg"} alt="Profile" className="w-8 h-8 rounded-full mr-2" />
                   <span>
                     {doctor.name}<br />
                     <span className="text-gray-500">{doctor.role}</span>
@@ -40,7 +40,7 @@ const DoctorsTable = ({ doctorsData, onDeleteDoctor }) => {
                   <span
                     key={i}
                     className={`w-6 h-6 flex items-center justify-center rounded-full text-sm ${
-                      isActive ? 'bg-gray-300 text-black' : 'bg-gray-700 text-gray-500'
+                      isActive ? 'bg-blue-200 text-white' : 'bg-blue-600 text-white'
                     }`}
                     title={isActive ? 'Working' : 'Off'}
                   >
@@ -68,7 +68,7 @@ const DoctorsTable = ({ doctorsData, onDeleteDoctor }) => {
                   <div className="absolute right-0 mt-2 w-24 bg-white border border-gray-300 rounded shadow-lg z-10">
                     <button
                       onClick={() => {
-                        onDeleteDoctor(doctor.email);
+                        onDeleteDoctor(doctor._id, doctor.name);
                         setShowDeleteMenu(null);
                       }}
                       className="w-full px-4 py-2 text-left text-red-600 hover:bg-gray-100"
