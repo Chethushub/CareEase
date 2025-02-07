@@ -43,12 +43,12 @@ const Dashboard = () => {
       </header>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <SchedulesCard />
-        <HealthTipsCard />
+      <SchedulesCard patientId={userId} />
+      <HealthTipsCard />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-6 gap-6">
-        <BillsCard />
+        <BillsCard patientId={userId}/>
         <div className="grid grid-row-1 lg:grid-rows-2 gap-6">
           <MedicalRecordsCard />
           <HealthStatsCard />

@@ -157,18 +157,25 @@ const BedsAvailability = () => {
         </button>
       </div>
 
+
       {/* Summary Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="bg-white p-4 shadow rounded flex flex-col items-center">
-          <p className="text-xl font-bold text-red-500">120</p>
-          <p className="text-gray-500">Occupied Beds</p>
+        <p className="text-xl font-bold text-red-500">
+            {bedData.filter((bed) => bed.status !== "Available").length}
+        </p>          
+        <p className="text-gray-500">Occupied Beds</p>
         </div>
         <div className="bg-white p-4 shadow rounded flex flex-col items-center">
-          <p className="text-xl font-bold text-green-500">40</p>
+          <p className="text-xl font-bold text-green-500">
+            {bedData.filter((bed) => bed.status === "Available").length}
+          </p>
           <p className="text-gray-500">Available Beds</p>
         </div>
         <div className="bg-white p-4 shadow rounded flex flex-col items-center">
-          <p className="text-xl font-bold">160</p>
+          <p className="text-xl font-bold">
+            {bedData.filter((bed) => bed.bedid).length}
+          </p>
           <p className="text-gray-500">Total Beds</p>
         </div>
       </div>

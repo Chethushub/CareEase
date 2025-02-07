@@ -1,10 +1,14 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { FaRupeeSign } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { Bar } from 'react-chartjs-2';
 import { bills } from './data';
 
-const BillsCard = () => {
+import axios from 'axios';  
+
+const BACKEND_URL = "http://localhost:5000";
+
+const BillsCard = ({patientId}) => {
   const billChartData = useMemo(() => ({
     labels: bills.map(bill => bill.date),
     datasets: [{
@@ -15,6 +19,27 @@ const BillsCard = () => {
       borderWidth: 1,
     }],
   }), []);
+
+    const [PatientBillData, setPatientBillData] = useState(null);
+    const [loading, setLoading] = useState(true);
+  
+    useEffect(() => {
+      const fetchBillData = async () => {
+        try {
+          const response = await axios.get(`${BACKEND_URL}/api/bills/`);
+          const patientBills = response.data.filter(bills => bills.patient._id === patientId);
+          console.log("Patient Bill Data", patientBills);
+  
+          setPatientBillData(patientBills);
+          setLoading(false);
+        } catch (error) {
+          console.error("Error fetching bill data:", error);
+          setLoading(false);
+        }
+      };
+  
+      fetchBillData();
+    }, [patientId]); 
 
   return (
     <motion.div className="p-6 bg-white rounded-lg shadow-lg" whileHover={{ scale: 1.02 }}>
