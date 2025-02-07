@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import React, { useState, useEffect } from "react";
 
 // Dummy data in case of fetch failure
 const dummyDoctorsData = [
@@ -34,14 +33,7 @@ const dummyDoctorsData = [
 
 const PatientAppointmentPage = () => {
   const [doctorsData, setDoctorsData] = useState([]);
-  const [doctorsData, setDoctorsData] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
-  const [isBooking, setIsBooking] = useState(false);
-  const [appointmentDetails, setAppointmentDetails] = useState({
-    date: "",
-    time: "",
-    reason: "",
-  });
 
   const [isBooking, setIsBooking] = useState(false);
   const [appointmentDetails, setAppointmentDetails] = useState({
@@ -156,55 +148,6 @@ const PatientAppointmentPage = () => {
   
   
 
-  const handleBookAppointment = async () => {
-    if (!appointmentDetails.date || !appointmentDetails.time || !appointmentDetails.reason) {
-      alert("Please fill out all fields.");
-      return;
-    }
-  
-    const patientId = "67510191bc8d53a71136999d"; 
-    const isValidObjectId = /^[0-9a-fA-F]{24}$/.test(patientId);
-  
-    if (!isValidObjectId) {
-      alert("Invalid patient ID.");
-      console.error("Patient ID is not a valid ObjectId:", patientId);
-      return;
-    }
-  
-    const requestBody = {
-      patient: patientId,
-      doctor: selectedDoctor.name,
-      hospital: selectedDoctor.hospital,
-      date: appointmentDetails.date,
-      time: appointmentDetails.time,
-      reason: appointmentDetails.reason,
-    };
-  
-    console.log("Request Payload:", JSON.stringify(requestBody));
-  
-    try {
-      const response = await fetch("http://localhost:5000/api/appointments/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
-      });
-  
-      if (response.ok) {
-        alert("Appointment booked successfully!");
-        setIsBooking(false);
-        setAppointmentDetails({ date: "", time: "", reason: "" });
-      } else {
-        const errorData = await response.json();
-        console.error("Server Response Error:", errorData);
-        alert(`Failed to book appointment: ${errorData.message || "Unknown error"}`);
-      }
-    } catch (error) {
-      console.error("Error booking appointment:", error);
-      alert("An error occurred while booking the appointment.");
-    }
-  };
-  
-  
 
   return (
     <div className="flex bg-gray-100 min-h-screen">
@@ -267,6 +210,7 @@ const PatientAppointmentPage = () => {
       {/* Main Content Section */}
       <div className="w-4/5 p-6">
         {selectedDoctor ? (
+          <>
           <>
             {/* Doctor Details */}
             <div className="p-6 bg-white rounded-lg shadow-md">
@@ -332,6 +276,8 @@ const PatientAppointmentPage = () => {
                 Book Appointment
               </button>
             </div>
+          </>
+
           </>
         ) : (
           <>
@@ -474,6 +420,6 @@ const PatientAppointmentPage = () => {
     </div>
   );
 }
-}
+
 
 export default PatientAppointmentPage;
