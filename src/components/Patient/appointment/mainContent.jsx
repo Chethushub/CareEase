@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-// Dummy data in case of fetch failure
 const dummyDoctorsData = [
   {
     name: "Dr Mohan Das",
