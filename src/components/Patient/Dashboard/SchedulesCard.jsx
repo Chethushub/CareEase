@@ -13,8 +13,11 @@ const SchedulesCard = ({ patientId }) => {
     const fetchAppointmentData = async () => {
       try {
         const response = await axios.get(`${BACKEND_URL}/api/appointments/`);
-        const patientAppointments = response.data.filter(appointment => appointment.patient._id === patientId);
-        console.log("Patient AppointmentData", patientAppointments);
+        const patientAppointments = response.data.filter(appointment => 
+          appointment.patient && appointment.patient._id && appointment.patient._id === patientId
+      );
+      
+      console.log("Patient AppointmentData", patientAppointments);
 
         setPatientAppointmentData(patientAppointments);
         setLoading(false);
