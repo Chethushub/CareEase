@@ -2,15 +2,25 @@ import React from "react";
 import Landing from "./components/Landing";
 import SignIn from "./components/signin";
 import SignUp from "./components/signup";
-import AdminProfile from "./components/ui/AdminProfile";
 
 import Dashboard from "./components/Admin/dashboard/MainContent";
 import Reservation from "./components/Admin/reservations/MainContent";
 import AdminStaffList from "./components/Admin/Admin-staff-list/Admin-staff-list";
+
+
 import Treatment from "./components/Admin/treatment/mainContent";
+
+// import Treatment from "./components/Admin/treatment2/mainContent";
+
+
+
+
+
 import Beds from "./components/Admin/BedsAvaliablity/main";
 import Bills from "./components/Admin/bills/main";
+
 import AdminProfile from "./components/Admin/Admin-Profile/AdminProfile";
+
 import PatientDashboard from "./components/Patient/Dashboard/PtMainContent";
 import BookAppointment from "./components/Patient/appointment/mainContent";
 import PatientSchedules from "./components/Patient/PatientSchedules/mainContent";
