@@ -28,7 +28,7 @@ const Sidebar = ({ activeItem }) => {
       </NavLink>
 
       <div className="hospital-name">
-        <NavLink to="/patient-dashboard" className="flex items-center">
+        <NavLink to="/patient" className="flex items-center">
           <button className="flex items-center">
             <img src="./icons/Hospital-icon.svg" alt="Hospital" className="mr-2" />
             {!isCollapsed && 'Hospital Name'}

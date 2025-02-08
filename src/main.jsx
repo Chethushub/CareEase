@@ -11,18 +11,23 @@ import Navbar from "./components/navbar"
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 
 import axios from 'axios'
-
+import { UserProvider } from './UserContext'
+import { useUser } from './UserContext';
 
 function MainLayout() {
   const BACKEND_URL = "http://localhost:5000"
   const location = useLocation();
-  // const { userId } = useParams(); 
   const [patientName, setPatientName] = useState("");
 
-  const userIdMatch = location.pathname.match(/\/patient\/([a-fA-F0-9]{24})/);
-  const userId = userIdMatch ? userIdMatch[1] : null;
+  const { userId, setUserId } = useUser();
 
-  console.log("userId in main " + userId)
+  useEffect(() => {
+    const userIdMatch = location.pathname.match(/\/patient\/([a-fA-F0-9]{24})/);
+    if (userIdMatch) {
+      setUserId(userIdMatch[1]);
+    }
+  }, [location.pathname, setUserId]);
+  
 
   useEffect(() => {
     if (userId) {
@@ -50,15 +55,9 @@ function MainLayout() {
     "/admin-reports": { activeItem: "Reports", title: "Reports" },
     "/admin-support": { activeItem: "Support", title: "Customer Support" },
 
-    "/patient": { activeItem: "Dashboard", title: "Patient Dashboard" },
-    "/patient-dashboard": { activeItem: "Dashboard", title: "Patient Dashboard" },
-    "/patient-book-appointment": { activeItem: "Book-appointment", title: "Book Appointment" },
-    "/patient-schedules": { activeItem: "Schedules", title: "Schedules" },
-    "/patient-messages": { activeItem: "Messages", title: "Messages" },
-    "/patient-medical-record": { activeItem: "Medical-record", title: "Medical Record" },
-    "/patient-settings": { activeItem: "Settings", title: "Settings" },
-    "/patient-reports": { activeItem: "Reports", title: "Reports" },
-    "/patient-profile": { activeItem: "Profile", title: "Profile" },
+    "/patient/:userId": { activeItem: "Dashboard", title: "Patient Dashboard" },
+    "/patient-book-appointment/:userId": { activeItem: "Book-appointment", title: "Book Appointment" },
+    "/patient-schedules/:userId": { activeItem: "Schedules", title: "Schedules" },
   };
 
   const { activeItem = "Dashboard", title = "Dashboard" } = routeMap[location.pathname] || {};
@@ -95,9 +94,9 @@ function MainLayout() {
 
       {isPatientRoute && (
         <div className="dashboard-layout">
-          <PtSidebar activeItem={activeItem}/>
+          <PtSidebar activeItem={activeItem} userId={userId}/>
           <div className="main-section">
-            <PtHeader title={title} patientName={patientName}/>
+            <PtHeader title={title} patientName={patientName} patientId={userId}/>
             <div className='overflow-y-auto'>
               <App />
             </div>
@@ -111,8 +110,11 @@ function MainLayout() {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+
     <Router>
-      <MainLayout />
+      <UserProvider>
+        <MainLayout />
+      </UserProvider>
     </Router>
   </StrictMode>
 );
