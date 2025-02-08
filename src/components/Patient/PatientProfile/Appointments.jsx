@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from "react";
 
-const Appointments = () => {
+const Appointments = ({patientId}) => {
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
         const response = await fetch("http://localhost:5000/api/appointments");
-        const data = await response.json();
-        setAppointments(data);
+        const data = await response.json(); 
+
+        console.log("appoint data: ", data); 
+  
+        const patientAppointments = data.filter(
+          (appointment) =>
+            appointment.patient &&
+            appointment.patient._id &&
+            appointment.patient._id === patientId
+        );
+
+        console.log("patientAppointments data: ", patientAppointments); 
+        setAppointments(patientAppointments);
       } catch (error) {
         console.error("Error fetching appointments:", error);
-        setAppointments([
-          { type: "Consultation", dateTime: "2024-12-18 10:00 AM", status: "Scheduled" },
-          { type: "Follow-up", dateTime: "2024-12-19 02:00 PM", status: "Completed" },
-        ]);
       }
     };
 

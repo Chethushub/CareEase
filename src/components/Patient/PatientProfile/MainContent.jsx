@@ -3,6 +3,10 @@ import ProfileCard from "./ProfileCard";
 import Appointments from "./Appointments";
 import PrescriptionOrders from "./PrescriptionOrders";
 import InsuranceBenefits from "./InsuranceBenefits";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+
+
 
 // Dummy Data for Fallback
 const dummyPatientData = {
@@ -22,13 +26,14 @@ const PatientProfile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
+  const { userId } = useParams();
+  
+
   const toggleEditMode = () => {
     setIsEditing((prev) => !prev);
   };
 
   const handleSave = () => {
-    // Save logic can be implemented here
-    // You can send the updated data to the backend if needed
     setIsEditing(false);
   };
 
@@ -40,15 +45,19 @@ const PatientProfile = () => {
     window.print();
   };
 
+
   useEffect(() => {
     const fetchPatientInfo = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:5000/api/patientProfile/");
+        // const response = await fetch("http://localhost:5000/api/patientProfile/");
+        const response = await fetch(`http://localhost:5000/api/patients/${userId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
         const data = await response.json();
+
+        console.log("PatientInfo: ", data)
         setPatientInfo(data);
         setError(false);
       } catch (error) {
@@ -79,7 +88,7 @@ const PatientProfile = () => {
           patientInfo={patientInfo}
           onEditChange={handleChange}
         />
-        <Appointments />
+        <Appointments patientId={patientInfo._id}/>
       </div>
       <div className="grid lg:grid-cols-2 gap-6 mt-6">
         <PrescriptionOrders />

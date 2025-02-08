@@ -10,7 +10,7 @@ const ProfileCard = ({ isEditing, patientInfo, onEditChange }) => {
       <h3 className="text-lg font-bold text-gray-800 mb-4">General Information</h3>
       <div className="flex items-center gap-4 mb-6">
         <img
-          src={patientInfo.profilePic}
+          src={patientInfo.profilePic ? patientInfo.profilePic : "/icons/Profile_icon.svg"}
           alt="Profile"
           className="w-24 h-24 rounded-full object-cover"
         />
