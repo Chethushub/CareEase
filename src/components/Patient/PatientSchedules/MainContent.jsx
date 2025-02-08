@@ -7,7 +7,7 @@ const dummyAppointments = [
     date: "APR 25",
     day: "25",
     time: "10:00 - 11:00 AM",
-    title: "Tooth Scaling",
+    problem: "Tooth Scaling",
     type: "MULTIPLE",
     details: "Visit #2 - Scaling Maxilla (Q1+Q2)",
     hospital: "Zendral Dental",
@@ -18,7 +18,7 @@ const dummyAppointments = [
     date: "APR 20",
     day: "20",
     time: "09:00 - 10:00 AM",
-    title: "Simple extractions",
+    problem: "Simple extractions",
     type: "MULTIPLE",
     details: "Visit #2 - Simple extractions (Q1+Q2)",
     hospital: "Zendral Dental",
@@ -31,7 +31,7 @@ const dummyAppointments = [
     date: "APR 19",
     day: "19",
     time: "17:00 - 18:00 PM",
-    title: "Emergency care",
+    problem: "Emergency care",
     type: "SINGLE",
     details: "",
     hospital: "Zendral Dental",
@@ -51,10 +51,11 @@ const PatientSchedule = () => {
           throw new Error("Failed to fetch data from server.");
         }
         const data = await response.json();
+        console.log("Data: ", data)
         setAppointments(data);
       } catch (error) {
         console.error("Error fetching appointments:", error.message);
-        setAppointments(dummyAppointments); // Fallback to dummy data
+        setAppointments(dummyAppointments); 
       }
     };
 
@@ -91,10 +92,13 @@ const PatientSchedule = () => {
       <div>
         <div className="flex items-center space-x-2 text-lg font-semibold text-gray-800">
           <span className="text-blue-500">&#9679;</span>
-          <span>Upcoming ({appointments.filter((a) => a.status === "upcoming").length})</span>
+          {console.log("appointments: ", appointments)}
+          <span>Upcoming ({appointments.filter((a) => a.status.toLowerCase() === "upcoming").length})</span>
+
+          
         </div>
         {appointments
-          .filter((a) => a.status === "upcoming")
+          .filter((a) => a.status.toLowerCase() === "upcoming")
           .map((appointment, index, arr) => (
             <AppointmentCard
               key={appointment.id}
@@ -109,10 +113,10 @@ const PatientSchedule = () => {
       <div>
         <div className="flex items-center space-x-2 text-lg font-semibold text-gray-800">
           <span className="text-green-500">&#9679;</span>
-          <span>Finished ({appointments.filter((a) => a.status === "finished").length})</span>
+          <span>Finished ({appointments.filter((a) => a.status.toLowerCase() === "finished").length})</span>
         </div>
         {appointments
-          .filter((a) => a.status === "finished")
+          .filter((a) => a.status.toLowerCase() === "finished")
           .map((appointment, index, arr) => (
             <AppointmentCard
               key={appointment.id}
@@ -138,9 +142,9 @@ const PatientSchedule = () => {
 
 const AppointmentCard = ({ appointment, onPay }) => {
   const lineColor =
-    appointment.status === "upcoming" ? "bg-blue-500" : "bg-green-500";
+    appointment.status.toLowerCase() === "upcoming" ? "bg-blue-500" : "bg-green-500";
   const textColor =
-    appointment.status === "upcoming" ? "text-blue-500" : "text-green-500";
+    appointment.status.toLowerCase() === "upcoming" ? "text-blue-500" : "text-green-500";
 
   return (
     <div className="flex items-start space-x-4 mb-4 relative">
@@ -168,7 +172,7 @@ const AppointmentCard = ({ appointment, onPay }) => {
           </span>
           <span className="text-gray-500 text-xs">#{appointment.id}</span>
         </div>
-        <h3 className="text-md font-semibold mt-2">{appointment.title}</h3>
+        <h3 className="text-md font-semibold mt-2">{appointment.problem}</h3>
 
         <div className="text-gray-500 text-sm mt-1">
           <span className="material-icons text-sm mr-1">location_on</span>
@@ -176,7 +180,7 @@ const AppointmentCard = ({ appointment, onPay }) => {
         </div>
 
         {/* Payment */}
-        {appointment.status === "finished" && (
+        {appointment.status.toLowerCase() === "finished" && (
           <div className="mt-4 flex justify-between items-center">
             {appointment.payment && (
               <div className="text-gray-700">
@@ -216,7 +220,7 @@ const PaymentModal = ({ appointment, onClose, onPay, isPaying }) => {
         <p className="text-gray-600 text-sm mt-2">
           Complete your payment of{" "}
           <span className="font-bold">${appointment.payment}</span> for{" "}
-          <span className="font-semibold">{appointment.title}</span>.
+          <span className="font-semibold">{appointment.problem}</span>.
         </p>
 
         {/* Payment Options */}

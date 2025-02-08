@@ -37,7 +37,7 @@ const BillsCard = ({patientId}) => {
 
 
     const billChartData = useMemo(() => ({
-      labels: (PatientBillData || []).map(bill => bill.reservationdate), 
+      labels: (PatientBillData || []).map(bill => bill.billdate), 
       datasets: [{
         label: 'Bill Amounts (₹)',
         data: (PatientBillData || []).map(bill => bill.amount),
@@ -60,9 +60,9 @@ const BillsCard = ({patientId}) => {
             PatientBillData.slice(0, 2).map((bill, index) => (
               <li key={index} className="mb-4 border-b pb-2">
                 <p><strong>Bill id:</strong> {bill.billId}</p>
-                <p><strong>Doctor:</strong> {bill.doctorName}</p>
+                <p><strong>Doctor:</strong> {bill.doctor.name}</p>
                 <p><strong>Amount:</strong> ₹ {bill.amount}</p>
-                <p><strong>Date:</strong> {bill.date}</p>
+                <p><strong>Date:</strong> {bill.billDate}</p>
               </li>
             ))
           ) : (
