@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ProfileCard from "./ProfileCard";
 import Appointments from "./Appointments";
 import PrescriptionOrders from "./PrescriptionOrders";
 import InsuranceBenefits from "./InsuranceBenefits";
 
-// Dummy data for fallback
+// Dummy Data for Fallback
 const dummyPatientData = {
   name: "Darlene Gibbs",
   email: "darlene_gibbs@gmail.com",
@@ -17,7 +17,7 @@ const dummyPatientData = {
 };
 
 const PatientProfile = () => {
-  const [patientInfo, setPatientInfo] = useState(null); // Main state for patient data
+  const [patientInfo, setPatientInfo] = useState(dummyPatientData);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -26,35 +26,34 @@ const PatientProfile = () => {
     setIsEditing((prev) => !prev);
   };
 
+  const handleSave = () => {
+    // Save logic can be implemented here
+    // You can send the updated data to the backend if needed
+    setIsEditing(false);
+  };
+
+  const handleChange = (field, value) => {
+    setPatientInfo((prev) => ({ ...prev, [field]: value }));
+  };
+
   const handlePrint = () => {
-    const contentToPrint = document.getElementById("printableArea");
-    const printWindow = window.open("", "", "height=650, width=900");
-    printWindow.document.write("<html><head><title>Profile</title>");
-    printWindow.document.write(
-      "<style>body{font-family: Arial, sans-serif; padding: 20px;} .profile-print{border: 1px solid #ddd; padding: 20px;}</style>"
-    );
-    printWindow.document.write("</head><body>");
-    printWindow.document.write(contentToPrint.innerHTML);
-    printWindow.document.write("</body></html>");
-    printWindow.document.close();
-    printWindow.print();
+    window.print();
   };
 
   useEffect(() => {
     const fetchPatientInfo = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:5000/api/patient-profile/"); // Replace with the correct endpoint
+        const response = await fetch("http://localhost:5000/api/patientProfile/");
         if (!response.ok) {
-          throw new Error(`Failed to fetch data: ${response.statusText}`);
+          throw new Error("Failed to fetch data");
         }
         const data = await response.json();
         setPatientInfo(data);
+        setError(false);
       } catch (error) {
         console.error("Error fetching patient profile:", error.message);
-        setError(true); // Set error state to true
-        setPatientInfo(dummyPatientData); // Fallback to dummy data
-        console.log("Using dummy data:", dummyPatientData); // Debugging log
+        setError(true);
       } finally {
         setLoading(false);
       }
@@ -63,53 +62,45 @@ const PatientProfile = () => {
     fetchPatientInfo();
   }, []);
 
-  if (loading) {
-    return <div className="text-center py-6">Loading...</div>;
-  }
-
-  // Ensure the dummy data is displayed even when there's an error
-  if (error && patientInfo === null) {
-    return (
-      <div className="text-center py-6 text-red-500">
-        Failed to load data. No fallback data available.
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      {/* Header Buttons */}
-      <div className="flex justify-end items-center mb-6">
+      <div className="flex justify-between mb-6">
+        <h2 className="text-2xl font-bold">Patient Profile</h2>
         <button
           onClick={handlePrint}
-          className="text-blue-600 bg-blue-100 hover:bg-blue-200 px-4 py-2 rounded-md font-medium transition"
+          className="px-4 py-2 bg-blue-500 text-white rounded-md"
         >
-          Download PDF
-        </button>
-
-        <button
-          onClick={toggleEditMode}
-          className="text-blue-600 bg-blue-100 hover:bg-blue-200 px-4 py-2 ml-4 rounded-md font-medium transition"
-        >
-          {isEditing ? "Save" : "Edit"}
+          Print
         </button>
       </div>
-
-      {/* Printable Area */}
-      <div id="printableArea" className="profile-print">
-        <div className="grid lg:grid-cols-2 gap-6">
-          {/* Profile Card */}
-          <ProfileCard isEditing={isEditing} patientInfo={patientInfo || dummyPatientData} />
-          {/* Appointments */}
-          <Appointments />
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-6 mt-6">
-          {/* Prescription Orders */}
-          <PrescriptionOrders />
-          {/* Insurance Benefits */}
-          <InsuranceBenefits />
-        </div>
+      <div className="grid lg:grid-cols-2 gap-6">
+        <ProfileCard
+          isEditing={isEditing}
+          patientInfo={patientInfo}
+          onEditChange={handleChange}
+        />
+        <Appointments />
+      </div>
+      <div className="grid lg:grid-cols-2 gap-6 mt-6">
+        <PrescriptionOrders />
+        <InsuranceBenefits />
+      </div>
+      <div className="mt-6 flex justify-end">
+        {isEditing ? (
+          <button
+            onClick={handleSave}
+            className="px-4 py-2 bg-green-500 text-white rounded-md"
+          >
+            Save Changes
+          </button>
+        ) : (
+          <button
+            onClick={toggleEditMode}
+            className="px-4 py-2 bg-yellow-500 text-white rounded-md"
+          >
+            Edit Profile
+          </button>
+        )}
       </div>
     </div>
   );
