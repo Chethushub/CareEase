@@ -11,36 +11,33 @@ import Navbar from "./components/navbar"
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 
 import axios from 'axios'
-
+import { UserProvider } from './UserContext'
+import { useUser } from './UserContext';
 
 function MainLayout() {
-  const BACKEND_URL = "http://localhost:5000"
   const location = useLocation();
-  // const { userId } = useParams(); 
-  const [patientName, setPatientName] = useState("");
 
-  const userIdMatch = location.pathname.match(/\/patient\/([a-fA-F0-9]{24})/);
-  const userId = userIdMatch ? userIdMatch[1] : null;
-
-  console.log("userId in main " + userId)
+  const { userId, setUserId } = useUser();
 
   useEffect(() => {
-    if (userId) {
-      const fetchPatientData = async () => {
-        try {
-          const response = await axios.get(`${BACKEND_URL}/api/patients/${userId}`);
-            setPatientName(response.data.name);
-        } catch (error) {
-          console.error("Error fetching patient data:", error);
-        }
-      };
-  
-      fetchPatientData();
+    const userIdMatch = location.pathname.match(/\/patient\/([a-fA-F0-9]{24})/);
+    if (userIdMatch) {
+      setUserId(userIdMatch[1]);
     }
-  }, [userId]);
+
+    if(!userId) {
+      const userIdMatch = location.pathname.match(/\/admin\/([a-fA-F0-9]{24})/);
+      if (userIdMatch) {
+        setUserId(userIdMatch[1]);
+      }
+    }
+
+  }, [location.pathname, setUserId]);
+  
 
   const routeMap = {
     "/admin": { activeItem: "Dashboard", title: "Dashboard" },
+    "/admin/:userId": { activeItem: "Dashboard", title: "Dashboard" },
     "/admin-dashboard": { activeItem: "Dashboard", title: "Dashboard" },
     "/admin-reservations": { activeItem: "Reservations", title: "Reservations" },
     "/admin-beds": { activeItem: "Beds", title: "Beds Availability" },
@@ -50,15 +47,10 @@ function MainLayout() {
     "/admin-reports": { activeItem: "Reports", title: "Reports" },
     "/admin-support": { activeItem: "Support", title: "Customer Support" },
     "/admin-profile" :{activeItem:"Profile",title :"Profile"},
-    "/patient": { activeItem: "Dashboard", title: "Patient Dashboard" },
-    "/patient-dashboard": { activeItem: "Dashboard", title: "Patient Dashboard" },
-    "/patient-book-appointment": { activeItem: "Book-appointment", title: "Book Appointment" },
-    "/patient-schedules": { activeItem: "Schedules", title: "Schedules" },
-    "/patient-messages": { activeItem: "Messages", title: "Messages" },
-    "/patient-medical-record": { activeItem: "Medical-record", title: "Medical Record" },
-    "/patient-settings": { activeItem: "Settings", title: "Settings" },
-    "/patient-reports": { activeItem: "Reports", title: "Reports" },
-    "/patient-profile": { activeItem: "Profile", title: "Profile" },
+
+    "/patient/:userId": { activeItem: "Dashboard", title: "Patient Dashboard" },
+    "/patient-book-appointment/:userId": { activeItem: "Book-appointment", title: "Book Appointment" },
+    "/patient-schedules/:userId": { activeItem: "Schedules", title: "Schedules" },
   };
 
   const { activeItem = "Dashboard", title = "Dashboard" } = routeMap[location.pathname] || {};
@@ -81,10 +73,10 @@ function MainLayout() {
 
       {isAdminRoute && (
         <div className="dashboard-layout ">
-          <Sidebar activeItem={activeItem} />
+          <Sidebar activeItem={activeItem} adminId={userId} />
 
           <div className="main-section">
-            <Header title={title} />
+            <Header title={title} adminId={userId}/>
             <div className='overflow-y-auto '>
               <App />
             </div>
@@ -95,9 +87,9 @@ function MainLayout() {
 
       {isPatientRoute && (
         <div className="dashboard-layout">
-          <PtSidebar activeItem={activeItem}/>
+          <PtSidebar activeItem={activeItem} userId={userId}/>
           <div className="main-section">
-            <PtHeader title={title} patientName={patientName}/>
+            <PtHeader title={title} patientId={userId}/>
             <div className='overflow-y-auto'>
               <App />
             </div>
@@ -111,8 +103,11 @@ function MainLayout() {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+
     <Router>
-      <MainLayout />
+      <UserProvider>
+        <MainLayout />
+      </UserProvider>
     </Router>
   </StrictMode>
 );

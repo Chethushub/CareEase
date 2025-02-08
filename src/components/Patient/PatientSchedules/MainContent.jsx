@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 
-// Dummy data for fallback
+import axios from "axios";
+
+import { useParams } from "react-router-dom";
+
 const dummyAppointments = [
   {
     id: "RSV10102",
@@ -40,22 +43,28 @@ const dummyAppointments = [
   },
 ];
 
+const BACKEND_URL = "http://localhost:5000";
+
+
 const PatientSchedule = () => {
   const [appointments, setAppointments] = useState([]);
+  const { userId } = useParams();
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/appointments");
-        if (!response.ok) {
-          throw new Error("Failed to fetch data from server.");
-        }
-        const data = await response.json();
-        console.log("Data: ", data)
-        setAppointments(data);
+        const response = await axios.get(`${BACKEND_URL}/api/appointments/`);
+        const patientAppointments = response.data.filter(appointment => 
+          appointment.patient && appointment.patient._id && appointment.patient._id === userId
+      );
+      
+      console.log("Patient AppointmentData", patientAppointments);
+      
+        console.log("Patient AppointmentData", patientAppointments);
+        setAppointments(patientAppointments);
+
       } catch (error) {
         console.error("Error fetching appointments:", error.message);
-        setAppointments(dummyAppointments); 
       }
     };
 
@@ -87,7 +96,7 @@ const PatientSchedule = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-4">
       {/* Upcoming Section */}
       <div>
         <div className="flex items-center space-x-2 text-lg font-semibold text-gray-800">
@@ -97,17 +106,23 @@ const PatientSchedule = () => {
 
           
         </div>
-        {appointments
-          .filter((a) => a.status.toLowerCase() === "upcoming")
-          .map((appointment, index, arr) => (
-            <AppointmentCard
-              key={appointment.id}
-              appointment={appointment}
-              isLast={index === arr.length - 1}
-              onPay={openPaymentModal}
-            />
-          ))}
-      </div>
+          {appointments.length > 0 ? (
+
+            appointments
+            .filter((a) => a.status.toLowerCase() === "upcoming")
+            .map((appointment, index, arr) => (
+              <AppointmentCard
+                key={appointment.id}
+                appointment={appointment}
+                isLast={index === arr.length - 1}
+                onPay={openPaymentModal}
+              />
+            ))
+
+          ) : (
+            <p className="text-gray-500 text-sm mt-2 pl-6">No upcoming appointments. Schedule one today!</p>
+          )}
+        </div>
 
       {/* Finished Section */}
       <div>
@@ -115,16 +130,22 @@ const PatientSchedule = () => {
           <span className="text-green-500">&#9679;</span>
           <span>Finished ({appointments.filter((a) => a.status.toLowerCase() === "finished").length})</span>
         </div>
-        {appointments
-          .filter((a) => a.status.toLowerCase() === "finished")
-          .map((appointment, index, arr) => (
-            <AppointmentCard
-              key={appointment.id}
-              appointment={appointment}
-              isLast={index === arr.length - 1}
-              onPay={openPaymentModal}
-            />
-          ))}
+              {appointments.length > 0 ? (
+
+              appointments
+              .filter((a) => a.status.toLowerCase() === "finished")
+              .map((appointment, index, arr) => (
+                <AppointmentCard
+                  key={appointment.id}
+                  appointment={appointment}
+                  isLast={index === arr.length - 1}
+                  onPay={openPaymentModal}
+                />
+              ))
+
+              ) : (
+                <p className="text-gray-500 text-sm mt-2 pl-6">No past appointments found. Your history will appear here after your visits.</p>
+              )}
       </div>
 
       {/* Payment Modal */}

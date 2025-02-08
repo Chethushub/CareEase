@@ -1,7 +1,27 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-const Header = ({ title, patientName }) => {
-  console.log("patientName " + patientName)
+import React, {useState, useEffect} from "react";
+import { useNavigate, NavLink } from "react-router-dom";
+import axios from "axios";
+
+const BACKEND_URL = "http://localhost:5000"
+
+const Header = ({ title, patientId }) => {
+  const [patientName, setPatientName] = useState("");
+
+  useEffect(() => {
+    if (patientId) {
+      const fetchPatientData = async () => {
+        try {
+          const response = await axios.get(`${BACKEND_URL}/api/patients/${patientId}`);
+            setPatientName(response.data.name);
+        } catch (error) {
+          console.error("Error fetching patient data:", error);
+        }
+      };
+  
+      fetchPatientData();
+    }
+  }, [patientId]);
+
   return (
     <div className="flex justify-between items-center p-2 bg-white shadow-md border-b border-gray-200">
 
@@ -30,7 +50,7 @@ const Header = ({ title, patientName }) => {
           />
 
           <NavLink
-            to="/patient-profile"
+            to={`/patient-profile/${patientId}`}
             className="text-gray-800 font-semibold flex items-center cursor-pointer hover:font-bold rounded-lg px-3   hover:bg-gray-200"
           >
             <div className="flex items-center gap-1 md:gap-1 lg:gap-3 pl-3 border-l border-gray-300 cursor-pointer hover:bg-gray-100 rounded-lg p-1 transition duration-200">

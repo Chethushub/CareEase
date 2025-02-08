@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { useParams } from "react-router-dom";
+
 const dummyDoctorsData = [
   { name: "Dr. Mohan Das", specialty: "Dentist", experience: "25 years", hospital: "Jeeva Hospital", languages: ["Kannada", "English"], availabileTimes: ["2:00 PM","3:00 PM","4:00 PM"] ,  days: [false,true,true,true,false,true,true], address: "14TH Cross Road, Bengaluru, 560011", qualifications: "MBBS, MS (Ortho)", profile: "./images/doctor_img.png" },
   { name: "Dr. Priya Kumar", specialty: "Cardiologist", experience: "15 years", hospital: "City Hospital", languages: ["Kannada", "English"], availabileTimes: ["12:00 PM","1:00 PM","2:00 PM"],  days: [false,true,true,true,false,true,true], address: "Malleswaram, Bengaluru, 560003", qualifications: "MBBS, MD (Cardiology)", profile: "data:image/jpeg;base64,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" },
@@ -25,6 +27,21 @@ const dummyDoctorsData = [
 
 
 const PatientAppointmentPage = () => {
+  const { userId } = useParams();
+
+  console.log(userId + " userid")
+
+  if (!userId) {
+    console.log("hi, enterd")
+    return (
+      <div className="col-span-full my-4 text-center text-lg text-gray-600">
+        We couldn't find your information. Please try again later or contact support if the issue persists.
+      </div>
+    );
+  }
+
+  console.log("Contining ... bcz userid not null")
+
   const [doctorsData, setDoctorsData] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
 
@@ -52,12 +69,13 @@ const PatientAppointmentPage = () => {
         if (response.ok) {
           const data = await response.json();
           setDoctorsData(data);
+
+          
         } else {
           throw new Error("Failed to fetch doctor data");
         }
       } catch (error) {
         console.error("Error fetching doctor data:", error);
-        setDoctorsData(dummyDoctorsData);
       }
     };
 
@@ -127,7 +145,6 @@ const PatientAppointmentPage = () => {
       alert("An error occurred while booking the appointment.");
     }
   };
-  
   
 
 
@@ -211,7 +228,11 @@ const PatientAppointmentPage = () => {
 
       {/* Main Content Section */}
       <div className="w-4/5 p-6">
-        {selectedDoctor ? (
+        {doctorsData.length === 0 ? (
+          <div className="text-center text-gray-600 text-xl">
+            No doctors available at the moment.
+          </div>
+        ) : selectedDoctor ? (
           <>
             {/* Doctor Details */}
             <div className="p-6 bg-white rounded-lg shadow-md">
@@ -250,33 +271,38 @@ const PatientAppointmentPage = () => {
             <h2 className="text-lg font-semibold text-gray-600 mb-4">
               Doctors (Showing {filteredDoctors.length} of {doctorsData.length})
             </h2>
+
             <div className="grid gap-4">
-              {filteredDoctors.map((doctor, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between p-6 bg-white rounded-lg shadow-md cursor-pointer"
-                  onClick={() => setSelectedDoctor(doctor)}
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-full bg-gray-300 flex-shrink-0">
-                      <img
-                        src={doctor.profile ? doctor.profile : "./images/doctor_img.png"}
-                        alt="Doctor Profile"
-                        className="w-full h-full object-cover rounded-full"
-                      />
-                    </div>
-                    <div>
-                      <h3 className="text-lg text-blue-800 font-bold">{doctor.name}</h3>
-                      <p className="text-gray-500 text-sm">
-                        {doctor.specialty} | {doctor.experience} exp
-                      </p>
-                      <p className="text-gray-500 text-sm">{doctor.hospital}</p>
-                      {/* <p className="text-gray-500 text-sm">{doctor.languages.join(", ")}</p> */}
-                      {/* <p className="text-gray-500 text-sm">{doctor.languages.join(", ")}</p> */}
+            {filteredDoctors.length === 0 ? (
+                <div className="col-span-full text-center text-lg text-gray-600">No doctors found based on your filters.</div>
+              ) : (
+                filteredDoctors.map((doctor, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-6 bg-white rounded-lg shadow-md cursor-pointer"
+                    onClick={() => setSelectedDoctor(doctor)}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-16 rounded-full bg-gray-300 flex-shrink-0">
+                        <img
+                          src={doctor.profile ? doctor.profile : "./images/doctor_img.png"}
+                          alt="Doctor Profile"
+                          className="w-full h-full object-cover rounded-full"
+                        />
+                      </div>
+                      <div>
+                        <h3 className="text-lg text-blue-800 font-bold">{doctor.name}</h3>
+                        <p className="text-gray-500 text-sm">
+                          {doctor.specialty} | {doctor.experience} exp
+                        </p>
+                        <p className="text-gray-500 text-sm">{doctor.hospital}</p>
+                        {/* <p className="text-gray-500 text-sm">{doctor.languages.join(", ")}</p> */}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
+            
             </div>
           </>
         )}

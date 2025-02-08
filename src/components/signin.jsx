@@ -15,7 +15,7 @@ const SignIn = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate();
 
-    const [patientSignInData, setpatientSignInData] = useState();
+    const [userSignInData, setuserSignInData] = useState();
 
     const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -23,55 +23,52 @@ const SignIn = () => {
     };
 
     useEffect(() => {
-        const fetchPatientSinginData = async () => {
+        const fetchUserSinginData = async () => {
           try {
-            const response = await axios.get(`${BACKEND_URL}/api/patients/getPasswordEmail`);
-              setpatientSignInData(response.data);
+            const response = await axios.get(`${BACKEND_URL}/api/${role}s/getPasswordEmail`);
+              setuserSignInData(response.data);
               
-              response.data.forEach((patient, index) => {
-                console.log(`Patient ${index + 1}:`, patient);
+              response.data.forEach((user, index) => {
+                console.log(`User ${index + 1}:`, user);
               });
               
           } catch (error) {
-            console.error("Error fetching patient data:", error);
+            console.error("Error fetching user data:", error);
           }
         };
     
-        fetchPatientSinginData();
-      }, []);
-
-
+        fetchUserSinginData();
+      }, [role]);
 
 
     const verifySignup = (email, password) => {
-        if (!patientSignInData) {
+        if (!userSignInData) {
             console.log("No patient data available");
             return;
         }
     
-        const matchedPatient = patientSignInData.find((patient) => 
+        const matchedUser = userSignInData.find((patient) => 
             patient.email === email && patient.password === password
         );
 
-        const matchedEmail = patientSignInData.find((patient) => patient.email === email);
+        const matchedEmail = userSignInData.find((patient) => patient.email === email);
 
 
         console.log("Input email: " + email + " & password: " + password)
 
-        console.log("Matched patient: ", matchedPatient);
+        console.log("Matched user: ", matchedUser ," for role: ", role);
 
-        
-        if (matchedPatient) {
+        if (matchedUser) {
             console.log("Email found in database");
             console.log("Sign-in approved");
             setSuccessMessage(`Sign-in successful as a ${role}. Redirecting...`);
             
             setTimeout(() => {
-                const userId = matchedPatient._id;
+                const userId = matchedUser._id;
 
                 console.log(userId)
 
-                navigate(role === 'admin' ? '/admin' : `/patient/${userId}`);
+                navigate(role === 'admin' ? `/admin/${userId}` : `/patient/${userId}`);
             }, 2000);
 
         } else {

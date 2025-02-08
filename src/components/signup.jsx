@@ -21,18 +21,16 @@ const SignUp = () => {
     name: '', age: '', phone: '', email: '', password: '', gender: '', address: '', problem: '', habits: {}
     });
 
-    const handleChange = (e) => setPatientData({ ...patientData, [e.target.name]: e.target.value });
+    const [formData, setFormData] = useState({
+        name: '', email: '', password: ''
+    });
 
-    useEffect(() => {
-        console.log("Updated patientData.name: ", patientData.name);
-    }, [patientData.name]);
-
+    const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+    
     const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     };
-
-
 
     const sendSignUpEmail = (email, password, role) => {
         const extractName = (email) => {
@@ -63,77 +61,59 @@ const SignUp = () => {
             });
     };
 
-    const handleSignUp = (e) => {
+    const handleSignUp = async (e) => {
+
+        console.log("Handling Signup ...")
         e.preventDefault();
         setError('');
         setSuccessMessage('');
 
-        if (!validateEmail(patientData.email)) {
+        if (!validateEmail(formData.email)) {
             setError('Please enter a valid email address.');
             return;
         }
-        if (patientData.password.length < 6) {
+        if (formData.password.length < 6) {
             setError('Password should be at least 6 characters long.');
             return;
         }
-        if (patientData.password !== confirmPassword) {
+        if (formData.password !== confirmPassword) {
             setError('Passwords do not match.');
             return;
         }
 
-        const extractedName = patientData.email.split('@')[0];
-
+        console.log("formData: ", formData)
+      
+            try {
+                const endpoint = role === 'admin' ? '/api/admins' : '/api/patients';
+                const response = await axios.post(`${BACKEND_URL}${endpoint}`, formData, {
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                console.log(`${role} added successfully:`, response.data);
+                setSuccessMessage(`Sign-up successful as a ${role}. Redirecting...`);
+                // sendSignUpEmail(formData.email, formData.password, role);
+                
+                setTimeout(() => navigate(role === 'admin' ? `/admin/${response.data._id}` : `/patient/${response.data._id}`), 2000);
+            } catch (error) {
+                console.error(`Error adding ${role}:`, error);
+                setError('Sign-up failed. Please try again.');
+            }
         
-        const updatedPatientData = {
-            ...patientData,
-            name: patientData.email.split('@')[0]
-        };
-
-
-        console.log("extractedName: " + extractedName)
-
-        console.log("extractedName: " + updatedPatientData.name);
-        handleSubmit(updatedPatientData);
 
 
     };
 
-    const handleSubmit = async (updatedData) => {
 
-        console.log('Patient data before submitting:', updatedData);
-
-        try {
-            const patientResponse = await axios.post(`${BACKEND_URL}/api/patients`,
-                JSON.stringify(updatedData),{ headers: { 'Content-Type': 'application/json' } }
-            );
-
-            console.log('Patient added successfully:', patientResponse.data);
-            console.log('Patient _id:', patientResponse._id);
-
-            setSuccessMessage(`Sign-up successful as a ${role}. \n Redirecting to your dashboard...`);
-            sendSignUpEmail(updatedData.email, updatedData.password, role);
-    
-            setTimeout(() => {
-                if (role === 'admin') {
-                    navigate('/admin');
-                } else {
-                    navigate(`/patient/${patientResponse.data._id}`);
-                }
-            }, 2000);
-        } catch (error) {
-            console.error('Error adding patient:', error);
-        }
-    };
 
     const handleGoogleSuccess = (credentialResponse) => {
         console.log('Google Sign-Up Success:', credentialResponse);
         setSuccessMessage(`Signed up successfully with Google as a ${role}. \n Redirecting to your dashboard...`);
-        sendSignUpEmail(patientData.email, patientData.password, role);
+        sendSignUpEmail(formData.email, formData.password, role);
         setTimeout(() => {
             if (role === 'admin') {
                 navigate('/admin');
             } else {
-                navigate(`/patient/${patientData._id}`);
+                navigate(`/patient/${formData._id}`);
             }
         }, 2000);
     };
@@ -191,7 +171,7 @@ const SignUp = () => {
                             <input
                                 type="email"
                                 name='email'
-                                value={patientData.email}
+                                value={formData.email}
                                 onChange={handleChange}
                                 className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-600"
                                 placeholder="Email"
@@ -200,7 +180,7 @@ const SignUp = () => {
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     name="password"
-                                    value={patientData.password}
+                                    value={formData.password}
                                     onChange={handleChange}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-600"
                                     placeholder="Password"
