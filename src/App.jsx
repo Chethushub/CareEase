@@ -9,7 +9,7 @@ import AdminStaffList from "./components/Admin/Admin-staff-list/Admin-staff-list
 import Treatment from "./components/Admin/treatment/mainContent";
 import Beds from "./components/Admin/BedsAvaliablity/main";
 import Bills from "./components/Admin/bills/main";
-
+import AdminProfile from "./components/Admin/Admin-Profile/AdminProfile";
 import PatientDashboard from "./components/Patient/Dashboard/PtMainContent";
 import BookAppointment from "./components/Patient/appointment/mainContent";
 import PatientSchedules from "./components/Patient/PatientSchedules/mainContent";
@@ -33,7 +33,7 @@ function App() {
         <Route path='/admin-treatment' element={<Treatment />} />
         <Route path='/admin-bills' element={<Bills />} />
         <Route path='/admin-beds' element={<Beds />} />
-
+        <Route path="/admin-profile" element={<AdminProfile />} /> 
         <Route path='/patient' element={<PatientDashboard />} />
         <Route path="/patient/:userId" element={<PatientDashboard />} />
         <Route path='/patient-book-appointment/:userId' element={<BookAppointment />} />

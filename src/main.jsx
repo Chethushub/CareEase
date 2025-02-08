@@ -54,6 +54,7 @@ function MainLayout() {
     "/admin-sales": { activeItem: "Sales", title: "Sales" },
     "/admin-reports": { activeItem: "Reports", title: "Reports" },
     "/admin-support": { activeItem: "Support", title: "Customer Support" },
+    "/admin-profile" :{activeItem:"Profile",title :"Profile"},
 
     "/patient/:userId": { activeItem: "Dashboard", title: "Patient Dashboard" },
     "/patient-book-appointment/:userId": { activeItem: "Book-appointment", title: "Book Appointment" },
