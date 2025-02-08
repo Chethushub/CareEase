@@ -21,7 +21,7 @@ import AdminProfile from "./components/Admin/Admin-Profile/AdminProfile";
 
 import PatientDashboard from "./components/Patient/Dashboard/PtMainContent";
 import BookAppointment from "./components/Patient/appointment/mainContent";
-import PatientSchedules from "./components/Patient/PatientSchedules/mainContent";
+import PatientSchedules from "./components/Patient/PatientSchedules/MainContent";
 import PatientProfile from "./components/Patient/PatientProfile/mainContent";
 import "./App.css";
 import { Route, Routes } from 'react-router-dom';
@@ -34,9 +34,9 @@ function App() {
         <Route path='/' element={<Landing />} />
         <Route path='/signin' element={<SignIn />} />
         <Route path='/signup' element={<SignUp />} />
-        <Route path="/admin-profile" element={<AdminProfile />} />
 
         <Route path='/admin' element={<Dashboard />} />
+        <Route path='/admin/:userId' element={<Dashboard />} />
         <Route path='/admin-dashboard'  element={<Dashboard />} />
         <Route path='/admin-reservations' element={<Reservation />} />
         <Route path='/admin-staff' element={<AdminStaffList />} />
@@ -44,6 +44,7 @@ function App() {
         <Route path='/admin-bills' element={<Bills />} />
         <Route path='/admin-beds' element={<Beds />} />
         <Route path="/admin-profile" element={<AdminProfile />} /> 
+
         <Route path='/patient' element={<PatientDashboard />} />
         <Route path="/patient/:userId" element={<PatientDashboard />} />
         <Route path='/patient-book-appointment/:userId' element={<BookAppointment />} />

@@ -1,12 +1,35 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { useNavigate, NavLink } from "react-router-dom";
+import axios from "axios";
 
-const Header = ({ title }) => {
-  const navigate = useNavigate(); // Hook for navigation
+const BACKEND_URL = "http://localhost:5000"
+
+const Header = ({ title, adminId }) => {
+  const navigate = useNavigate(); 
+  const [adminName, setAdminName] = useState("");
 
   const handleProfileClick = () => {
-    navigate("/admin-profile"); // Navigate to the admin profile page
+    navigate("/admin-profile"); 
   };
+  
+  console.log(adminId)
+
+    useEffect(() => {
+      if (adminId) {
+        const fetchAdminData = async () => {
+          try {
+            const response = await axios.get(`${BACKEND_URL}/api/admins/${adminId}`);
+              setAdminName(response.data.name);
+              console.log(response.data.name)
+              console.log(response.data)
+          } catch (error) {
+            console.error("Error fetching patient data:", error);
+          }
+        };
+    
+        fetchAdminData();
+      }
+    }, [adminId]);
 
   return (
     <div className="flex justify-between items-center p-2 bg-white shadow-md border-b border-gray-200">
@@ -61,7 +84,7 @@ const Header = ({ title }) => {
               />
               <div className="text-left">
                 <span className="block font-medium text-sm lg:text-base text-gray-900">
-                  User Name
+                  {adminName}
                 </span>
                 <span className="block text-xs text-gray-500">Admin</span>
               </div>

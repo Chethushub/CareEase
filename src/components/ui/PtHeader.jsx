@@ -1,9 +1,27 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, {useState, useEffect} from "react";
+import { useNavigate, NavLink } from "react-router-dom";
+import axios from "axios";
 
+const BACKEND_URL = "http://localhost:5000"
 
-const Header = ({ title, patientName, patientId }) => {
-  console.log("patientName " + patientName)
+const Header = ({ title, patientId }) => {
+  const [patientName, setPatientName] = useState("");
+
+  useEffect(() => {
+    if (patientId) {
+      const fetchPatientData = async () => {
+        try {
+          const response = await axios.get(`${BACKEND_URL}/api/patients/${patientId}`);
+            setPatientName(response.data.name);
+        } catch (error) {
+          console.error("Error fetching patient data:", error);
+        }
+      };
+  
+      fetchPatientData();
+    }
+  }, [patientId]);
+
   return (
     <div className="flex justify-between items-center p-2 bg-white shadow-md border-b border-gray-200">
 

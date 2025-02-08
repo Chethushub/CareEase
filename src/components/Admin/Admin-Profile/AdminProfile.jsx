@@ -23,7 +23,7 @@ const AdminProfile = () => {
     const fetchAdminInfo = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:5000/api/admin/admin-profile/");
+        const response = await fetch("http://localhost:5000/api/admins/admin-profile/");
         if (!response.ok) throw new Error("Server not responding");
         const data = await response.json();
         setAdminInfo(data);
@@ -41,7 +41,7 @@ const AdminProfile = () => {
 
   const handleSaveChanges = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/admin/admin-profile/", {
+      const response = await fetch("http://localhost:5000/api/admins/admin-profile/", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
