@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-const Header = ({ title }) => {
+const Header = ({ title, patientName }) => {
+  console.log("patientName " + patientName)
   return (
     <div className="flex justify-between items-center p-2 bg-white shadow-md border-b border-gray-200">
 
@@ -35,7 +36,7 @@ const Header = ({ title }) => {
             <div className="flex items-center gap-1 md:gap-1 lg:gap-3 pl-3 border-l border-gray-300 cursor-pointer hover:bg-gray-100 rounded-lg p-1 transition duration-200">
               <img src="./icons/Profile_icon.svg" alt="Profile" className="w-8 h-8 rounded-full" />
               <div className="text-left">
-                <span className="block font-medium text-sm md:text-sm lg:text-base text-gray-900">User Name</span>
+                <span className="block font-medium text-sm md:text-sm lg:text-base text-gray-900">{patientName}</span>
                 <span className="block text-xs text-gray-500">Patient</span>
               </div>
               <img src="./icons/down_arrow.svg" alt="Down Arrow" className="w-4 h-4" />

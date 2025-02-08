@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import AppointmentsCard from './appointmentsCard';
 import BillsCard from './billsCard';
@@ -26,6 +26,7 @@ const Dashboard = () => {
     setTimeframe((prev) => ({ ...prev, [key]: value }));
   };
 
+  
   const getDate = () => {
     const date = new Date();
     const weekday = date.toLocaleString('default', { weekday: 'long' });
@@ -35,14 +36,41 @@ const Dashboard = () => {
     return `Today is ${weekday}, ${day}-${month}-${year}`;
   };
 
+  const getGreeting = (() => {
+    const today = new Date();
+    const hour = today.getHours();
+    let greeting = "Good Morning";
+
+    if (hour >= 12 && hour < 17) {
+        greeting = "Good Afternoon";
+    } else if (hour >= 17) {
+        greeting = "Good Evening";
+    }
+    return `${greeting}`
+  })
+
+  const [currentDate, setCurrentDate] = useState(getDate());
+  const [greeting, setGreeting] = useState(getGreeting());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentDate(getDate());
+      setGreeting(getGreeting());
+    }, 60000); 
+
+    return () => clearInterval(interval); 
+  }, []);
+  
+
+  
   const handleSearchChange = (e) => setSearchQuery(e.target.value);
 
   return (
     <div className="dashboard bg-gray-100 min-h-screen p-6">
       <header className="flex justify-between items-center mb-6">
         <div>
-          <h3 className="text-2xl font-bold text-gray-800">Good Morning! Ram</h3>
-          <p className="text-sm font-bold text-gray-500">{getDate()}</p>
+          <h3 className="text-2xl font-bold text-gray-800">{`${greeting}, Ram`}</h3>
+          <p className="text-sm font-bold text-gray-500">{currentDate}</p>
         </div>
         <div className="relative">
           <input

@@ -195,11 +195,16 @@ const Reservation = () => {
 
   const filteredAppointments = (appointments || []).filter((appt) => {
     console.log(appt.doctor, appt.status)
-    return (
-      appt.date === date.toISOString().split('T')[0] &&
-      (!filters.doctor || appt.doctor.name === filters.doctor) &&
-      (!filters.status || appt.status === filters.status)
-    );
+    
+    // if(appt.doctor.de === false) {
+      return (
+   
+        appt.date === date.toISOString().split('T')[0] &&
+        (!filters.doctor || appt.doctor.name === filters.doctor) &&
+        (!filters.status || appt.status === filters.status)
+      );
+        
+    // }
   });
 
   const totalReservations = filteredAppointments.length;
