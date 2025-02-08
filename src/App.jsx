@@ -10,10 +10,8 @@ import AdminStaffList from "./components/Admin/Admin-staff-list/Admin-staff-list
 
 import Treatment from "./components/Admin/treatment/mainContent";
 
+// import Treatment from "./components/Admin/treatment1/mainContent";
 // import Treatment from "./components/Admin/treatment2/mainContent";
-
-
-
 
 
 import Beds from "./components/Admin/BedsAvaliablity/main";
