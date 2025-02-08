@@ -64,12 +64,12 @@ const Main = () => {
       <div className={`relative p-5 h-screen w-full ${active !== 0 ? "blur-sm pointer-events-none" : ""}`}>
         <div className="flex items-center mb-6">
           <div className="flex items-center mr-4">
-            <img className="w-10 h-10" src="./icons/revenue.svg" alt="Revenue" />
+            <img className="w-10 h-10" src="/icons/revenue.svg" alt="Revenue" />
           </div>
           <div>
             <p className="text-gray-500 text-sm">Revenue This Month</p>
             <p className="flex items-center text-xl font-bold">
-              <img className="w-4 h-4 mr-1" src="./icons/rupee.svg" alt="Rupee" />
+              <img className="w-4 h-4 mr-1" src="/icons/rupee.svg" alt="Rupee" />
               <span>123456</span>
             </p>
           </div>
@@ -88,7 +88,7 @@ const Main = () => {
           />
           <div className="flex space-x-4">
             <button className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-md">
-              <img className="w-4 h-4 mr-2" src="./icons/export.svg" alt="Export" />
+              <img className="w-4 h-4 mr-2" src="/icons/export.svg" alt="Export" />
               Export
             </button>
             <button
@@ -118,7 +118,7 @@ const Main = () => {
               <p>{row.numberOfBills}</p>
               <p>{row.reservationDate}</p>
               <p className="flex items-center">
-                <img className="w-4 h-4 mr-1" src="./icons/rupee.svg" alt="Rupee" />
+                <img className="w-4 h-4 mr-1" src="/icons/rupee.svg" alt="Rupee" />
                 {row.totalAmount}
               </p>
               <div className="flex items-center space-x-2">
@@ -131,10 +131,10 @@ const Main = () => {
                 </button>
               </div>
               <button>
-                <img className="w-4 h-4" src="./icons/more.svg" alt="More" />
+                <img className="w-4 h-4" src="/icons/more.svg" alt="More" />
               </button>
               <button>
-                <img className="w-4 h-4" src="./icons/down_arrow.svg" alt="Expand" />
+                <img className="w-4 h-4" src="/icons/down_arrow.svg" alt="Expand" />
               </button>
             </div>
           ))}

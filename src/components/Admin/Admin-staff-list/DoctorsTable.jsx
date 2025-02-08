@@ -27,7 +27,7 @@ const DoctorsTable = ({ doctorsData, onDeleteDoctor }) => {
             <tr key={index} className="border-b border-gray-700">
               <td className="px-4 py-2">
                 <span className="flex">
-                  <img src={doctor.profile || "./icons/Profile_icon.svg"} alt="Profile" className="w-8 h-8 rounded-full mr-2" />
+                  <img src={doctor.profile || "/icons/Profile_icon.svg"} alt="Profile" className="w-8 h-8 rounded-full mr-2" />
                   <span>
                     {doctor.name}<br />
                     <span className="text-gray-500">{doctor.role}</span>

@@ -33,7 +33,7 @@ const Header = ({ date, onPreviousDate, onNextDate, totalReservations, onFilterC
     </div>
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2">
-        <img src="./icons/reservation.svg" alt="Reservations" />
+        <img src="/icons/reservation.svg" alt="Reservations" />
         <span className="text-lg font-bold text-gray-700"> {totalReservations} </span>
         <p className="text-lg font-medium text-gray-400">total appointments</p>
       </div>

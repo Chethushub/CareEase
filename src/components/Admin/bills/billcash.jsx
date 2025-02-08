@@ -7,7 +7,7 @@ const Cash = ({ goToPayment }) => (
       <button>
         <img
           className="w-4 h-4"
-          src="./icons/right-arrow-circle-icon.svg"
+          src="/icons/right-arrow-circle-icon.svg"
           alt="right arrow"
         />
       </button>
@@ -17,7 +17,7 @@ const Cash = ({ goToPayment }) => (
       <div className="flex justify-between items-center mb-4">
         <h5 className="text-sm font-medium">Total Payment</h5>
         <h5 className="flex items-center text-sm font-semibold">
-          <img className="w-3 h-3 mr-1" src="./icons/rupee.svg" alt="rupee" />
+          <img className="w-3 h-3 mr-1" src="/icons/rupee.svg" alt="rupee" />
           <p>435.00</p>
         </h5>
       </div>
@@ -38,19 +38,19 @@ const Cash = ({ goToPayment }) => (
 
         <div className="flex justify-between">
           <button className="flex items-center bg-gray-100 border border-gray-300 rounded-md px-2 py-1 text-sm">
-            <img className="w-3 h-3 mr-1" src="./icons/rupee.svg" alt="rupee" />
+            <img className="w-3 h-3 mr-1" src="/icons/rupee.svg" alt="rupee" />
             30.00
           </button>
           <button className="flex items-center bg-gray-100 border border-gray-300 rounded-md px-2 py-1 text-sm">
-            <img className="w-3 h-3 mr-1" src="./icons/rupee.svg" alt="rupee" />
+            <img className="w-3 h-3 mr-1" src="/icons/rupee.svg" alt="rupee" />
             50.00
           </button>
           <button className="flex items-center bg-gray-100 border border-gray-300 rounded-md px-2 py-1 text-sm">
-            <img className="w-3 h-3 mr-1" src="./icons/rupee.svg" alt="rupee" />
+            <img className="w-3 h-3 mr-1" src="/icons/rupee.svg" alt="rupee" />
             20.00
           </button>
           <button className="flex items-center bg-gray-100 border border-gray-300 rounded-md px-2 py-1 text-sm">
-            <img className="w-3 h-3 mr-1" src="./icons/rupee.svg" alt="rupee" />
+            <img className="w-3 h-3 mr-1" src="/icons/rupee.svg" alt="rupee" />
             100.00
           </button>
         </div>
