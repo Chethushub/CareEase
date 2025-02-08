@@ -28,6 +28,7 @@ const Dashboard = () => {
 
     fetchPatientData();
   }, [userId]);
+
   const getDate = () => {
     const date = new Date();
     const weekday = date.toLocaleString('default', { weekday: 'long' });
@@ -57,8 +58,13 @@ const Dashboard = () => {
   }, []);
 
   if (!patientData) {
-    return <div>Loading patient data...</div>;  
+    return (
+      <div className="col-span-full my-4 text-center text-lg text-gray-600">
+        We couldn't find your information. Please try again later or contact support if the issue persists.
+      </div>
+    );
   }
+  
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
