@@ -2,6 +2,7 @@ import React from "react";
 import Landing from "./components/Landing";
 import SignIn from "./components/signin";
 import SignUp from "./components/signup";
+import AdminProfile from "./components/ui/AdminProfile";
 
 import Dashboard from "./components/Admin/dashboard/MainContent";
 import Reservation from "./components/Admin/reservations/MainContent";
@@ -25,12 +26,13 @@ function App() {
         <Route path='/' element={<Landing />} />
         <Route path='/signin' element={<SignIn />} />
         <Route path='/signup' element={<SignUp />} />
+        <Route path="/admin-profile" element={<AdminProfile />} />
 
         <Route path='/admin' element={<Dashboard />} />
         <Route path='/admin-dashboard'  element={<Dashboard />} />
         <Route path='/admin-reservations' element={<Reservation />} />
         <Route path='/admin-staff' element={<AdminStaffList />} />
-        <Route path='/admin-treatment' element={<Treatment />} />
+        <Route path="/admin-treatment" element={<Treatment />} />
         <Route path='/admin-bills' element={<Bills />} />
         <Route path='/admin-beds' element={<Beds />} />
 

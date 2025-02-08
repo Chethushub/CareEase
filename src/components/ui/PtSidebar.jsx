@@ -3,8 +3,7 @@ import { NavLink } from 'react-router-dom';
 import './Sidebar.css';
 
 const PtSidebar = ({ activeItem }) => {
-  // const [activeItem, setActiveItem] = useState('Dashboard');
-
+  
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleSidebar = () => {
@@ -47,7 +46,7 @@ const PtSidebar = ({ activeItem }) => {
             to="/patient-book-appointment"
             className={`text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2 
               ${activeItem === 'Book-appointment' ? 'bg-white font-bold' : 'hover:bg-gray-200'}`}
-          // onClick={() => setActiveItem('Book-appointment')}
+          
           >
             <img src="./icons/reservation.svg" alt="Book Appointment" className="mr-2" />
             {!isCollapsed && 'Book Appointment'}
@@ -57,7 +56,7 @@ const PtSidebar = ({ activeItem }) => {
             to="/patient-schedules"
             className={`text-gray-800 font-semibold  flex items-center  cursor-pointer  hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2 
               ${activeItem === 'Schedules' ? 'bg-white font-bold' : 'hover:bg-gray-200'}`}
-          // onClick={() => setActiveItem('Schedules')}
+          
           >
             <img src="./icons/Schedules.svg" alt="Schedules" className="mr-2" />
             {!isCollapsed && 'Schedules'}
