@@ -3,12 +3,17 @@ import './Admin-staff.css';
 import DoctorsTable from './DoctorsTable';
 import AddDoctor from './AddDoctor';
 
+import { useParams } from 'react-router-dom';
+
 import axios from 'axios'
 
 const BACKEND_URL = "http://localhost:5000"
 
 export default function AdminStaffList() {
   const [doctors, setDoctors] = useState(null);  
+
+  const { userId } = useParams();
+
 
     useEffect(() => {
       const fetchDoctors = async () => {
@@ -83,7 +88,7 @@ export default function AdminStaffList() {
     <div className="admin-staff-list">
       <div className="flex justify-between items-center p-4">
         <div className="flex items-center">
-          <img src="./icons/treatment.svg" alt="Treatment" className="mr-2" />
+          <img src="/icons/treatment.svg" alt="Treatment" className="mr-2" />
           <h1 className="text-lg text-gray-400 font-bold">Doctors Available: {filteredDoctors.length}</h1>
         </div>
 

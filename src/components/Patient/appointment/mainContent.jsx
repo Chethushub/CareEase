@@ -32,7 +32,7 @@ const PatientAppointmentPage = () => {
   console.log(userId + " userid")
 
   if (!userId) {
-    console.log("hi, enterd")
+    console.log("hi, entered")
     return (
       <div className="col-span-full my-4 text-center text-lg text-gray-600">
         We couldn't find your information. Please try again later or contact support if the issue persists.

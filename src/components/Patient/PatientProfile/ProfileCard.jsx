@@ -1,20 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 
-const ProfileCard = ({ isEditing, patientInfo }) => {
-  const [editableInfo, setEditableInfo] = useState(patientInfo);
-
-  const handleChange = (field, value) => {
-    setEditableInfo((prev) => ({ ...prev, [field]: value }));
+const ProfileCard = ({ isEditing, patientInfo, onEditChange }) => {
+  const handleInputChange = (field, event) => {
+    onEditChange(field, event.target.value);
   };
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <h3 className="text-lg font-bold text-gray-800 mb-4">General Information</h3>
-      
-      {/* Profile Picture and Name */}
       <div className="flex items-center gap-4 mb-6">
         <img
-          src={editableInfo.profilePic}
+          src={patientInfo.profilePic ? patientInfo.profilePic : "/icons/Profile_icon.svg"}
           alt="Profile"
           className="w-24 h-24 rounded-full object-cover"
         />
@@ -22,75 +18,48 @@ const ProfileCard = ({ isEditing, patientInfo }) => {
           {isEditing ? (
             <input
               type="text"
-              value={editableInfo.name}
-              onChange={(e) => handleChange("name", e.target.value)}
-              className="block w-full font-bold text-lg text-gray-800 focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md shadow-sm"
+              value={patientInfo.name}
+              onChange={(e) => handleInputChange("name", e)}
+              className="text-xl font-bold text-gray-800 mb-2 border-b border-gray-300"
             />
           ) : (
-            <p className="text-xl font-bold text-gray-800">{editableInfo.name}</p>
+            <p className="text-xl font-bold text-gray-800">{patientInfo.name}</p>
           )}
           <p className="text-sm text-gray-500">Patient</p>
         </div>
       </div>
-
-      {/* Credit and Balance */}
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        <div className="bg-gray-100 p-3 rounded-md">
-          <p className="text-sm text-gray-600">Credit</p>
-          <p className="text-lg font-bold text-gray-800">{editableInfo.credit}</p>
-        </div>
-        <div className="bg-gray-100 p-3 rounded-md">
-          <p className="text-sm text-gray-600">Balance</p>
-          <p className="text-lg font-bold text-gray-800">{editableInfo.balance}</p>
-        </div>
-      </div>
-
-      {/* Other Details */}
-      <div className="space-y-4">
-        {/* Email */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Email</label>
-          {isEditing ? (
+      <div>
+        {isEditing ? (
+          <>
+            <label className="block mb-2">Email</label>
             <input
               type="email"
-              value={editableInfo.email}
-              onChange={(e) => handleChange("email", e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              value={patientInfo.email}
+              onChange={(e) => handleInputChange("email", e)}
+              className="w-full mb-2 p-2 border-b border-gray-300"
             />
-          ) : (
-            <p className="text-gray-800">{editableInfo.email}</p>
-          )}
-        </div>
-
-        {/* Phone */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Phone</label>
-          {isEditing ? (
+            <label className="block mb-2">Phone</label>
             <input
               type="text"
-              value={editableInfo.phone}
-              onChange={(e) => handleChange("phone", e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              value={patientInfo.phone}
+              onChange={(e) => handleInputChange("phone", e)}
+              className="w-full mb-2 p-2 border-b border-gray-300"
             />
-          ) : (
-            <p className="text-gray-800">{editableInfo.phone}</p>
-          )}
-        </div>
-
-        {/* Address */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Address</label>
-          {isEditing ? (
+            <label className="block mb-2">Address</label>
             <input
               type="text"
-              value={editableInfo.address}
-              onChange={(e) => handleChange("address", e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              value={patientInfo.address}
+              onChange={(e) => handleInputChange("address", e)}
+              className="w-full mb-2 p-2 border-b border-gray-300"
             />
-          ) : (
-            <p className="text-gray-800">{editableInfo.address}</p>
-          )}
-        </div>
+          </>
+        ) : (
+          <>
+            <p>Email: {patientInfo.email}</p>
+            <p>Phone: {patientInfo.phone}</p>
+            <p>Address: {patientInfo.address}</p>
+          </>
+        )}
       </div>
     </div>
   );

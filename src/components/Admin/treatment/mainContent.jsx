@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './mainContent.css';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const Treatment = () => {
+  const { userId } = useParams();
+
   const [activeTab, setActiveTab] = useState('active');
   const [showModal, setShowModal] = useState(false);
   const [activeTreatments, setActiveTreatments] = useState([]);

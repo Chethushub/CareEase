@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const BACKEND_URL = "http://localhost:5000"
 
 const BedsAvailability = () => {
+    const { userId } = useParams();
+
+
   const [bedData, setBedData] = useState([
     { bedid: "B001", department: "Cardiology", status: "Not Available", patient: { name: "John Doe", problem: "Heart Condition", age: 45 }, condition: "Stable", lastUpdated: "2023-10-01" },
     { bedid: "B002", department: "Neurology", status: "Not Available", patient: { name: "Jane Smith", problem: "Stroke", age: 60 }, condition: "Critical", lastUpdated: "2023-10-02" },

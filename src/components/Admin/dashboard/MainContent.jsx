@@ -8,11 +8,17 @@ import NewPatientsCard from './newPatientsCard';
 import BedOccupancyCard from './bedOccupancyCard';
 import initialData from './data';
 
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+
+
 import {
   Chart as ChartJS, Tooltip, Legend, ArcElement, CategoryScale, LinearScale, PointElement, LineElement, BarElement
 } from 'chart.js';
 
 ChartJS.register(Tooltip, Legend, ArcElement, CategoryScale, LinearScale, PointElement, LineElement, BarElement);
+
+const BACKEND_URL = "http://localhost:5000"
 
 const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,7 +32,22 @@ const Dashboard = () => {
     setTimeframe((prev) => ({ ...prev, [key]: value }));
   };
 
-  
+    const { userId } = useParams();  
+    const [adminData, setAdminData] = useState(" ");
+    
+    useEffect(() => {
+      const fetchPatientData = async () => {
+        try {
+          const response = await axios.get(`${BACKEND_URL}/api/admins/${userId}`);
+          setAdminData(response.data);
+          console.log("Admin: ", response.data);
+        } catch (error) {
+          console.error("Error fetching patient data:", error);
+        }
+      };
+      fetchPatientData();
+    }, [userId]);
+    
   const getDate = () => {
     const date = new Date();
     const weekday = date.toLocaleString('default', { weekday: 'long' });
@@ -50,7 +71,7 @@ const Dashboard = () => {
   })
 
   const [currentDate, setCurrentDate] = useState(getDate());
-  const [greeting, setGreeting] = useState(getGreeting());
+  const [greeting, setGreeting] = useState(() => getGreeting());
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -69,7 +90,9 @@ const Dashboard = () => {
     <div className="dashboard bg-gray-100 min-h-screen p-6">
       <header className="flex justify-between items-center mb-6">
         <div>
-          <h3 className="text-2xl font-bold text-gray-800">{`${greeting}, Ram`}</h3>
+        <h3 className="text-2xl font-bold text-gray-800">
+          {`${greeting}, ${adminData?.name || ''}`}
+        </h3>
           <p className="text-sm font-bold text-gray-500">{currentDate}</p>
         </div>
         <div className="relative">

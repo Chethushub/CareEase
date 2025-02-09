@@ -1,27 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 const InsuranceBenefits = () => {
   const [benefits, setBenefits] = useState([]);
-  const [hasBenefits, setHasBenefits] = useState(false);
 
   useEffect(() => {
     const fetchBenefits = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/insurance');
+        const response = await fetch("http://localhost:5000/api/insurance");
         const data = await response.json();
         setBenefits(data);
-        setHasBenefits(data.length > 0);
       } catch (error) {
-        console.error('Error fetching insurance benefits:', error);
-        
-        // Dummy data in case of error
-        const dummyData = [
-          { name: 'Health Insurance', payout: '$2000', date: '2024-05-10', status: 'Active' },
-          { name: 'Life Insurance', payout: '$10000', date: '2023-11-15', status: 'Active' },
-          { name: 'Dental Insurance', payout: '$500', date: '2024-01-22', status: 'Pending' },
-        ];
-        setBenefits(dummyData);
-        setHasBenefits(dummyData.length > 0);
+        console.error("Error fetching insurance benefits:", error);
+        setBenefits([
+          { name: "Health Insurance", payout: "$2000", status: "Active" },
+          { name: "Life Insurance", payout: "$10000", status: "Active" },
+        ]);
       }
     };
 
@@ -31,36 +24,11 @@ const InsuranceBenefits = () => {
   return (
     <div className="bg-white shadow rounded-lg p-6">
       <h2 className="text-xl font-bold mb-4">Insurance Benefits</h2>
-      <table className="w-full text-left border-collapse">
-        <thead>
-          <tr>
-            <th className="border-b p-2">Insurance Benefit</th>
-            <th className="border-b p-2">Payout</th>
-            <th className="border-b p-2">Date/Time</th>
-            <th className="border-b p-2">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {hasBenefits ? (
-            benefits.map((benefit, index) => (
-              <tr key={index} className="hover:bg-gray-100">
-                <td className="p-2 border-b">{benefit.name}</td>
-                <td className="p-2 border-b">{benefit.payout}</td>
-                <td className="p-2 border-b">
-                  {new Date(benefit.date).toLocaleDateString()}
-                </td>
-                <td className="p-2 border-b">{benefit.status}</td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td className="p-2 border-b" colSpan="4" align="center">
-                No insurance benefits available
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      {benefits.map((benefit, index) => (
+        <div key={index} className="p-2 border-b">
+          {benefit.name} - {benefit.payout} - {benefit.status}
+        </div>
+      ))}
     </div>
   );
 };

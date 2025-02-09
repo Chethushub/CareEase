@@ -13,7 +13,7 @@ const AdminProfileCard = ({ isEditing, adminInfo }) => {
       
       <div className="flex items-center gap-4 mb-6">
         <img
-          src={editableInfo.profilePic}
+          src={editableInfo.profilePic || '/icons/Profile_icon.svg'}
           alt="Admin Profile"
           className="w-24 h-24 rounded-full object-cover"
         />

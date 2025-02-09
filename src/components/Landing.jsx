@@ -3,6 +3,9 @@ import { NavLink } from 'react-router-dom';
 import { FaHeartbeat, FaBed, FaCalendarAlt } from 'react-icons/fa';
 
 const Landing = () => {
+  const defaultAdminId = "67a6e9eb594b66ddcab08dc9"
+  const defaultPatientId = "67510191bc8d53a71136999d"
+
   return (
     <div className="bg-gray-50 min-h-screen">
       <section className="bg-gradient-to-r from-blue-700 to-green-600 text-white py-20">
@@ -11,12 +14,12 @@ const Landing = () => {
           <p className="text-lg md:text-xl mb-6">Streamlining patient care and hospital management with innovative solutions.</p>
           <h2 className="text-xl md:text-2xl font-semibold mb-4">Get Started as</h2>
           <div className="flex justify-center gap-4">
-            <NavLink to="/admin">
+            <NavLink to={`/admin/${defaultAdminId}`}>
               <button className="bg-gradient-to-r from-green-600 to-green-500  hover:shadow-xl hover:scale-105 text-white font-medium py-3 px-8 rounded-md shadow-lg transition duration-300">
                 Admin
               </button>
             </NavLink>
-            <NavLink to="/patient">
+            <NavLink to={`/patient/${defaultPatientId}`}>
               <button className="bg-gradient-to-r from-green-600 to-green-500  hover:shadow-xl hover:scale-105 text-white font-medium py-3 px-8 rounded-md shadow-lg transition duration-300">
                 Patient
               </button>

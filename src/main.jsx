@@ -15,9 +15,7 @@ import { UserProvider } from './UserContext'
 import { useUser } from './UserContext';
 
 function MainLayout() {
-  const BACKEND_URL = "http://localhost:5000"
   const location = useLocation();
-  const [patientName, setPatientName] = useState("");
 
   const { userId, setUserId } = useUser();
 
@@ -26,26 +24,20 @@ function MainLayout() {
     if (userIdMatch) {
       setUserId(userIdMatch[1]);
     }
+
+    if(!userId) {
+      const userIdMatch = location.pathname.match(/\/admin\/([a-fA-F0-9]{24})/);
+      if (userIdMatch) {
+        setUserId(userIdMatch[1]);
+      }
+    }
+
   }, [location.pathname, setUserId]);
   
 
-  useEffect(() => {
-    if (userId) {
-      const fetchPatientData = async () => {
-        try {
-          const response = await axios.get(`${BACKEND_URL}/api/patients/${userId}`);
-            setPatientName(response.data.name);
-        } catch (error) {
-          console.error("Error fetching patient data:", error);
-        }
-      };
-  
-      fetchPatientData();
-    }
-  }, [userId]);
-
   const routeMap = {
     "/admin": { activeItem: "Dashboard", title: "Dashboard" },
+    "/admin/:userId": { activeItem: "Dashboard", title: "Dashboard" },
     "/admin-dashboard": { activeItem: "Dashboard", title: "Dashboard" },
     "/admin-reservations": { activeItem: "Reservations", title: "Reservations" },
     "/admin-beds": { activeItem: "Beds", title: "Beds Availability" },
@@ -81,10 +73,10 @@ function MainLayout() {
 
       {isAdminRoute && (
         <div className="dashboard-layout ">
-          <Sidebar activeItem={activeItem} />
+          <Sidebar activeItem={activeItem} adminId={userId} />
 
           <div className="main-section">
-            <Header title={title} />
+            <Header title={title} adminId={userId}/>
             <div className='overflow-y-auto '>
               <App />
             </div>
@@ -97,7 +89,7 @@ function MainLayout() {
         <div className="dashboard-layout">
           <PtSidebar activeItem={activeItem} userId={userId}/>
           <div className="main-section">
-            <PtHeader title={title} patientName={patientName} patientId={userId}/>
+            <PtHeader title={title} patientId={userId}/>
             <div className='overflow-y-auto'>
               <App />
             </div>

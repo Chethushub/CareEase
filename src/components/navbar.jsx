@@ -42,7 +42,7 @@ const Navbar = () => {
                 <div className="container mx-auto flex justify-between items-center p-2">
                     <NavLink to="/">
                         <div className=" flex items-center text-center cursor-pointer">
-                            <img className="h-14" src="./icons/logo.svg" alt="Logo" />
+                            <img className="h-14" src="/icons/logo.svg" alt="Logo" />
                             <span
                                 className="font-bold text-3xl text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-500">
                                 CareEase
