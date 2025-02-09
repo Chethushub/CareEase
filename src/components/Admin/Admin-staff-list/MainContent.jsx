@@ -1,13 +1,13 @@
 import React from 'react';
 
 const doctorsData = [
-  { profile:'/icons/Profile_icon.svg' ,name:'Mohan das',role:'Dentist', email: 'abcd@gmail.com', days: [true, true, true, true, true, true, true], assignedTreatment:"dentist",type: 'Part-Time' },
-  { profile:'/icons/Profile_icon.svg' ,name:'Mohan das',role:'Dentist', email: 'abcdefghxwyz@gmail.com', days: [true, true, true, true, true, true, true], assignedTreatment:"dentist", type: 'Full-Time' },
-  { profile:'/icons/Profile_icon.svg' ,name:'Mohan das',role:'Dentist', email: 'abcd@gmail.com', days: [true, true, true, false, false, true, true], assignedTreatment:"dentist", type: 'Part-Time' },
-  { profile:'/icons/Profile_icon.svg' ,name:'Mohan das',role:'Dentist', email: 'abcdefg@gmail.com', days: [true, false, true, true, false, true, true], assignedTreatment:"dentist", type: 'Part-Time' },
-  { profile:'/icons/Profile_icon.svg' ,name:'Mohan das',role:'Dentist', email: 'abcd@gmail.com', days: [true, true, false, true, true, true, false], assignedTreatment:"dentist", type: 'Part-Time' },
-  { profile:'/icons/Profile_icon.svg' ,name:'Mohan das',role:'Dentist', email: 'abcd@gmail.com', days: [true, true, true, true, true, false, false], assignedTreatment:"dentist", type: 'Part-Time' },
-  { profile:'/icons/Profile_icon.svg' ,name:'Mohan das',role:'Dentist', email: 'abcd@gmail.com', days: [true, true, true, true, false, false, false], assignedTreatment:"dentist", type: 'Part-Time' },
+  { profile:'./icons/Profile_icon.svg' ,name:'Mohan das',role:'Dentist', email: 'abcd@gmail.com', days: [true, true, true, true, true, true, true], assignedTreatment:"dentist",type: 'Part-Time' },
+  { profile:'./icons/Profile_icon.svg' ,name:'Mohan das',role:'Dentist', email: 'abcdefghxwyz@gmail.com', days: [true, true, true, true, true, true, true], assignedTreatment:"dentist", type: 'Full-Time' },
+  { profile:'./icons/Profile_icon.svg' ,name:'Mohan das',role:'Dentist', email: 'abcd@gmail.com', days: [true, true, true, false, false, true, true], assignedTreatment:"dentist", type: 'Part-Time' },
+  { profile:'./icons/Profile_icon.svg' ,name:'Mohan das',role:'Dentist', email: 'abcdefg@gmail.com', days: [true, false, true, true, false, true, true], assignedTreatment:"dentist", type: 'Part-Time' },
+  { profile:'./icons/Profile_icon.svg' ,name:'Mohan das',role:'Dentist', email: 'abcd@gmail.com', days: [true, true, false, true, true, true, false], assignedTreatment:"dentist", type: 'Part-Time' },
+  { profile:'./icons/Profile_icon.svg' ,name:'Mohan das',role:'Dentist', email: 'abcd@gmail.com', days: [true, true, true, true, true, false, false], assignedTreatment:"dentist", type: 'Part-Time' },
+  { profile:'./icons/Profile_icon.svg' ,name:'Mohan das',role:'Dentist', email: 'abcd@gmail.com', days: [true, true, true, true, false, false, false], assignedTreatment:"dentist", type: 'Part-Time' },
 ];
 
 const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];

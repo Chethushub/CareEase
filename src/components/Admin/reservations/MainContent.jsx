@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { FaUserMd, FaCheckCircle } from 'react-icons/fa';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const BACKEND_URL = "http://localhost:5000"
 
@@ -157,6 +158,8 @@ const AddPatientModal = ({ onClose, onSubmit }) => {
 
 // Reservation component
 const Reservation = () => {
+  const { userId } = useParams();
+
   const [date, setDate] = useState(new Date('2024-11-10'));
   const [appointments, setAppointments] = useState([]);
 
@@ -205,15 +208,17 @@ const Reservation = () => {
       );
         
     // }
-  });
+  }, []);
 
-  const totalReservations = filteredAppointments.length;
+  const totalReservations = () => filteredAppointments.length || 0;
 
   const handlePreviousDate = () => setDate(new Date(date.setDate(date.getDate() - 1)));
   const handleNextDate = () => setDate(new Date(date.setDate(date.getDate() + 1)));
 
-  const uniqueDoctors = Array.isArray(doctors) ? [...new Set(doctors.map((doct) => doct.name))] : [];
-
+  const uniqueDoctors = useMemo(() => {
+    return doctors ? [...new Set(doctors.map((doc) => doc.name))] : [];
+  }, [doctors]);
+  
   const handleAddPatient = (doctor, time) => {
     { console.log("handleAddPatient: ", doctor) }
     setSelectedSlot({ doctor, time });

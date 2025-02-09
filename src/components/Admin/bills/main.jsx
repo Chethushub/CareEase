@@ -3,8 +3,12 @@ import DetailsCard from "./billdetails";
 import CashCard from "./billcash";
 import PaymentCard from "./billpayment";
 import BillCard from "./billcard";
+import { useParams } from "react-router-dom";
 
 const Main = () => {
+  const { userId } = useParams();
+
+
   const [active, setActive] = useState(0);
   const [tableData, setTableData] = useState([
     {

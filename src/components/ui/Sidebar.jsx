@@ -28,7 +28,7 @@ const Sidebar = ({ activeItem, adminId }) => {
       </NavLink>
 
       <div className="hospital-name">
-        <NavLink to="/patient" className="flex items-center">
+        <NavLink  className="flex items-center">
           <button className="flex items-center">
             <img src="/icons/Hospital-icon.svg" alt="Hospital" className="mr-2" />
             {!isCollapsed && 'Hospital Name'}
@@ -39,7 +39,7 @@ const Sidebar = ({ activeItem, adminId }) => {
       <nav>
         <ul>
           <NavLink
-            to="/admin-dashboard"
+            to={`/admin-dashboard/${adminId}`}
             className={`${activeItem === 'Dashboard' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >
@@ -49,7 +49,7 @@ const Sidebar = ({ activeItem, adminId }) => {
           {!isCollapsed && <div className="section-header font-bold text-gray-600 my-4">Clinic</div>}
 
           <NavLink
-            to="/admin-reservations"
+            to={`/admin-reservations/${adminId}`}
             className={`${activeItem === 'Reservations' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >
@@ -57,7 +57,7 @@ const Sidebar = ({ activeItem, adminId }) => {
           </NavLink>
 
           <NavLink
-            to="/admin-beds"
+            to={`/admin-beds/${adminId}`}
             className={`${activeItem === 'Beds' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >
@@ -65,7 +65,7 @@ const Sidebar = ({ activeItem, adminId }) => {
           </NavLink>
 
           <NavLink
-            to="/admin-staff"
+            to={`/admin-staff/${adminId}`}
             className={`${activeItem === 'Staff' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >
@@ -73,7 +73,7 @@ const Sidebar = ({ activeItem, adminId }) => {
           </NavLink>
 
           <NavLink
-            to="/admin-treatment"
+            to={`/admin-treatment/${adminId}`}
             className={`${activeItem === 'Treatment' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >
@@ -83,7 +83,7 @@ const Sidebar = ({ activeItem, adminId }) => {
           {!isCollapsed && <div className="section-header font-bold text-gray-600 my-4">Finance</div>}
 
           <NavLink
-            to="/admin-bills"
+            to={`/admin-bills/${adminId}`}
             className={`${activeItem === 'Sales' ? 'bg-white font-bold' : 'hover:bg-gray-200'}
              text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >

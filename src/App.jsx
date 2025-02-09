@@ -37,13 +37,13 @@ function App() {
 
         <Route path='/admin' element={<Dashboard />} />
         <Route path='/admin/:userId' element={<Dashboard />} />
-        <Route path='/admin-dashboard'  element={<Dashboard />} />
-        <Route path='/admin-reservations' element={<Reservation />} />
-        <Route path='/admin-staff' element={<AdminStaffList />} />
-        <Route path="/admin-treatment" element={<Treatment />} />
-        <Route path='/admin-bills' element={<Bills />} />
-        <Route path='/admin-beds' element={<Beds />} />
-        <Route path="/admin-profile" element={<AdminProfile />} /> 
+        <Route path='/admin-dashboard/:userId'  element={<Dashboard />} />
+        <Route path='/admin-reservations/:userId' element={<Reservation />} />
+        <Route path='/admin-staff/:userId' element={<AdminStaffList />} />
+        <Route path="/admin-treatment/:userId" element={<Treatment />} />
+        <Route path='/admin-bills/:userId' element={<Bills />} />
+        <Route path='/admin-beds/:userId' element={<Beds />} />
+        <Route path="/admin-profile/:userId" element={<AdminProfile />} /> 
 
         <Route path='/patient' element={<PatientDashboard />} />
         <Route path="/patient/:userId" element={<PatientDashboard />} />

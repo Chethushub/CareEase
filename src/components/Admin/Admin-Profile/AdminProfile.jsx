@@ -2,8 +2,11 @@
 import React, { useState, useEffect } from "react";
 import AdminProfileCard from "./AdminProfileCard";
 import UserManagement from "./UserManagement";
+import { useParams } from "react-router-dom";
 
 const AdminProfile = () => {
+  const { userId } = useParams();
+
   const [adminInfo, setAdminInfo] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -23,14 +26,15 @@ const AdminProfile = () => {
     const fetchAdminInfo = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:5000/api/admins/admin-profile/");
-        if (!response.ok) throw new Error("Server not responding");
-        const data = await response.json();
-        setAdminInfo(data);
+        const response = await fetch(`http://localhost:5000/api/admins/${userId}`);
+          if (!response.ok) throw new Error("Server not responding");
+          const data = await response.json();
+          console.log("data: ", data)
+          setAdminInfo(data);
       } catch (error) {
         console.error("Error fetching admin profile:", error);
         setError(true);
-        setAdminInfo(dummyAdminData);
+        // setAdminInfo(dummyAdminData);
       } finally {
         setLoading(false);
       }
@@ -86,8 +90,8 @@ const AdminProfile = () => {
         </div>
       </div>
       <div className="grid lg:grid-cols-2 gap-6">
-        <AdminProfileCard isEditing={isEditing} adminInfo={adminInfo} setAdminInfo={setAdminInfo} />
-        <UserManagement />
+        <AdminProfileCard isEditing={isEditing} adminInfo={adminInfo} />
+        <UserManagement adminInfo={adminInfo}/>
       </div>
     </div>
   );

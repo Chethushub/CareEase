@@ -73,7 +73,7 @@ const Header = ({ title, adminId }) => {
 
           {/* Profile Section */}
           <NavLink
-            to="/admin-profile"
+            to={`/admin-profile/${adminId}`}
             className="text-gray-800 font-semibold flex items-center cursor-pointer hover:font-bold rounded-lg px-3 hover:bg-gray-200"
           >
             <div className="flex items-center gap-1 lg:gap-3 pl-3 border-l border-gray-300 cursor-pointer hover:bg-gray-100 rounded-lg p-1 transition duration-200">

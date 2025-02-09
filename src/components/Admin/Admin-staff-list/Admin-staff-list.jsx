@@ -3,12 +3,17 @@ import './Admin-staff.css';
 import DoctorsTable from './DoctorsTable';
 import AddDoctor from './AddDoctor';
 
+import { useParams } from 'react-router-dom';
+
 import axios from 'axios'
 
 const BACKEND_URL = "http://localhost:5000"
 
 export default function AdminStaffList() {
   const [doctors, setDoctors] = useState(null);  
+
+  const { userId } = useParams();
+
 
     useEffect(() => {
       const fetchDoctors = async () => {
