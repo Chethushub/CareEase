@@ -26,17 +26,14 @@ const BedOccupancyCard = ({ adminId }) => {
   // Calculate the number of beds in each status
   const occupiedBeds = bedData.filter(item => item.status.toLowerCase() === 'occupied').length;
   const availableBeds = bedData.filter(item => item.status.toLowerCase() === 'available').length;
-  const outOfServiceBeds = bedData.filter(item => item.status.toLowerCase() === 'out of service').length;
-  const quarantinedBeds = bedData.filter(item => item.status.toLowerCase() === 'quarantined').length;
   const reservedBeds = bedData.filter(item => item.status.toLowerCase() === 'reserved').length;
-  const underObservationBeds = bedData.filter(item => item.status.toLowerCase() === 'under observation').length;
-  const cleaningBeds = bedData.filter(item => item.status.toLowerCase() === 'cleaning').length;
+  const undermaintenance = bedData.filter(item => item.status.toLowerCase() === 'under observation').length;
 
   const bedOccupancyData = {
-    labels: ['Occupied', 'Available', 'Out of Service', 'Quarantined', 'Reserved', 'Under Observation', 'Cleaning'],
+    labels: ['Occupied', 'Available', 'Reserved', 'Under Maintenance'],
     datasets: [{
-      data: [occupiedBeds, availableBeds, outOfServiceBeds, quarantinedBeds, reservedBeds, underObservationBeds, cleaningBeds],
-      backgroundColor: ['#F44336', '#4CAF50', '#9E9E9E', '#FFEB3B', '#FFC107', '#3F51B5', '#00BCD4'],
+      data: [occupiedBeds, availableBeds, reservedBeds, undermaintenance],
+      backgroundColor: ['#F44336', '#4CAF50', '#9E9E9E', '#FFEB3B'],
     }]
   };
 

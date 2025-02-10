@@ -111,8 +111,8 @@ const BedsAvailability = () => {
                 <tr>
                   <td>${bed.bedid}</td>
                   <td>${bed.department}</td>
-                  <td>${bed.status.charAt(0).toUpperCase() + bed.status.slice(1)}</td>
-                  <td>${bed.patient.name} (Age: ${bed.patient.age}, Condition: ${bed.patient.problem})</td>
+                  <td>${bed.status.trim().toLowerCase().charAt(0).toUpperCase() + bed.status.trim().toLowerCase().slice(1)}</td>
+                  <td>${bed.patient.name || "No patient"} (Age: ${bed.patient.age}, Condition: ${bed.patient.problem})</td>
                   <td>${bed.lastUpdated}</td>
                 </tr>
               `
@@ -137,7 +137,7 @@ const BedsAvailability = () => {
     return (
       bed.bedid.toLowerCase().includes(searchQuery.toLowerCase()) ||
       bed.department.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      bed.patient.name.toLowerCase().includes(searchQuery.toLowerCase())
+      (bed.patient && bed.patient.name && bed.patient.name.toLowerCase().includes(searchQuery.toLowerCase())) // Safe check
     );
   });
   
@@ -163,18 +163,30 @@ const BedsAvailability = () => {
 
 
       {/* Summary Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-5 gap-4 mb-6">
         <div className="bg-white p-4 shadow rounded flex flex-col items-center">
-        <p className="text-xl font-bold text-red-500">
-            {bedData.filter((bed) => bed.status !== "Available").length}
-        </p>          
-        <p className="text-gray-500">Occupied Beds</p>
+          <p className="text-xl font-bold text-red-500">
+            {bedData.filter((bed) => bed.status.trim().toLowerCase() === "occupied").length}
+          </p>          
+          <p className="text-gray-500">Occupied Beds</p>
         </div>
         <div className="bg-white p-4 shadow rounded flex flex-col items-center">
           <p className="text-xl font-bold text-green-500">
-            {bedData.filter((bed) => bed.status === "Available").length}
+            {bedData.filter((bed) => bed.status.trim().toLowerCase() === "available").length}
           </p>
           <p className="text-gray-500">Available Beds</p>
+        </div>
+        <div className="bg-white p-4 shadow rounded flex flex-col items-center">
+          <p className="text-xl font-bold text-yellow-500">
+            {bedData.filter((bed) => bed.status.trim().toLowerCase() === "under maintenance").length}
+          </p>
+          <p className="text-gray-500">Under Maintenance Beds</p>
+        </div>
+        <div className="bg-white p-4 shadow rounded flex flex-col items-center">
+          <p className="text-xl font-bold text-blue-500">
+            {bedData.filter((bed) => bed.status.trim().toLowerCase() === "reserved").length}
+          </p>
+          <p className="text-gray-500">Reserved Beds</p>
         </div>
         <div className="bg-white p-4 shadow rounded flex flex-col items-center">
           <p className="text-xl font-bold">
@@ -205,15 +217,25 @@ const BedsAvailability = () => {
                 <td className="px-4 py-2">
                   <span
                     className={`inline-block w-3 h-3 rounded-full ${
-                      bed.status === "Available" ? "bg-green-500" : "bg-red-500"
+                      bed.status.trim().toLowerCase() === "available" ? "bg-green-500" :
+                      bed.status.trim().toLowerCase() === "occupied" ? "bg-red-500" :
+                      bed.status.trim().toLowerCase() === "under maintenance" ? "bg-yellow-500" :
+                      bed.status.trim().toLowerCase() === "reserved" ? "bg-blue-500" :
+                      "bg-gray-500"  
                     }`}
                   ></span>
                 </td>
                 <td className="px-4 py-2">
-                  <div>{bed.patient.name}</div>
-                  <div className="text-sm text-gray-500">
-                    Age: {bed.patient.age}, Condition: {bed.patient.problem}
-                  </div>
+                  {bed.patient ? (
+                    <>
+                      <div>{bed.patient?.name || "No patient"}</div>
+                      <div className="text-sm text-gray-500">
+                        Age: {bed.patient?.age || "N/A"}, Condition: {bed.patient?.problem || "N/A"}
+                      </div>
+                    </>
+                  ) : (
+                    <div>No patient assigned</div> 
+                  )}
                 </td>
                 <td className="px-4 py-2">{bed.lastUpdated}</td>
                 <td className="px-4 py-2">
