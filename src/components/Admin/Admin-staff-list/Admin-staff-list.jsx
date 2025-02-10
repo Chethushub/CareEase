@@ -21,6 +21,8 @@ export default function AdminStaffList() {
           const response = await axios.get(`${BACKEND_URL}/api/doctors`);
           setDoctors(response.data);
           console.log('Doctor details fetched successfully:', response.data);
+          console.log('Doctor hospital details: ', response.data.hospital);
+          console.log('Doctor hospital', response.data.hospital);
         } catch (error) {
           console.error(error);
         }
@@ -74,6 +76,12 @@ export default function AdminStaffList() {
   });
 
   console.log("filteredDoctors: ", filteredDoctors);
+
+  filteredDoctors.forEach((doctor) => {
+    console.log('Hospital details for', doctor.name, ':', doctor.hospital);
+    console.log('Hospital name for', doctor.name, ':', doctor.hospital.name);
+  });
+
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;

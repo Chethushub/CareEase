@@ -1,15 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { FaBed } from 'react-icons/fa';
-import { motion } from "framer-motion"
-import initialData from './data';
+import { motion } from "framer-motion";
+import axios from 'axios';
 
-const BedOccupancyCard = ({adminId}) => {
+const BACKEND_URL = "http://localhost:5000";
+
+const BedOccupancyCard = ({ adminId }) => {
+  const [bedData, setBedData] = useState([]);
+
+  useEffect(() => {
+    const fetchBedData = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_URL}/api/beds`);
+        console.log("DB beds data:", response.data);
+        setBedData(response.data);
+      } catch (err) {
+        console.error("Error fetching bed data:", err);
+      }
+    };
+
+    fetchBedData();
+  }, []);
+
+  // Calculate the number of beds in each status
+  const occupiedBeds = bedData.filter(item => item.status.toLowerCase() === 'occupied').length;
+  const availableBeds = bedData.filter(item => item.status.toLowerCase() === 'available').length;
+  const outOfServiceBeds = bedData.filter(item => item.status.toLowerCase() === 'out of service').length;
+  const quarantinedBeds = bedData.filter(item => item.status.toLowerCase() === 'quarantined').length;
+  const reservedBeds = bedData.filter(item => item.status.toLowerCase() === 'reserved').length;
+  const underObservationBeds = bedData.filter(item => item.status.toLowerCase() === 'under observation').length;
+  const cleaningBeds = bedData.filter(item => item.status.toLowerCase() === 'cleaning').length;
+
   const bedOccupancyData = {
-    labels: initialData.bedOccupancy.map(item => item.name),
+    labels: ['Occupied', 'Available', 'Out of Service', 'Quarantined', 'Reserved', 'Under Observation', 'Cleaning'],
     datasets: [{
-      data: initialData.bedOccupancy.map(item => item.value),
-      backgroundColor: ['#4CAF50', '#FF9800', '#F44336']
+      data: [occupiedBeds, availableBeds, outOfServiceBeds, quarantinedBeds, reservedBeds, underObservationBeds, cleaningBeds],
+      backgroundColor: ['#F44336', '#4CAF50', '#9E9E9E', '#FFEB3B', '#FFC107', '#3F51B5', '#00BCD4'],
     }]
   };
 

@@ -13,7 +13,7 @@ const BillsCard = ({ timeframe, onTimeframeChange }) => {
     const fetchBillData = async () => {
       try {
         const response = await axios.get(`${BACKEND_URL}/api/bills`);
-        console.log("✅ Fetched bill data from DB:", response.data);
+        console.log("Fetched bill data from DB:", response.data);
         
         if (!Array.isArray(response.data)) {
           console.warn("⚠️ Unexpected response format. Expected an array, but got:", response.data);
@@ -23,18 +23,16 @@ const BillsCard = ({ timeframe, onTimeframeChange }) => {
 
         setBillData(response.data);
       } catch (err) {
-        console.error("❌ Error fetching bill data:", err);
+        console.error("Error fetching bill data:", err);
       }
     };
 
     fetchBillData();
   }, []);
 
-  const sortedBills = useMemo(() => {
-    console.log("🔄 Processing bill data for sorting...", billData);
-  
+  const sortedBills = useMemo(() => {  
     if (!billData.length) {
-      console.warn("⚠️ No bill data available!");
+      console.warn("No bill data available!");
       return [];
     }
   
@@ -43,7 +41,7 @@ const BillsCard = ({ timeframe, onTimeframeChange }) => {
   
       billData.forEach(bill => {
         if (!bill.billDate || typeof bill.amount !== 'number') {
-          console.warn("⚠️ Skipping invalid bill entry:", bill);
+          console.warn("Skipping invalid bill entry:", bill);
           return;
         }
   
@@ -51,7 +49,7 @@ const BillsCard = ({ timeframe, onTimeframeChange }) => {
         monthlyBills[month].amount += bill.amount;
       });
   
-      console.log("✅ Final Monthly Aggregation:", monthlyBills);
+      console.log("Final Monthly Aggregation:", monthlyBills);
       return monthlyBills;
     }
   
@@ -60,15 +58,15 @@ const BillsCard = ({ timeframe, onTimeframeChange }) => {
   
       billData.forEach(bill => {
         if (!bill.billDate || typeof bill.amount !== 'number') {
-          console.warn("⚠️ Skipping invalid bill entry:", bill);
+          console.warn("Skipping invalid bill entry:", bill);
           return;
         }
   
-        const dayOfWeek = new Date(bill.billDate).getDay(); // 0 (Sun) - 6 (Sat)
+        const dayOfWeek = new Date(bill.billDate).getDay(); 
         weeklyBills[dayOfWeek].amount += bill.amount;
       });
   
-      console.log("✅ Final Weekly Aggregation:", weeklyBills);
+      console.log("Final Weekly Aggregation:", weeklyBills);
       return weeklyBills;
     }
   

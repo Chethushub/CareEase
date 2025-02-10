@@ -1,21 +1,57 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import {motion} from "framer-motion";
+import { motion } from 'framer-motion';
 import { FaCalendarAlt } from 'react-icons/fa';
-import initialData from './data';
-import { div } from 'framer-motion/client';
+import axios from 'axios';
+
+const BACKEND_URL = "http://localhost:5000";
 
 const AppointmentsCard = ({ timeframe, onTimeframeChange, adminId }) => {
-  const appointmentData = useMemo(() => ({
-    labels: timeframe.appointment === 'weeks' ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    datasets: [{
-      label: timeframe.appointment === 'weeks' ? 'Weekly Appointments' : 'Monthly Appointments',
-      data: initialData.appointments[timeframe.appointment],
-      backgroundColor: 'rgba(54, 162, 235, 0.2)',
-      borderColor: 'rgba(54, 162, 235, 1)',
-      borderWidth: 1
-    }]
-  }), [timeframe.appointment]);
+  const [appointments, setAppointments] = useState([]);
+  
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_URL}/api/appointments`);
+        setAppointments(response.data);
+        console.log('Appointments details fetched successfully in AppointmentsCard:', response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchAppointments();
+  }, []);
+
+  const aggregateAppointments = (appointments, timeframe) => {
+    const counts = timeframe === 'weeks' ? Array(7).fill(0) : Array(12).fill(0);
+    
+    appointments.forEach(appointment => {
+      const date = new Date(appointment.date);
+      const index = timeframe === 'weeks' 
+        ? date.getDay() 
+        : date.getMonth();
+        
+      counts[index]++;
+    });
+    
+    return counts;
+  };
+
+  const appointmentData = useMemo(() => {
+    const data = aggregateAppointments(appointments, timeframe.appointment);
+    return {
+      labels: timeframe.appointment === 'weeks' 
+        ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      datasets: [{
+        label: timeframe.appointment === 'weeks' ? 'Weekly Appointments' : 'Monthly Appointments',
+        data: data,
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    };
+  }, [appointments, timeframe.appointment]);
 
   return (
     <div>
