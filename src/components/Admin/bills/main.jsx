@@ -15,6 +15,7 @@ const Main = () => {
 
   const [active, setActive] = useState(0);
   const [billData, setBillData] = useState([]);
+  const [revenue, setRevenue] = useState(0);
   const [tableData, setTableData] = useState([
     {
       reservationId: "#RSV001",
@@ -70,6 +71,13 @@ const Main = () => {
         const response = await axios.get(`${BACKEND_URL}/api/bills`);
         console.log("DB data:", response.data);
         setBillData(response.data);
+
+        const totalRevenue = response.data.reduce(
+          (acc, bill) => acc + parseFloat(bill.amount || 0),
+          0
+        );
+        setRevenue(totalRevenue);
+
       } catch (err) {
         console.error("Error fetching bill data:", err);
       }
@@ -104,7 +112,7 @@ const Main = () => {
             <p className="flex items-center text-xl font-bold">
 
               <img className="w-4 h-4 mr-1" src="/icons/rupee.svg" alt="Rupee" />
-              <span>123456</span>
+              <span>{revenue.toLocaleString()}</span>
             </p>
           </div>
         </div>

@@ -22,7 +22,7 @@ import AdminProfile from "./components/Admin/Admin-Profile/AdminProfile";
 import PatientDashboard from "./components/Patient/Dashboard/PtMainContent";
 import BookAppointment from "./components/Patient/appointment/mainContent";
 import PatientSchedules from "./components/Patient/PatientSchedules/MainContent";
-import PatientProfile from "./components/Patient/PatientProfile/mainContent";
+import PatientProfile from "./components/Patient/PatientProfile/MainContent";
 import "./App.css";
 import { Route, Routes } from 'react-router-dom';
 
