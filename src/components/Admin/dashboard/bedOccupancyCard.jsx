@@ -4,7 +4,7 @@ import { FaBed } from 'react-icons/fa';
 import { motion } from "framer-motion"
 import initialData from './data';
 
-const BedOccupancyCard = () => {
+const BedOccupancyCard = ({adminId}) => {
   const bedOccupancyData = {
     labels: initialData.bedOccupancy.map(item => item.name),
     datasets: [{

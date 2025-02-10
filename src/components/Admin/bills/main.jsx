@@ -162,7 +162,7 @@ const Main = () => {
               <p className="flex items-center">
                 <img
                   className="w-4 h-4 mr-1"
-                  src="./icons/rupee.svg"
+                  src="/icons/rupee.svg"
                   alt="Rupee"
                 />
                 {bill.amount}

@@ -5,7 +5,7 @@ import { FaCalendarAlt } from 'react-icons/fa';
 import initialData from './data';
 import { div } from 'framer-motion/client';
 
-const AppointmentsCard = ({ timeframe, onTimeframeChange }) => {
+const AppointmentsCard = ({ timeframe, onTimeframeChange, adminId }) => {
   const appointmentData = useMemo(() => ({
     labels: timeframe.appointment === 'weeks' ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     datasets: [{

@@ -11,7 +11,6 @@ import initialData from './data';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
-
 import {
   Chart as ChartJS, Tooltip, Legend, ArcElement, CategoryScale, LinearScale, PointElement, LineElement, BarElement
 } from 'chart.js';
@@ -107,17 +106,17 @@ const Dashboard = () => {
       </header>
 
       <motion.div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
-        <AppointmentsCard timeframe={timeframe} onTimeframeChange={handleTimeframeChange} />
-        <BillsCard timeframe={timeframe} onTimeframeChange={handleTimeframeChange} />
+        <AppointmentsCard timeframe={timeframe} onTimeframeChange={handleTimeframeChange} adminId={userId}/>
+        <BillsCard timeframe={timeframe} onTimeframeChange={handleTimeframeChange} adminId={userId}/>
       </motion.div>
 
       <motion.div  className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
-        <PatientDepartmentsCard />
+        <PatientDepartmentsCard adminId={userId}/>
         <motion.div  className="grid grid-rows-1 lg:grid-rows-2 gap-4">
-          <TreatmentRatingsCard />
-          <NewPatientsCard timeframe={timeframe} onTimeframeChange={handleTimeframeChange} />
+          <TreatmentRatingsCard adminId={userId}/>
+          <NewPatientsCard timeframe={timeframe} onTimeframeChange={handleTimeframeChange} adminId={userId}/>
         </motion.div >
-        <BedOccupancyCard />
+        <BedOccupancyCard adminId={userId}/>
       </motion.div >
     </div>
   );

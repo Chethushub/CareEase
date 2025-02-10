@@ -5,7 +5,7 @@ import initialData from './data';
 import { motion } from "framer-motion"
 
 
-const PatientDepartmentsCard = () => {
+const PatientDepartmentsCard = ({adminId}) => {
   const pieData = {
     labels: initialData.patientDepartments.map(dept => dept.name),
     datasets: [{

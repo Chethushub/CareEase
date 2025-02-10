@@ -4,7 +4,7 @@ import initialData from './data';
 import { motion } from "framer-motion"
 
 
-const NewPatientsCard = ({ timeframe, onTimeframeChange }) => {
+const NewPatientsCard = ({ timeframe, onTimeframeChange, adminId }) => {
   const newPatientCount = useMemo(
     () => initialData.newPatients.filter(patient => patient.firstVisit).length,
     []

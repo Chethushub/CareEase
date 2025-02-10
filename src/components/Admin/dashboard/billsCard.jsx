@@ -1,32 +1,101 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { FaRupeeSign } from 'react-icons/fa';
-import initialData from './data';
-import { motion } from 'framer-motion'
+import { motion } from 'framer-motion';
+import axios from 'axios';
+
+const BACKEND_URL = "http://localhost:5000";
 
 const BillsCard = ({ timeframe, onTimeframeChange }) => {
-  const sortedBills = useMemo(() => {
-    if (timeframe.bills === 'months') {
-      return Object.values(initialData.bills.months.reduce((acc, bill) => {
-        const month = new Date(bill.date).getMonth();
-        acc[month] = acc[month] || { date: bill.date, amount: 0 };
-        acc[month].amount += bill.amount;
-        return acc;
-      }, {}));
-    }
-    return initialData.bills[timeframe.bills];
-  }, [timeframe.bills]);
+  const [billData, setBillData] = useState([]);
 
-  const billData = useMemo(() => ({
-    labels: timeframe.bills === 'weeks' ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    datasets: [{
-      label: 'Bill Amounts (₹)',
-      data: sortedBills.map(bill => bill.amount),
-      backgroundColor: 'rgba(75, 192, 192, 0.2)',
-      borderColor: 'rgba(75, 192, 192, 1)',
-      borderWidth: 1
-    }]
-  }), [sortedBills, timeframe.bills]);
+  useEffect(() => {
+    const fetchBillData = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_URL}/api/bills`);
+        console.log("✅ Fetched bill data from DB:", response.data);
+        
+        if (!Array.isArray(response.data)) {
+          console.warn("⚠️ Unexpected response format. Expected an array, but got:", response.data);
+          setBillData([]);
+          return;
+        }
+
+        setBillData(response.data);
+      } catch (err) {
+        console.error("❌ Error fetching bill data:", err);
+      }
+    };
+
+    fetchBillData();
+  }, []);
+
+  const sortedBills = useMemo(() => {
+    console.log("🔄 Processing bill data for sorting...", billData);
+  
+    if (!billData.length) {
+      console.warn("⚠️ No bill data available!");
+      return [];
+    }
+  
+    if (timeframe.bills === 'months') {
+      const monthlyBills = Array(12).fill(0).map((_, month) => ({ label: month, amount: 0 }));
+  
+      billData.forEach(bill => {
+        if (!bill.billDate || typeof bill.amount !== 'number') {
+          console.warn("⚠️ Skipping invalid bill entry:", bill);
+          return;
+        }
+  
+        const month = new Date(bill.billDate).getMonth();
+        monthlyBills[month].amount += bill.amount;
+      });
+  
+      console.log("✅ Final Monthly Aggregation:", monthlyBills);
+      return monthlyBills;
+    }
+  
+    if (timeframe.bills === 'weeks') {
+      const weeklyBills = Array(7).fill(0).map((_, day) => ({ label: day, amount: 0 }));
+  
+      billData.forEach(bill => {
+        if (!bill.billDate || typeof bill.amount !== 'number') {
+          console.warn("⚠️ Skipping invalid bill entry:", bill);
+          return;
+        }
+  
+        const dayOfWeek = new Date(bill.billDate).getDay(); // 0 (Sun) - 6 (Sat)
+        weeklyBills[dayOfWeek].amount += bill.amount;
+      });
+  
+      console.log("✅ Final Weekly Aggregation:", weeklyBills);
+      return weeklyBills;
+    }
+  
+    return billData;
+  }, [billData, timeframe.bills]);
+  
+  
+
+  const DisplaybillData = useMemo(() => {
+    const chartLabels = timeframe.bills === 'weeks'
+      ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    const chartData = {
+       labels: chartLabels,
+      datasets: [{
+        label: 'Bill Amounts (₹)',
+        data: sortedBills.map(bill => bill.amount || 0),
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+      }]
+    };
+
+    console.log("📊 Final Chart Data:", chartData);
+    return chartData;
+  }, [sortedBills, timeframe.bills]);
 
   return (
     <motion.div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200" whileHover={{ scale: 1.01 }}>
@@ -47,9 +116,8 @@ const BillsCard = ({ timeframe, onTimeframeChange }) => {
           </button>
         </div>
       </div>
-      
       <Bar
-        data={billData}
+        data={DisplaybillData}
         options={{ scales: { x: { title: { display: true, text: 'Timeframe' } }, y: { title: { display: true, text: 'Amount' } } } }}
       />
     </motion.div>
