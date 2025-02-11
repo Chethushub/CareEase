@@ -71,6 +71,8 @@ function MainLayout() {
         </div>
       )}
 
+      {console.log("admin id in main: ", userId)}
+
       {isAdminRoute && (
         <div className="dashboard-layout ">
           <Sidebar activeItem={activeItem} adminId={userId} />

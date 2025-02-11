@@ -79,7 +79,7 @@ export default function AdminStaffList() {
 
   filteredDoctors.forEach((doctor) => {
     console.log('Hospital details for', doctor.name, ':', doctor.hospital);
-    console.log('Hospital name for', doctor.name, ':', doctor.hospital.name);
+    console.log('Hospital name for', doctor.name, ':', doctor?.hospital?.name);
   });
 
 

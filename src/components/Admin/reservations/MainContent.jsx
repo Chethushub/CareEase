@@ -35,7 +35,7 @@ const Header = ({ date, onPreviousDate, onNextDate, totalReservations, onFilterC
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2">
         <img src="/icons/reservation.svg" alt="Reservations" />
-        <span className="text-lg font-bold text-gray-700"> {totalReservations} </span>
+        <span className="text-lg font-bold text-gray-700"> {totalReservations() || "No reservations"} </span>
         <p className="text-lg font-medium text-gray-400">total appointments</p>
       </div>
 
@@ -203,15 +203,16 @@ const Reservation = () => {
       return (
    
         appt.date === date.toISOString().split('T')[0] &&
-        (!filters.doctor || appt.doctor.name === filters.doctor) &&
+        (!filters.doctor || appt.doctor?.name === filters.doctor) &&
         (!filters.status || appt.status === filters.status)
       );
         
     // }
   }, []);
 
-  const totalReservations = () => filteredAppointments.length || 0;
+  const totalReservations = () => filteredAppointments?.length || 0;
 
+  
   const handlePreviousDate = () => setDate(new Date(date.setDate(date.getDate() - 1)));
   const handleNextDate = () => setDate(new Date(date.setDate(date.getDate() + 1)));
 
@@ -318,7 +319,7 @@ const Reservation = () => {
 
                 {timeslots.map((time, idx) => {
                   const appointment = filteredAppointments.find(
-                    (appt) => appt.time === time && appt.doctor.name === doctor
+                    (appt) => appt.time === time && appt.doctor?.name === doctor
                   );
 
                   return appointment ? (

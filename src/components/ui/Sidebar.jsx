@@ -1,9 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Sidebar.css';
 import { NavLink } from 'react-router-dom';
 
+import axios from 'axios';
+
+const BACKEND_URL = "http://localhost:5000"
+
+
 const Sidebar = ({ activeItem, adminId }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  console.log("Admin id in sidebar: ", adminId)
+
+    const [adminInfo, setAdminInfo] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+  
+    useEffect(() => {
+      const fetchAdminInfo = async () => {
+        try {
+          setLoading(true);
+            const response = await axios.get(`${BACKEND_URL}/api/admins/${adminId}`);
+            console.log("AdminInfo data: ", response.data)
+            setAdminInfo(response.data);
+        } catch (error) {
+          console.error("Error fetching admin profile:", error);
+          setError(true);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchAdminInfo();
+    }, [adminId]);
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -31,8 +60,8 @@ const Sidebar = ({ activeItem, adminId }) => {
         <NavLink  className="flex items-center">
           <button className="flex items-center">
             <img src="/icons/Hospital-icon.svg" alt="Hospital" className="mr-2" />
-            {!isCollapsed && 'Hospital Name'}
-          </button>
+            {!isCollapsed && (adminInfo?.hospital?.name ? adminInfo.hospital.name : "Hospital name")}
+            </button>
         </NavLink>
       </div>
 

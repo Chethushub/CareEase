@@ -12,7 +12,7 @@ const Header = ({ title, adminId }) => {
     navigate("/admin-profile"); 
   };
 
-  console.log(adminId)
+  console.log("Admin id in header: ", adminId)
 
     useEffect(() => {
       if (adminId) {
