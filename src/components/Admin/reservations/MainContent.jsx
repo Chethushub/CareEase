@@ -35,7 +35,7 @@ const Header = ({ date, onPreviousDate, onNextDate, totalReservations, onFilterC
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2">
         <img src="/icons/reservation.svg" alt="Reservations" />
-        <span className="text-lg font-bold text-gray-700"> {totalReservations() || "No reservations"} </span>
+        <span className="text-lg font-bold text-gray-700"> {totalReservations()} </span>
         <p className="text-lg font-medium text-gray-400">total appointments</p>
       </div>
 
@@ -197,18 +197,16 @@ const Reservation = () => {
 
 
   const filteredAppointments = (appointments || []).filter((appt) => {
-    console.log(appt.doctor, appt.status)
-    
-    // if(appt.doctor.de === false) {
-      return (
-   
-        appt.date === date.toISOString().split('T')[0] &&
-        (!filters.doctor || appt.doctor?.name === filters.doctor) &&
-        (!filters.status || appt.status === filters.status)
-      );
-        
-    // }
-  }, []);
+    console.log(appt?.doctor?.name, appt.status);
+  
+    return (
+      appt.date === date.toISOString().split('T')[0] &&
+      appt.doctor &&
+      (!filters.doctor || appt.doctor.name === filters.doctor) &&
+      (!filters.status || appt.status === filters.status)
+    );
+  });
+  
 
   const totalReservations = () => filteredAppointments?.length || 0;
 
