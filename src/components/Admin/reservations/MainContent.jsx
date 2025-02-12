@@ -60,7 +60,6 @@ const Header = ({ date, onPreviousDate, onNextDate, totalReservations, onFilterC
                 </option>
               ))
             }
-
           </select>
         </div>
 
@@ -89,6 +88,8 @@ const AddPatientModal = ({ onClose, onSubmit }) => {
     name: '', phone: '', email: '', gender: '', address: '', problem: '', habits: {}
   });
 
+  const [fetchedPatientsData, setfetchedPatientsData] = useState([]);
+  
   const handleNext = () => setStep(2);
   const handlePrev = () => setStep(1);
   const handleChange = (e) => setPatientData({ ...patientData, [e.target.name]: e.target.value });
@@ -96,27 +97,49 @@ const AddPatientModal = ({ onClose, onSubmit }) => {
     setPatientData({ ...patientData, habits: { ...patientData.habits, [e.target.name]: e.target.checked } });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    useEffect(() => {
+      const fetchPatientInfo = async () => {
+        try {
+          const response = await axios.get(`${BACKEND_URL}/api/patients`);  
+          console.log("fetchedPatientsData: ", response.data)
+          setfetchedPatientsData(response.data);
+        } catch (error) {
+          console.error("Error fetching patient profile:", error.message);
+        } 
+      };
+  
+      fetchPatientInfo();
+    }, []);
 
-    console.log('Patient data before submitting:', patientData);
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+  
+      console.log('Patient data before submitting:', patientData);
+  
+  
+      try {
+        const existingPatient = fetchedPatientsData.find((p) => p.email === patientData.email);
+  
+        if (existingPatient) {
+          console.log('Existing patient found:', existingPatient);
+          onSubmit(existingPatient._id, patientData.problem);
+        } else {
+          console.log('Existing patient was not found');
 
-    try {
-      const patientResponse = await axios.post(
-        `${BACKEND_URL}/api/patients`,
-        JSON.stringify(patientData),
-        { headers: { 'Content-Type': 'application/json' } }
-      );
-
-      console.log('Patient added successfully:', patientResponse.data);
-      onSubmit(patientResponse.data._id, patientResponse.data.problem)
-
-    } catch (error) {
-      console.error('Error adding patient:', error);
-    }
-
-    onClose()
-  };
+          const patientResponse = await axios.post(
+            `${BACKEND_URL}/api/patients`,
+            patientData, 
+            { headers: { 'Content-Type': 'application/json' } }
+          );
+  
+          console.log('Patient added successfully:', patientResponse.data);
+          onSubmit(patientResponse.data._id, patientResponse.data.problem);
+        }
+      } catch (error) {
+        console.error('Error adding patient:', error);
+      }
+      onClose();
+    };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-end">
@@ -196,16 +219,19 @@ const Reservation = () => {
 
 
 
-  const filteredAppointments = (appointments || []).filter((appt) => {
-    console.log(appt?.doctor?.name, appt.status);
-  
-    return (
-      appt.date === date.toISOString().split('T')[0] &&
-      appt.doctor &&
-      (!filters.doctor || appt.doctor.name === filters.doctor) &&
-      (!filters.status || appt.status === filters.status)
-    );
-  });
+  const filteredAppointments = Array.isArray(appointments)
+  ? appointments.filter((appt) => {
+      console.log(appt?.doctor?.name, appt.status);
+
+      return (
+        appt.date === date.toISOString().split('T')[0] &&
+        appt.doctor &&
+        (!filters.doctor || appt.doctor.name === filters.doctor) &&
+        (!filters.status || appt.status === filters.status)
+      );
+    })
+  : [];
+
   
 
   const totalReservations = () => filteredAppointments?.length || 0;
@@ -250,7 +276,7 @@ const Reservation = () => {
       );
       setAppointments(prevAppointments => [...prevAppointments, response.data]);
 
-      const appointmentsResponse = await axios.get('BACKEND_URL/api/appointments');
+      const appointmentsResponse = await axios.get(`${BACKEND_URL}/api/appointments`);
       setAppointments(appointmentsResponse.data);
       console.log('Appointment added successfully:', response.data);
     } catch (error) {
