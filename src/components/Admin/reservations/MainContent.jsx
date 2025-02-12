@@ -222,8 +222,10 @@ const Reservation = () => {
       const fetchAppointments = async () => {
         try {
           const response = await axios.get(`${BACKEND_URL}/api/appointments`);
-          const sortAppointments = response.data.filter(appointment => appointment.hospital._id === AdminHospitalId);
-
+          const sortAppointments = response.data.filter(
+            (appt) => appt?.hospital && appt.hospital._id === AdminHospitalId
+          );
+          
           setAppointments(sortAppointments);
           console.log('Appointments details fetched successfully:', sortAppointments);
         } catch (error) {
