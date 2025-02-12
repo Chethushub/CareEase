@@ -183,7 +183,12 @@ const AddPatientModal = ({ onClose, onSubmit }) => {
 const Reservation = () => {
   const { userId } = useParams();
 
-  const [date, setDate] = useState(new Date('2024-11-10'));
+  const [date, setDate] = useState(new Date());
+
+  useEffect(() => {
+      setDate(new Date()); 
+  }, []);
+  
   const [appointments, setAppointments] = useState([]);
 
   const [doctors, setdoctors] = useState(null);
