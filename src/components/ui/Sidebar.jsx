@@ -109,7 +109,7 @@ const Sidebar = ({ activeItem, adminId }) => {
             <img src="/icons/treatment.svg" alt="Treatment" className="mr-2" /> {!isCollapsed && 'Treatment'}
           </NavLink>
 
-          {!isCollapsed && <div className="section-header font-bold text-gray-600 my-4">Finance</div>}
+          {/* {!isCollapsed && <div className="section-header font-bold text-gray-600 my-4">Finance</div>}
 
           <NavLink
             to={`/admin-bills/${adminId}`}
@@ -117,7 +117,7 @@ const Sidebar = ({ activeItem, adminId }) => {
              text-gray-800 font-semibold flex items-center cursor-pointer hover:bg-white hover:font-bold rounded-lg px-3 py-2 my-2`}
           >
             <img src="/icons/bills.svg" alt="Sales" className="mr-2" /> {!isCollapsed && 'Bills'}
-          </NavLink>
+          </NavLink> */}
 
         </ul>
       </nav>

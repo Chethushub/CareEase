@@ -75,7 +75,6 @@ const Treatments = () => {
 
   return (
     <div className="treatment-container">
-      <h1>Treatments</h1>
       <div className="search-bar">
         <input
           type="text"
@@ -83,7 +82,7 @@ const Treatments = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <button onClick={searchTreatments} className="search-btn">Search</button>
+        <button onClick={searchTreatments} className="search-btn mx-2">Search</button>
         <button onClick={() => setShowModal(true)} className="add-treatment-btn">+ Add Treatment</button>
       </div>
       {error && <div style={{ color: "red" }}>{error}</div>}
@@ -130,8 +129,8 @@ const Treatments = () => {
               <input type="text" name="type" value={formData.type} onChange={(e) => setFormData({ ...formData, type: e.target.value })} placeholder="Type" required />
               <input type="number" name="rating" value={formData.rating} onChange={(e) => setFormData({ ...formData, rating: e.target.value })} placeholder="Rating" required />
               <input type="number" name="reviews" value={formData.reviews} onChange={(e) => setFormData({ ...formData, reviews: e.target.value })} placeholder="Reviews" required />
-              <button className="save-btn" type="submit">Save</button>
-              <button className="cancel-btn" onClick={() => setShowModal(false)}>Cancel</button>
+              <button className="save-btn mx-1" type="submit">Save</button>
+              <button className="cancel-btn mx-1" onClick={() => setShowModal(false)}>Cancel</button>
             </form>
           </div>
         </div>

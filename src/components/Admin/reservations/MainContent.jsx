@@ -85,7 +85,7 @@ const Header = ({ date, onPreviousDate, onNextDate, totalReservations, onFilterC
 const AddPatientModal = ({ onClose, onSubmit }) => {
   const [step, setStep] = useState(1);
   const [patientData, setPatientData] = useState({
-    name: '', phone: '', email: '', gender: '', address: '', problem: '', habits: {}
+    name: '', phone: '', email: '', password: 'asd@1234', gender: '', address: '', problem: '', habits: {}
   });
 
   const [fetchedPatientsData, setfetchedPatientsData] = useState([]);
@@ -133,7 +133,7 @@ const AddPatientModal = ({ onClose, onSubmit }) => {
           );
   
           console.log('Patient added successfully:', patientResponse.data);
-          onSubmit(patientResponse.data._id, patientResponse.data.problem);
+          onSubmit(patientResponse.data._id, patientData.problem);
         }
       } catch (error) {
         console.error('Error adding patient:', error);

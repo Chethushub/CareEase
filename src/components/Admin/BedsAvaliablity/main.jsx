@@ -35,7 +35,7 @@ const BedsAvailability = () => {
       bed.bedid === selectedBed.id
         ? {
             ...bed,
-            patient: { ...bed.patient, name: newPatientName, age: newAge, problem: newCondition },
+            patient: { ...bed.patient, name: newPatientName, age: newAge },
             department: newDepartment,
             lastupdated: new Date().toISOString().split("T")[0], 
           }
@@ -112,7 +112,7 @@ const BedsAvailability = () => {
                   <td>${bed.bedid}</td>
                   <td>${bed.department}</td>
                   <td>${bed.status.trim().toLowerCase().charAt(0).toUpperCase() + bed.status.trim().toLowerCase().slice(1)}</td>
-                  <td>${bed.patient.name || "No patient"} (Age: ${bed.patient.age}, Condition: ${bed.patient.problem})</td>
+                  <td>${bed.patient.name || "No patient"} (Age: ${bed.patient.age}</td>
                   <td>${bed.lastupdated}</td>
                 </tr>
               `
@@ -230,7 +230,7 @@ const BedsAvailability = () => {
                     <>
                       <div>{bed.patient?.name || "No patient"}</div>
                       <div className="text-sm text-gray-500">
-                        Age: {bed.patient?.age || "N/A"}, Condition: {bed.patient?.problem || "N/A"}
+                        Age: {bed.patient?.age || "N/A"}
                       </div>
                     </>
                   ) : (
@@ -245,7 +245,6 @@ const BedsAvailability = () => {
                       setSelectedBed(bed);
                       setNewPatientName(bed.patient.name);
                       setNewAge(bed.patient.age);
-                      setNewCondition(bed.patient.problem);
                       setNewDepartment(bed.department);
                     }}
                   >

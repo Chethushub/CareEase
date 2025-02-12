@@ -56,7 +56,7 @@ const Header = ({ title, adminId }) => {
       {/* Icons and Profile Section */}
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2 md:gap-2 lg:gap-4">
-          <img
+          {/* <img
             src="/icons/help.svg"
             alt="Help Icon"
             className="w-6 h-6 hover:scale-110 transform transition duration-200 cursor-pointer hidden lg:block"
@@ -70,7 +70,7 @@ const Header = ({ title, adminId }) => {
             src="/icons/settingGreyColor.svg"
             alt="Settings"
             className="w-6 h-6 text-gray-400 hover:scale-110 transform transition duration-200 cursor-pointer hidden md:block"
-          />
+          /> */}
 
           {/* Profile Section */}
           <NavLink
