@@ -43,6 +43,7 @@ const Header = ({ date, onPreviousDate, onNextDate, totalReservations, onFilterC
         <div className="text-lg font-semibold text-gray-400 gap-2 flex">
           <button onClick={onPreviousDate}>&lt;</button>
           <span className="text-gray-600">{date.toDateString()}</span>
+          {console.log("Date in reservation header: ", date.toDateString())}
           <button onClick={onNextDate}>&gt;</button>
         </div>
 
@@ -256,7 +257,7 @@ const Reservation = () => {
       console.log(appt?.doctor?.name, appt.status);
 
       return (
-        appt.date === date.toISOString().split('T')[0] &&
+        appt.date === date.toLocaleDateString('en-CA') &&
         appt.doctor &&
         (!filters.doctor || appt.doctor.name === filters.doctor) &&
         (!filters.status || appt.status === filters.status)
@@ -378,8 +379,11 @@ const Reservation = () => {
                     (appt) => appt.time === time && appt.doctor?.name === doctor
                   );
 
+                  
+                  
                   return appointment ? (
                     <div key={idx} className="relative bg-gray-100 p-4 mb-2 rounded-md">
+                      {console.log("appointment date: ", appointment.date)}
                       <div
                         className={`absolute top-4 right-2 text-xs text-white px-2 py-1 rounded-full cursor-pointer 
                         ${appointment.status.toLowerCase() === 'finished' ? 'bg-green-500' :
