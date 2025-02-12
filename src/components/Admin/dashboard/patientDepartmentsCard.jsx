@@ -35,8 +35,10 @@ const PatientDepartmentsCard = ({adminId}) => {
           try {
             const response = await axios.get(`${BACKEND_URL}/api/appointments`);
 
-            const sortAppointments = response.data.filter(appt => appt.hospital._id === AdminHospitalId);
-            console.log("patientAppointments data: ", sortAppointments); 
+            const sortAppointments = response.data.filter(
+              (appt) => appt?.hospital && appt.hospital._id === AdminHospitalId
+            );
+          console.log("patientAppointments data: ", sortAppointments); 
             setAppointments(sortAppointments);
           } catch (error) {
             console.error("Error fetching appointments:", error);

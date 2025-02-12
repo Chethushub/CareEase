@@ -151,8 +151,12 @@ const PatientAppointmentPage = () => {
             className="text-sm text-gray-700 bg-white border-none"
           >
             <option value="">All Hospitals</option>
-            <option value="Jeeva Hospital">Jeeva Hospital</option>
-            <option value="City Hospital">City Hospital</option>
+
+            {[...new Set(doctorsData.flatMap((doctor) => doctor.hospital.name))].map((time, index) => (
+              <option key={index} value={time}>
+                {time}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -196,9 +200,10 @@ const PatientAppointmentPage = () => {
             className="text-sm text-gray-700 bg-white border-none"
           >
             <option value="">Any Experience</option>
+            <option value="5">1+ years</option>
             <option value="5">5+ years</option>
             <option value="10">10+ years</option>
-            <option value="20">20+ years</option>
+            <option value="10">15+ years</option>
           </select>
         </div>
         <div className="flex justify-between items-center p-3 my-2 bg-blue-50 rounded-lg">
@@ -209,8 +214,12 @@ const PatientAppointmentPage = () => {
             className="text-sm text-gray-700 bg-white border-none"
           >
             <option value="">All Languages</option>
-            <option value="Kannada">Kannada</option>
-            <option value="English">English</option>
+
+            {[...new Set(doctorsData.flatMap((doctor) => doctor.language))].map((time, index) => (
+              <option key={index} value={time}>
+                {time}
+              </option>
+            ))}
           </select>
         </div>
       </div>

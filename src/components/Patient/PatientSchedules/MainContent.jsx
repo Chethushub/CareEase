@@ -4,45 +4,6 @@ import axios from "axios";
 
 import { useParams } from "react-router-dom";
 
-const dummyAppointments = [
-  {
-    id: "RSV10102",
-    date: "APR 25",
-    day: "25",
-    time: "10:00 - 11:00 AM",
-    problem: "Tooth Scaling",
-    type: "MULTIPLE",
-    details: "Visit #2 - Scaling Maxilla (Q1+Q2)",
-    hospital: "Zendral Dental",
-    status: "registered",
-  },
-  {
-    id: "RSV10105",
-    date: "APR 20",
-    day: "20",
-    time: "09:00 - 10:00 AM",
-    problem: "Simple extractions",
-    type: "MULTIPLE",
-    details: "Visit #2 - Simple extractions (Q1+Q2)",
-    hospital: "Zendral Dental",
-    status: "finished",
-    payment: "240.00",
-    payButton: true,
-  },
-  {
-    id: "RSV10094",
-    date: "APR 19",
-    day: "19",
-    time: "17:00 - 18:00 PM",
-    problem: "Emergency care",
-    type: "SINGLE",
-    details: "",
-    hospital: "Zendral Dental",
-    status: "finished",
-    paymentStatus: "PAID",
-  },
-];
-
 const BACKEND_URL = "http://localhost:5000";
 
 

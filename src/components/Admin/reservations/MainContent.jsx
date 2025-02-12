@@ -291,10 +291,11 @@ const Reservation = () => {
       doctor: doctorData._id,
       patient: patientId,
       time: selectedSlot.time,
-      date: date.toISOString().split('T')[0],
+      date: date.toLocaleDateString('en-CA'),
       type: doctorData.specialization,
       problem: problem,
-      status: 'Registered'
+      status: 'Registered',
+      hospital: doctorData.hospital._id
     };
 
     setShowAddModal(false);
