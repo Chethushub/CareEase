@@ -83,8 +83,6 @@ const Dashboard = () => {
   
 
   
-  const handleSearchChange = (e) => setSearchQuery(e.target.value);
-
   return (
     <div className="dashboard bg-gray-100 min-h-screen p-6">
       <header className="flex justify-between items-center mb-6">
@@ -94,15 +92,7 @@ const Dashboard = () => {
         </h3>
           <p className="text-sm font-bold text-gray-500">{currentDate}</p>
         </div>
-        <div className="relative">
-          <input
-            type="search"
-            className="rounded-lg p-2 bg-white shadow-sm"
-            placeholder="Search..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-        </div>
+
       </header>
 
       <motion.div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">

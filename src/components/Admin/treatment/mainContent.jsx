@@ -6,6 +6,7 @@ const BASE_URL = "http://localhost:5000/api/treatments";
 
 const Treatments = () => {
   const [treatments, setTreatments] = useState([]);
+  const [filteredTreatments, setFilteredTreatments] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -17,6 +18,7 @@ const Treatments = () => {
     try {
       const { data } = await axios.get(BASE_URL);
       setTreatments(data);
+      setFilteredTreatments(data);
       setError(null);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to load treatments. Please try again.");
@@ -25,12 +27,18 @@ const Treatments = () => {
     }
   };
 
-  const searchTreatments = () => {
-    const filtered = treatments.filter(treatment =>
-      treatment.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setTreatments(filtered);
-  };
+  // Update filtered results when searchQuery changes
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredTreatments(treatments);
+    } else {
+      setFilteredTreatments(
+        treatments.filter((treatment) =>
+          treatment.name.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      );
+    }
+  }, [searchQuery, treatments]);
 
   const deleteTreatment = async (id) => {
     if (!window.confirm("Are you sure you want to delete this treatment?")) return;
@@ -82,7 +90,7 @@ const Treatments = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <button onClick={searchTreatments} className="search-btn mx-2">Search</button>
+        <button onClick={() => setSearchQuery("")} className="clear-btn mx-2">Clear</button>
         <button onClick={() => setShowModal(true)} className="add-treatment-btn">+ Add Treatment</button>
       </div>
       {error && <div style={{ color: "red" }}>{error}</div>}
@@ -102,7 +110,7 @@ const Treatments = () => {
             </tr>
           </thead>
           <tbody>
-            {treatments.map((treatment) => (
+            {filteredTreatments.map((treatment) => (
               <tr key={treatment._id}>
                 <td>{treatment.name}</td>
                 <td>${treatment.price}</td>

@@ -43,11 +43,11 @@ const Header = ({ title, patientId }) => {
 
 
         <div className="flex items-center gap-2 md:gap-2 lg:gap-4">
-          <img
+          {/* <img
             src="/icons/Icons.svg"
             alt="Icons"
             className="w-6 h-6 hover:scale-110 transform transition duration-200 cursor-pointer"
-          />
+          /> */}
 
           <NavLink
             to={`/patient-profile/${patientId}`}
