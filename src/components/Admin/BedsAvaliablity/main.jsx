@@ -46,20 +46,44 @@ const BedsAvailability = () => {
   };
 
   
+    const [admin, setAdmin] = useState([]);
+    
+    useEffect(() => {
+      const fetchAdmin = async () => {
+        try {
+          console.log("userId: ", userId);
+          const response = await axios.get(`${BACKEND_URL}/api/admins/${userId}`);
+          setAdmin(response.data);
+          console.log('Admin details fetched successfully:', response.data);
+        } catch (error) {
+          console.error(`Failed to fetch admin details for userId ${userId}:`, error);
+        }
+      };
+      fetchAdmin();
+    }, [userId]);
 
-  useEffect(() => {
-    const fetchBedData = async () => {
-      try {
-        const response = await axios.get(`${BACKEND_URL}/api/beds`);
-        console.log("DB data:", response.data);
-        setBedData(response.data);
-      } catch (err) {
-        console.error("Error fetching bed data:", err);
-      }
-    };
+     useEffect(() => {
+        if (admin && admin.hospital) {
+          const AdminHospitalId = admin.hospital._id;
+          console.log("AdminHospitalId: ", AdminHospitalId);
+      
+          const fetchBedData = async () => {
+            try {
+              const response = await axios.get(`${BACKEND_URL}/api/beds`);
+              const sortBeds = response.data.filter(bed => bed.hospital._id === AdminHospitalId);
+  
+              setBedData(sortBeds);
+              console.log('Beds details fetched successfully:', sortBeds);
+            } catch (err) {
+              console.error("Error fetching bed data:", err);
+            }
+          };
+      
+          fetchBedData();
+        }
+      }, [admin]);  
+      
 
-    fetchBedData();
-  }, []);
 
   useEffect(() => {
     console.log("Updated bedData:", bedData);

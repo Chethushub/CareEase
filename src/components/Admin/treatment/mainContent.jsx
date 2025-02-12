@@ -3,8 +3,13 @@ import axios from "axios";
 import "./mainContent.css";
 
 const BASE_URL = "http://localhost:5000/api/treatments";
+import { useParams } from "react-router-dom";
+
+const BACKEND_URL = "http://localhost:5000"
 
 const Treatments = () => {
+  const { userId } = useParams();
+  
   const [treatments, setTreatments] = useState([]);
   const [filteredTreatments, setFilteredTreatments] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -13,21 +18,46 @@ const Treatments = () => {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({ name: "", price: "", duration: "", type: "", rating: "", reviews: "", category: "active" });
 
-  const fetchTreatments = async () => {
-    setLoading(true);
-    try {
-      const { data } = await axios.get(BASE_URL);
-      setTreatments(data);
-      setFilteredTreatments(data);
-      setError(null);
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to load treatments. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  // Update filtered results when searchQuery changes
+        const [admin, setAdmin] = useState([]);
+        
+        useEffect(() => {
+          const fetchAdmin = async () => {
+            try {
+              console.log("userId: ", userId);
+              const response = await axios.get(`${BACKEND_URL}/api/admins/${userId}`);
+              setAdmin(response.data);
+              console.log('Admin details fetched successfully:', response.data);
+            } catch (error) {
+              console.error(`Failed to fetch admin details for userId ${userId}:`, error);
+            }
+          };
+          fetchAdmin();
+        }, [userId]);
+    
+         useEffect(() => {
+            if (admin && admin.hospital) {
+              const AdminHospitalId = admin.hospital._id;
+              console.log("AdminHospitalId: ", AdminHospitalId);
+          
+              const fetchTreatments = async () => {
+                try {
+                  const response = await axios.get(`${BACKEND_URL}/api/treatments`);
+  
+                  const sortTreatments = response.data.filter(treatment => treatment.hospital._id === AdminHospitalId);
+                  setTreatments(sortTreatments);
+                  setFilteredTreatments(sortTreatments);
+                  console.log('Doctor details fetched successfully:', sortTreatments);
+                } catch (error) {
+                  console.error(error);
+                }
+              };
+  
+              fetchTreatments();
+            }
+          }, [admin]);  
+
+
   useEffect(() => {
     if (searchQuery.trim() === "") {
       setFilteredTreatments(treatments);
@@ -77,9 +107,7 @@ const Treatments = () => {
     }
   };
 
-  useEffect(() => {
-    fetchTreatments();
-  }, []);
+
 
   return (
     <div className="treatment-container">

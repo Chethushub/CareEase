@@ -190,37 +190,64 @@ const Reservation = () => {
   }, []);
   
   const [appointments, setAppointments] = useState([]);
-
+  
   const [doctors, setdoctors] = useState(null);
   const [filters, setFilters] = useState({ doctor: '', status: '' });
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState({ doctor: '', time: '' });
-
+  
+  const [admin, setAdmin] = useState([]);
+  
   useEffect(() => {
-    const fetchAppointments = async () => {
+    const fetchAdmin = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/api/appointments`);
-        setAppointments(response.data);
-        console.log('Appointments details fetched successfully:', response.data);
+        console.log("userId: ", userId);
+        const response = await axios.get(`${BACKEND_URL}/api/admins/${userId}`);
+        setAdmin(response.data);
+        console.log('Admin details fetched successfully:', response.data);
       } catch (error) {
-        console.error(error);
+        console.error(`Failed to fetch admin details for userId ${userId}:`, error);
       }
     };
-    fetchAppointments();
-  }, []);
+    fetchAdmin();
+  }, [userId]);
 
+  
   useEffect(() => {
-    const fetchDoctors = async () => {
-      try {
-        const response = await axios.get(`${BACKEND_URL}/api/doctors`);
-        setdoctors(response.data);
-        console.log('Doctor details fetched successfully:', response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchDoctors();
-  }, []);
+    if (admin && admin.hospital) {
+      const AdminHospitalId = admin.hospital._id;
+      console.log("AdminHospitalId: ", AdminHospitalId);
+  
+      const fetchAppointments = async () => {
+        try {
+          const response = await axios.get(`${BACKEND_URL}/api/appointments`);
+          const sortAppointments = response.data.filter(appointment => appointment.hospital._id === AdminHospitalId);
+
+          setAppointments(sortAppointments);
+          console.log('Appointments details fetched successfully:', sortAppointments);
+        } catch (error) {
+          console.error('Error fetching appointments:', error);
+        }
+      };
+  
+      const fetchDoctors = async () => {
+        try {
+          const response = await axios.get(`${BACKEND_URL}/api/doctors`);
+          const sortDoctors = response.data.filter(doctor => doctor.hospital._id === AdminHospitalId);
+
+          setdoctors(sortDoctors);
+          console.log('Doctor details fetched successfully:', sortDoctors);
+        } catch (error) {
+          console.error('Error fetching doctors:', error);
+        }
+      };
+  
+      fetchAppointments();
+      fetchDoctors();
+    }
+  }, [admin]);  
+  
+  
 
 
 

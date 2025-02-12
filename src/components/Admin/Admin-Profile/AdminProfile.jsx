@@ -12,15 +12,6 @@ const AdminProfile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  const dummyAdminData = {
-    name: "Admin Name",
-    email: "admin@example.com",
-    role: "Super Admin",
-    department: "System Administration",
-    lastLogin: "2024-03-15 14:30:00",
-    profilePic: "https://via.placeholder.com/150",
-    permissions: ["Full Access", "User Management", "System Config"],
-  };
 
   useEffect(() => {
     const fetchAdminInfo = async () => {
