@@ -14,7 +14,7 @@ const dummyAppointments = [
     type: "MULTIPLE",
     details: "Visit #2 - Scaling Maxilla (Q1+Q2)",
     hospital: "Zendral Dental",
-    status: "upcoming",
+    status: "registered",
   },
   {
     id: "RSV10105",
@@ -102,14 +102,14 @@ const PatientSchedule = () => {
         <div className="flex items-center space-x-2 text-lg font-semibold text-gray-800">
           <span className="text-blue-500">&#9679;</span>
           {console.log("appointments: ", appointments)}
-          <span>Upcoming ({appointments.filter((a) => a.status.toLowerCase() === "upcoming").length})</span>
+          <span>Upcoming ({appointments.filter((a) => a.status.toLowerCase() === "registered").length})</span>
 
           
         </div>
           {appointments.length > 0 ? (
 
             appointments
-            .filter((a) => a.status.toLowerCase() === "upcoming")
+            .filter((a) => a.status.toLowerCase() === "registered")
             .map((appointment, index, arr) => (
               <AppointmentCard
                 key={appointment.id}
@@ -163,9 +163,9 @@ const PatientSchedule = () => {
 
 const AppointmentCard = ({ appointment, onPay }) => {
   const lineColor =
-    appointment.status.toLowerCase() === "upcoming" ? "bg-blue-500" : "bg-green-500";
+    appointment.status.toLowerCase() === "registered" ? "bg-blue-500" : "bg-green-500";
   const textColor =
-    appointment.status.toLowerCase() === "upcoming" ? "text-blue-500" : "text-green-500";
+    appointment.status.toLowerCase() === "registered" ? "text-blue-500" : "text-green-500";
 
   return (
     <div className="flex items-start space-x-4 mb-4 relative">

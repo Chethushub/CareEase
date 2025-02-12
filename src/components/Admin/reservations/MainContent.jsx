@@ -261,8 +261,8 @@ const Reservation = () => {
   const handleFilterChange = (key, value) => setFilters({ ...filters, [key]: value });
 
   const toggleStatus = async (appointmentId, currentStatus) => {
-    if (currentStatus != "Finished") {
-      const statusOrder = ['Registered', 'Doing Treatment', 'Finished'];
+    if (currentStatus != "finished") {
+      const statusOrder = ['registered', 'doing treatment', 'finished'];
       const currentIndex = statusOrder.indexOf(currentStatus);
       const nextIndex = (currentIndex + 1) % statusOrder.length;
       const nextStatus = statusOrder[nextIndex];
@@ -324,12 +324,12 @@ const Reservation = () => {
                     <div key={idx} className="relative bg-gray-100 p-4 mb-2 rounded-md">
                       <div
                         className={`absolute top-4 right-2 text-xs text-white px-2 py-1 rounded-full cursor-pointer 
-                        ${appointment.status === 'Finished' ? 'bg-green-500' :
-                            appointment.status === 'Doing Treatment' ? 'bg-yellow-500' :
-                              appointment.status === 'Registered' ? 'bg-blue-500' :
+                        ${appointment.status.toLowerCase() === 'finished' ? 'bg-green-500' :
+                            appointment.status.toLowerCase() === 'doing treatment' ? 'bg-yellow-500' :
+                              appointment.status.toLowerCase() === 'registered' ? 'bg-blue-500' :
                                 ''
                           }`}
-                        onClick={() => toggleStatus(appointment._id, appointment.status)}
+                        onClick={() => toggleStatus(appointment._id, appointment.status.toLowerCase())}
                       >
                         {appointment.status}
                       </div>
