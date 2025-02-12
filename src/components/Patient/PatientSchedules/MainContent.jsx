@@ -196,8 +196,8 @@ const AppointmentCard = ({ appointment, onPay }) => {
         <h3 className="text-md font-semibold mt-2">{appointment.problem}</h3>
 
         <div className="text-gray-500 text-sm mt-1">
-          <span className="material-icons text-sm mr-1">location_on</span>
-          {appointment.hospital}
+          {/* <span className="material-icons text-sm mr-1">Hospital: </span> */}
+          {appointment.hospital.name}
         </div>
 
         {/* Payment */}

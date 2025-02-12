@@ -6,29 +6,54 @@ import axios from 'axios';
 
 const BACKEND_URL = "http://localhost:5000";
 
-const BillsCard = ({ timeframe, onTimeframeChange }) => {
+const BillsCard = ({ timeframe, onTimeframeChange, adminId }) => {
   const [billData, setBillData] = useState([]);
 
+  const [admin, setAdmin] = useState([]);
+  
   useEffect(() => {
-    const fetchBillData = async () => {
+    const fetchAdmin = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/api/bills`);
-        console.log("Fetched bill data from DB:", response.data);
-        
-        if (!Array.isArray(response.data)) {
-          console.warn("⚠️ Unexpected response format. Expected an array, but got:", response.data);
-          setBillData([]);
-          return;
-        }
-
-        setBillData(response.data);
-      } catch (err) {
-        console.error("Error fetching bill data:", err);
+        console.log("userId: ", adminId);
+        const response = await axios.get(`${BACKEND_URL}/api/admins/${adminId}`);
+        setAdmin(response.data);
+        console.log('Admin details fetched successfully:', response.data);
+      } catch (error) {
+        console.error(`Failed to fetch admin details for userId ${adminId}:`, error);
       }
     };
+    fetchAdmin();
+  }, [adminId]);
 
-    fetchBillData();
-  }, []);
+    useEffect(() => {
+      if (admin && admin.hospital) {
+        const AdminHospitalId = admin.hospital._id;
+        console.log("AdminHospitalId: ", AdminHospitalId);
+
+        const fetchBillData = async () => {
+          try {
+            const response = await axios.get(`${BACKEND_URL}/api/bills`);
+            console.log("Fetched bill data from DB:", response.data);
+            
+            if (!Array.isArray(response.data)) {
+              console.warn("Unexpected response format. Expected an array, but got:", response.data);
+              
+              setBillData([]);
+              return;
+            }
+            
+            const sortBills = response.data.filter(bill => bill.hospital._id === AdminHospitalId);
+            setBillData(sortBills);
+          } catch (err) {
+            console.error("Error fetching bill data:", err);
+          }
+        };
+    
+        fetchBillData();
+      }
+    }, [admin]);  
+
+
 
   const sortedBills = useMemo(() => {  
     if (!billData.length) {

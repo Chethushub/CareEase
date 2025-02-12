@@ -65,26 +65,51 @@ const Main = () => {
     closeCard();
   };
 
-  useEffect(() => {
-    const fetchBillData = async () => {
-      try {
-        const response = await axios.get(`${BACKEND_URL}/api/bills`);
-        console.log("DB data:", response.data);
-        setBillData(response.data);
+    
+      const [admin, setAdmin] = useState([]);
+      
+      useEffect(() => {
+        const fetchAdmin = async () => {
+          try {
+            console.log("userId: ", userId);
+            const response = await axios.get(`${BACKEND_URL}/api/admins/${userId}`);
+            setAdmin(response.data);
+            console.log('Admin details fetched successfully:', response.data);
+          } catch (error) {
+            console.error(`Failed to fetch admin details for userId ${userId}:`, error);
+          }
+        };
+        fetchAdmin();
+      }, [userId]);
+  
+       useEffect(() => {
+          if (admin && admin.hospital) {
+            const AdminHospitalId = admin.hospital._id;
+            console.log("AdminHospitalId: ", AdminHospitalId);
+        
 
-        const totalRevenue = response.data.reduce(
-          (acc, bill) => acc + parseFloat(bill.amount || 0),
-          0
-        );
-        setRevenue(totalRevenue);
+            const fetchBillData = async () => {
+              try {
+                const response = await axios.get(`${BACKEND_URL}/api/bills`);
+                const sortBills = response.data.filter(bill => bill.hospital._id === AdminHospitalId);
 
-      } catch (err) {
-        console.error("Error fetching bill data:", err);
-      }
-    };
+                setBillData(sortBills);
+        
+                const totalRevenue = sortBills.reduce(
+                  (acc, bill) => acc + parseFloat(bill.amount || 0),
+                  0
+                );
+                setRevenue(totalRevenue);
+        
+              } catch (err) {
+                console.error("Error fetching bill data:", err);
+              }
+            };
+        
+            fetchBillData();
+          }
+        }, [admin]);  
 
-    fetchBillData();
-  }, []);
 
 
 
