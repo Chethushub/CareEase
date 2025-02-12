@@ -10,13 +10,13 @@ const BedsAvailability = () => {
 
 
   const [bedData, setBedData] = useState([
-    { bedid: "B001", department: "Cardiology", status: "Not Available", patient: { name: "John Doe", problem: "Heart Condition", age: 45 }, condition: "Stable", lastUpdated: "2023-10-01" },
-    { bedid: "B002", department: "Neurology", status: "Not Available", patient: { name: "Jane Smith", problem: "Stroke", age: 60 }, condition: "Critical", lastUpdated: "2023-10-02" },
-    { bedid: "B003", department: "Oncology", status: "Not Available", patient: { name: "Michael Johnson", problem: "Cancer", age: 50 }, condition: "Under Observation", lastUpdated: "2023-10-03" },
-    { bedid: "B004", department: "Pediatrics", status: "Available", patient: { name: "Emily Brown", problem: "Asthma", age: 8 }, condition: "Healthy", lastUpdated: "2023-10-04" },
-    { bedid: "B005", department: "Orthopedics", status: "Not Available", patient: { name: "David Wilson", problem: "Fracture", age: 30 }, condition: "Recovering", lastUpdated: "2023-10-05" },
-    { bedid: "B006", department: "Emergency", status: "Not Available", patient: { name: "Sarah White", problem: "Accident", age: 35 }, condition: "Critical", lastUpdated: "2023-10-06" },
-    { bedid: "B007", department: "General", status: "Available", patient: { name: "Kevin Lee", problem: "Fever", age: 28 }, condition: "Stable", lastUpdated: "2023-10-07" }
+    { bedid: "B001", department: "Cardiology", status: "Not Available", patient: { name: "John Doe", problem: "Heart Condition", age: 45 }, condition: "Stable", lastupdated: "2023-10-01" },
+    { bedid: "B002", department: "Neurology", status: "Not Available", patient: { name: "Jane Smith", problem: "Stroke", age: 60 }, condition: "Critical", lastupdated: "2023-10-02" },
+    { bedid: "B003", department: "Oncology", status: "Not Available", patient: { name: "Michael Johnson", problem: "Cancer", age: 50 }, condition: "Under Observation", lastupdated: "2023-10-03" },
+    { bedid: "B004", department: "Pediatrics", status: "Available", patient: { name: "Emily Brown", problem: "Asthma", age: 8 }, condition: "Healthy", lastupdated: "2023-10-04" },
+    { bedid: "B005", department: "Orthopedics", status: "Not Available", patient: { name: "David Wilson", problem: "Fracture", age: 30 }, condition: "Recovering", lastupdated: "2023-10-05" },
+    { bedid: "B006", department: "Emergency", status: "Not Available", patient: { name: "Sarah White", problem: "Accident", age: 35 }, condition: "Critical", lastupdated: "2023-10-06" },
+    { bedid: "B007", department: "General", status: "Available", patient: { name: "Kevin Lee", problem: "Fever", age: 28 }, condition: "Stable", lastupdated: "2023-10-07" }
   ]);
   
 
@@ -37,7 +37,7 @@ const BedsAvailability = () => {
             ...bed,
             patient: { ...bed.patient, name: newPatientName, age: newAge, problem: newCondition },
             department: newDepartment,
-            lastUpdated: new Date().toISOString().split("T")[0], 
+            lastupdated: new Date().toISOString().split("T")[0], 
           }
         : bed
     );
@@ -113,7 +113,7 @@ const BedsAvailability = () => {
                   <td>${bed.department}</td>
                   <td>${bed.status.trim().toLowerCase().charAt(0).toUpperCase() + bed.status.trim().toLowerCase().slice(1)}</td>
                   <td>${bed.patient.name || "No patient"} (Age: ${bed.patient.age}, Condition: ${bed.patient.problem})</td>
-                  <td>${bed.lastUpdated}</td>
+                  <td>${bed.lastupdated}</td>
                 </tr>
               `
                 )
@@ -237,7 +237,7 @@ const BedsAvailability = () => {
                     <div>No patient assigned</div> 
                   )}
                 </td>
-                <td className="px-4 py-2">{bed.lastUpdated}</td>
+                <td className="px-4 py-2">{bed.lastupdated}</td>
                 <td className="px-4 py-2">
                   <button
                     className="px-4 py-2 bg-blue-500 text-white rounded"

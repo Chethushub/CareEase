@@ -13,6 +13,7 @@ const Header = ({ title, adminId }) => {
   };
 
   console.log("Admin id in header: ", adminId)
+  console.log("Title in header: ", title)
 
     useEffect(() => {
       if (adminId) {
