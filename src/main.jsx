@@ -22,19 +22,32 @@ function MainLayout() {
   const { userId, setUserId } = useUser();
 
   useEffect(() => {
-    const userIdMatch = location.pathname.match(/\/patient\/([a-fA-F0-9]{24})/);
-    if (userIdMatch) {
-      setUserId(userIdMatch[1]);
-    }
+    const routes = [
+      '/admin/:userId',
+      '/admin-dashboard/:userId',
+      '/admin-reservations/:userId',
+      "/admin-beds/:userId",
+      '/admin-staff/:userId',
+      '/admin-treatment/:userId',
+      '/admin-profile/:userId',
+      '/patient/:userId',
+      '/patient-book-appointment/:userId',
+      '/patient-schedules/:userId',
+      '/patient-profile/:userId',
+    ];
 
-    if(!userId) {
-      const userIdMatch = location.pathname.match(/\/admin\/([a-fA-F0-9]{24})/);
-      if (userIdMatch) {
-        setUserId(userIdMatch[1]);
+    // Iterate over each route and check if userId is present
+    for (let route of routes) {
+      if (!userId) {
+        const userIdMatch = location.pathname.match(new RegExp(`^${route.replace(':userId', '([a-fA-F0-9]{24})')}$`));
+        if (userIdMatch) {
+          setUserId(userIdMatch[1]);  // Set userId from the matched URL
+          break; 
+        }
       }
     }
 
-  }, [location.pathname, setUserId]);
+  }, [location.pathname, setUserId, userId]); 
   
 
   const routeMap = {
