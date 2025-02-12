@@ -47,7 +47,7 @@ const Treatments = () => {
                   const sortTreatments = response.data.filter(treatment => treatment.hospital._id === AdminHospitalId);
                   setTreatments(sortTreatments);
                   setFilteredTreatments(sortTreatments);
-                  console.log('Doctor details fetched successfully:', sortTreatments);
+                  console.log('Treatments details fetched successfully:', sortTreatments);
                 } catch (error) {
                   console.error(error);
                 }

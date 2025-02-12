@@ -5,28 +5,51 @@ import { motion } from 'framer-motion';
 
 const BASE_URL = 'http://localhost:5000/api/treatments';
 
+const BACKEND_URL = "http://localhost:5000"
+
+
 const TreatmentRatingsCard = ({ adminId }) => {
   const [treatments, setTreatments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const [admin, setAdmin] = useState([]);
+  
   useEffect(() => {
-    const fetchTreatments = async () => {
-      setLoading(true);
+    const fetchAdmin = async () => {
       try {
-        const response = await axios.get(BASE_URL);
-        setTreatments(response.data || []);
-        setError(null);
-        console.log('All Treatment data: ', response.data);
-      } catch (err) {
-        setError('Failed to load treatments. Please try again.');
-      } finally {
-        setLoading(false);
+        console.log("userId: ", adminId);
+        const response = await axios.get(`${BACKEND_URL}/api/admins/${adminId}`);
+        setAdmin(response.data);
+        console.log('Admin details fetched successfully:', response.data);
+      } catch (error) {
+        console.error(`Failed to fetch admin details for userId ${adminId}:`, error);
       }
     };
+    fetchAdmin();
+  }, [adminId]);
 
-    fetchTreatments();
-  }, []);
+    useEffect(() => {
+      if (admin && admin.hospital) {
+        const AdminHospitalId = admin.hospital._id;
+        console.log("AdminHospitalId: ", AdminHospitalId);
+    
+        const fetchTreatments = async () => {
+          try {
+            const response = await axios.get(`${BACKEND_URL}/api/treatments`);
+
+            const sortTreatments = response.data.filter(treatment => treatment.hospital._id === AdminHospitalId);
+            setTreatments(sortTreatments);
+            console.log('Treatments details fetched successfully:', sortTreatments);
+          } catch (error) {
+            console.error(error);
+          }
+        };
+
+        fetchTreatments();
+      }
+    }, [admin]);  
+
 
   return (
     <motion.div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200" whileHover={{ scale: 1.01 }}>
