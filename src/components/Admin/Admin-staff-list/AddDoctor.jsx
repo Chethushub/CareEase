@@ -9,6 +9,8 @@ const AddDoctor = ({ onAddDoctor }) => {
     days: [false, false, false, false, false, false, false],
     assignedTreatment: '',
     type: 'Part-Time',
+    experience: '',
+    language: '',
   });
 
   const handleInputChange = (e) => {
@@ -26,7 +28,16 @@ const AddDoctor = ({ onAddDoctor }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAddDoctor(doctor);
+    // Convert the language string into an array (splitting by commas)
+    const languageArray = doctor.language
+      .split(',')
+      .map((lang) => lang.trim())
+      .filter((lang) => lang !== '');
+    const newDoctor = { ...doctor, language: languageArray };
+
+    onAddDoctor(newDoctor);
+
+    // Reset the form state
     setDoctor({
       profile: '',
       name: '',
@@ -35,6 +46,8 @@ const AddDoctor = ({ onAddDoctor }) => {
       days: [false, false, false, false, false, false, false],
       assignedTreatment: '',
       type: 'Part-Time',
+      experience: '',
+      language: '',
     });
   };
 
@@ -54,16 +67,16 @@ const AddDoctor = ({ onAddDoctor }) => {
           />
         </div>
         <div>
-          <label className="block font-semibold">specialization</label>
+          <label className="block font-semibold">Specialization</label>
           <input
             type="text"
             name="specialization"
             value={doctor.specialization}
             onChange={handleInputChange}
             className="w-full px-3 py-2 border rounded-md"
+            required
           />
         </div>
-
         <div>
           <label className="block font-semibold">Email</label>
           <input
@@ -83,6 +96,7 @@ const AddDoctor = ({ onAddDoctor }) => {
             value={doctor.assignedTreatment}
             onChange={handleInputChange}
             className="w-full px-3 py-2 border rounded-md"
+            required
           />
         </div>
         <div>
@@ -98,6 +112,28 @@ const AddDoctor = ({ onAddDoctor }) => {
           </select>
         </div>
         <div>
+          <label className="block font-semibold">Experience</label>
+          <input
+            type="text"
+            name="experience"
+            value={doctor.experience}
+            onChange={handleInputChange}
+            className="w-full px-3 py-2 border rounded-md"
+            required
+          />
+        </div>
+        <div>
+          <label className="block font-semibold">Languages (comma separated)</label>
+          <input
+            type="text"
+            name="language"
+            value={doctor.language}
+            onChange={handleInputChange}
+            className="w-full px-3 py-2 border rounded-md"
+            required
+          />
+        </div>
+        <div>
           <label className="block font-semibold">Working Days</label>
           <div className="flex space-x-2">
             {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, index) => (
@@ -106,7 +142,9 @@ const AddDoctor = ({ onAddDoctor }) => {
                 type="button"
                 onClick={() => handleDayToggle(index)}
                 className={`w-8 h-8 rounded-full ${
-                  doctor.days[index] ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'
+                  doctor.days[index]
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-200 text-gray-600'
                 }`}
               >
                 {day}

@@ -8,7 +8,7 @@ import axios from "axios";
 
 
 
-// Dummy Data for Fallback
+
 const dummyPatientData = {
   name: "Darlene Gibbs",
   email: "darlene_gibbs@gmail.com",
