@@ -25,7 +25,7 @@ const PatientAppointmentPage = () => {
   const [appointmentDetails, setAppointmentDetails] = useState({
     date: "",
     time: "",
-    reason: "",
+    problem: "",
   });
 
   const [hospitalFilter, setHospitalFilter] = useState("");
@@ -73,10 +73,19 @@ const PatientAppointmentPage = () => {
     );
   });
   
-  
+  const formatTime = (time) => {
+    console.log("formatTime function running")
+    if (!time) return "";
+    let [hours, minutes] = time.split(":");
+    let period = +hours >= 12 ? "PM" : "AM";
+    hours = +hours % 12 || 12; 
+    console.log("formatTime retuen by formatTime function: ", `${hours}:${minutes} ${period}`)
+
+    return `${hours}:${minutes} ${period}`;
+  };
 
   const handleBookAppointment = async () => {
-    if (!appointmentDetails.date || !appointmentDetails.time || !appointmentDetails.reason) {
+    if (!appointmentDetails.date || !appointmentDetails.time || !appointmentDetails.problem) {
       alert("Please fill out all fields.");
       return;
     }
@@ -89,14 +98,17 @@ const PatientAppointmentPage = () => {
       console.error("Patient ID is not a valid ObjectId:", patientId);
       return;
     }
+
+    const formatedTime = formatTime(appointmentDetails.time);
   
     const requestBody = {
       patient: patientId,
-      doctor: selectedDoctor.name,
+      doctor: selectedDoctor._id,
       hospital: selectedDoctor.hospital._id,
       date: appointmentDetails.date,
-      time: appointmentDetails.time,
-      reason: appointmentDetails.reason,
+      time: formatedTime,
+      problem: appointmentDetails.problem,
+      status: "registered",
     };
   
     console.log("Request Payload:", JSON.stringify(requestBody));
@@ -111,7 +123,7 @@ const PatientAppointmentPage = () => {
       if (response.ok) {
         alert("Appointment booked successfully!");
         setIsBooking(false);
-        setAppointmentDetails({ date: "", time: "", reason: "" });
+        setAppointmentDetails({ date: "", time: "", problem: "" });
       } else {
         const errorData = await response.json();
         console.error("Server Response Error:", errorData);
@@ -139,8 +151,12 @@ const PatientAppointmentPage = () => {
             className="text-sm text-gray-700 bg-white border-none"
           >
             <option value="">All Hospitals</option>
-            <option value="Jeeva Hospital">Jeeva Hospital</option>
-            <option value="City Hospital">City Hospital</option>
+
+            {[...new Set(doctorsData.flatMap((doctor) => doctor.hospital.name))].map((time, index) => (
+              <option key={index} value={time}>
+                {time}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -184,9 +200,10 @@ const PatientAppointmentPage = () => {
             className="text-sm text-gray-700 bg-white border-none"
           >
             <option value="">Any Experience</option>
+            <option value="5">1+ years</option>
             <option value="5">5+ years</option>
             <option value="10">10+ years</option>
-            <option value="20">20+ years</option>
+            <option value="10">15+ years</option>
           </select>
         </div>
         <div className="flex justify-between items-center p-3 my-2 bg-blue-50 rounded-lg">
@@ -197,8 +214,12 @@ const PatientAppointmentPage = () => {
             className="text-sm text-gray-700 bg-white border-none"
           >
             <option value="">All Languages</option>
-            <option value="Kannada">Kannada</option>
-            <option value="English">English</option>
+
+            {[...new Set(doctorsData.flatMap((doctor) => doctor.language))].map((time, index) => (
+              <option key={index} value={time}>
+                {time}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -304,15 +325,17 @@ const PatientAppointmentPage = () => {
                   <input
                     type="time"
                     value={appointmentDetails.time}
-                    onChange={(e) => setAppointmentDetails({ ...appointmentDetails, time: e.target.value })}
+                    onChange={(e) => {
+                      setAppointmentDetails({ ...appointmentDetails, time: e.target.value });
+                    }}                    
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Reason</label>
                   <textarea
-                    value={appointmentDetails.reason}
-                    onChange={(e) => setAppointmentDetails({ ...appointmentDetails, reason: e.target.value })}
+                    value={appointmentDetails.problem}
+                    onChange={(e) => setAppointmentDetails({ ...appointmentDetails, problem: e.target.value })}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   ></textarea>
                 </div>
@@ -335,56 +358,6 @@ const PatientAppointmentPage = () => {
           </div>
         )}
 
-        {/* Booking Modal */}
-        {isBooking && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="p-6 bg-white rounded-lg shadow-lg">
-              <h2 className="text-lg font-bold mb-4">Book Appointment with {selectedDoctor.name}</h2>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Date</label>
-                  <input
-                    type="date"
-                    value={appointmentDetails.date}
-                    onChange={(e) => setAppointmentDetails({ ...appointmentDetails, date: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Time</label>
-                  <input
-                    type="time"
-                    value={appointmentDetails.time}
-                    onChange={(e) => setAppointmentDetails({ ...appointmentDetails, time: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Reason</label>
-                  <textarea
-                    value={appointmentDetails.reason}
-                    onChange={(e) => setAppointmentDetails({ ...appointmentDetails, reason: e.target.value })}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  ></textarea>
-                </div>
-              </div>
-              <div className="mt-4 flex justify-end gap-4">
-                <button
-                  onClick={() => setIsBooking(false)}
-                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg shadow-sm"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleBookAppointment}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-sm"
-                >
-                  Book Appointment
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -4,45 +4,6 @@ import axios from "axios";
 
 import { useParams } from "react-router-dom";
 
-const dummyAppointments = [
-  {
-    id: "RSV10102",
-    date: "APR 25",
-    day: "25",
-    time: "10:00 - 11:00 AM",
-    problem: "Tooth Scaling",
-    type: "MULTIPLE",
-    details: "Visit #2 - Scaling Maxilla (Q1+Q2)",
-    hospital: "Zendral Dental",
-    status: "upcoming",
-  },
-  {
-    id: "RSV10105",
-    date: "APR 20",
-    day: "20",
-    time: "09:00 - 10:00 AM",
-    problem: "Simple extractions",
-    type: "MULTIPLE",
-    details: "Visit #2 - Simple extractions (Q1+Q2)",
-    hospital: "Zendral Dental",
-    status: "finished",
-    payment: "240.00",
-    payButton: true,
-  },
-  {
-    id: "RSV10094",
-    date: "APR 19",
-    day: "19",
-    time: "17:00 - 18:00 PM",
-    problem: "Emergency care",
-    type: "SINGLE",
-    details: "",
-    hospital: "Zendral Dental",
-    status: "finished",
-    paymentStatus: "PAID",
-  },
-];
-
 const BACKEND_URL = "http://localhost:5000";
 
 
@@ -102,14 +63,14 @@ const PatientSchedule = () => {
         <div className="flex items-center space-x-2 text-lg font-semibold text-gray-800">
           <span className="text-blue-500">&#9679;</span>
           {console.log("appointments: ", appointments)}
-          <span>Upcoming ({appointments.filter((a) => a.status.toLowerCase() === "upcoming").length})</span>
+          <span>Upcoming ({appointments.filter((a) => a.status.toLowerCase() === "registered").length})</span>
 
           
         </div>
           {appointments.length > 0 ? (
 
             appointments
-            .filter((a) => a.status.toLowerCase() === "upcoming")
+            .filter((a) => a.status.toLowerCase() === "registered")
             .map((appointment, index, arr) => (
               <AppointmentCard
                 key={appointment.id}
@@ -163,9 +124,9 @@ const PatientSchedule = () => {
 
 const AppointmentCard = ({ appointment, onPay }) => {
   const lineColor =
-    appointment.status.toLowerCase() === "upcoming" ? "bg-blue-500" : "bg-green-500";
+    appointment.status.toLowerCase() === "registered" ? "bg-blue-500" : "bg-green-500";
   const textColor =
-    appointment.status.toLowerCase() === "upcoming" ? "text-blue-500" : "text-green-500";
+    appointment.status.toLowerCase() === "registered" ? "text-blue-500" : "text-green-500";
 
   return (
     <div className="flex items-start space-x-4 mb-4 relative">
@@ -196,8 +157,8 @@ const AppointmentCard = ({ appointment, onPay }) => {
         <h3 className="text-md font-semibold mt-2">{appointment.problem}</h3>
 
         <div className="text-gray-500 text-sm mt-1">
-          <span className="material-icons text-sm mr-1">location_on</span>
-          {appointment.hospital}
+          {/* <span className="material-icons text-sm mr-1">Hospital: </span> */}
+          {appointment.hospital.name}
         </div>
 
         {/* Payment */}

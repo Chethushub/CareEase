@@ -4,23 +4,50 @@ import { FaChartLine } from "react-icons/fa";
 import axios from "axios";
 import { motion } from "framer-motion";
 
-const PatientDepartmentsCard = () => {
+const BACKEND_URL = "http://localhost:5000"
+
+
+const PatientDepartmentsCard = ({adminId}) => {
   const [appointments, setAppointments] = useState([]);
 
+  const [admin, setAdmin] = useState([]);
+    
   useEffect(() => {
-    const fetchAppointments = async () => {
+    const fetchAdmin = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/appointments");
-        const patientAppointments = response.data;
-        console.log("patientAppointments data: ", patientAppointments);
-        setAppointments(patientAppointments);
+        console.log("userId: ", adminId);
+        const response = await axios.get(`${BACKEND_URL}/api/admins/${adminId}`);
+        setAdmin(response.data);
+        console.log('Admin details fetched successfully:', response.data);
       } catch (error) {
-        console.error("Error fetching appointments:", error);
+        console.error(`Failed to fetch admin details for userId ${adminId}:`, error);
       }
     };
+    fetchAdmin();
+  }, [adminId]);
 
-    fetchAppointments();
-  }, []);
+    useEffect(() => {
+      if (admin && admin.hospital) {
+        const AdminHospitalId = admin.hospital._id;
+        console.log("AdminHospitalId: ", AdminHospitalId);
+
+        const fetchAppointments = async () => {
+          try {
+            const response = await axios.get(`${BACKEND_URL}/api/appointments`);
+
+            const sortAppointments = response.data.filter(
+              (appt) => appt?.hospital && appt.hospital._id === AdminHospitalId
+            );
+          console.log("patientAppointments data: ", sortAppointments); 
+            setAppointments(sortAppointments);
+          } catch (error) {
+            console.error("Error fetching appointments:", error);
+          }
+        };
+    
+        fetchAppointments();
+      }
+    }, [admin]);  
 
   const departmentCounts = appointments.reduce((acc, appointment) => {
     acc[appointment.type] = (acc[appointment.type] || 0) + 1;

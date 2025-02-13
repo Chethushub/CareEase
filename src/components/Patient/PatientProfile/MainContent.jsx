@@ -91,8 +91,8 @@ const PatientProfile = () => {
         <Appointments patientId={patientInfo._id}/>
       </div>
       <div className="grid lg:grid-cols-2 gap-6 mt-6">
-        <PrescriptionOrders />
-        <InsuranceBenefits />
+        {/* <PrescriptionOrders /> */}
+        {/* <InsuranceBenefits /> */}
       </div>
       <div className="mt-6 flex justify-end">
         {isEditing ? (

@@ -3,34 +3,72 @@ import axios from "axios";
 import "./mainContent.css";
 
 const BASE_URL = "http://localhost:5000/api/treatments";
+import { useParams } from "react-router-dom";
+
+const BACKEND_URL = "http://localhost:5000"
 
 const Treatments = () => {
+  const { userId } = useParams();
+  
   const [treatments, setTreatments] = useState([]);
+  const [filteredTreatments, setFilteredTreatments] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({ name: "", price: "", duration: "", type: "", rating: "", reviews: "", category: "active" });
 
-  const fetchTreatments = async () => {
-    setLoading(true);
-    try {
-      const { data } = await axios.get(BASE_URL);
-      setTreatments(data);
-      setError(null);
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to load treatments. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  const searchTreatments = () => {
-    const filtered = treatments.filter(treatment =>
-      treatment.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setTreatments(filtered);
-  };
+        const [admin, setAdmin] = useState([]);
+        
+        useEffect(() => {
+          const fetchAdmin = async () => {
+            try {
+              console.log("userId: ", userId);
+              const response = await axios.get(`${BACKEND_URL}/api/admins/${userId}`);
+              setAdmin(response.data);
+              console.log('Admin details fetched successfully:', response.data);
+            } catch (error) {
+              console.error(`Failed to fetch admin details for userId ${userId}:`, error);
+            }
+          };
+          fetchAdmin();
+        }, [userId]);
+    
+         useEffect(() => {
+            if (admin && admin.hospital) {
+              const AdminHospitalId = admin.hospital._id;
+              console.log("AdminHospitalId: ", AdminHospitalId);
+          
+              const fetchTreatments = async () => {
+                try {
+                  const response = await axios.get(`${BACKEND_URL}/api/treatments`);
+  
+                  const sortTreatments = response.data.filter(treatment => treatment.hospital._id === AdminHospitalId);
+                  setTreatments(sortTreatments);
+                  setFilteredTreatments(sortTreatments);
+                  console.log('Treatments details fetched successfully:', sortTreatments);
+                } catch (error) {
+                  console.error(error);
+                }
+              };
+  
+              fetchTreatments();
+            }
+          }, [admin]);  
+
+
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredTreatments(treatments);
+    } else {
+      setFilteredTreatments(
+        treatments.filter((treatment) =>
+          treatment.name.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      );
+    }
+  }, [searchQuery, treatments]);
 
   const deleteTreatment = async (id) => {
     if (!window.confirm("Are you sure you want to delete this treatment?")) return;
@@ -69,13 +107,10 @@ const Treatments = () => {
     }
   };
 
-  useEffect(() => {
-    fetchTreatments();
-  }, []);
+
 
   return (
     <div className="treatment-container">
-      <h1>Treatments</h1>
       <div className="search-bar">
         <input
           type="text"
@@ -83,7 +118,7 @@ const Treatments = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <button onClick={searchTreatments} className="search-btn">Search</button>
+        <button onClick={() => setSearchQuery("")} className="clear-btn mx-2">Clear</button>
         <button onClick={() => setShowModal(true)} className="add-treatment-btn">+ Add Treatment</button>
       </div>
       {error && <div style={{ color: "red" }}>{error}</div>}
@@ -103,7 +138,7 @@ const Treatments = () => {
             </tr>
           </thead>
           <tbody>
-            {treatments.map((treatment) => (
+            {filteredTreatments.map((treatment) => (
               <tr key={treatment._id}>
                 <td>{treatment.name}</td>
                 <td>${treatment.price}</td>
@@ -130,8 +165,8 @@ const Treatments = () => {
               <input type="text" name="type" value={formData.type} onChange={(e) => setFormData({ ...formData, type: e.target.value })} placeholder="Type" required />
               <input type="number" name="rating" value={formData.rating} onChange={(e) => setFormData({ ...formData, rating: e.target.value })} placeholder="Rating" required />
               <input type="number" name="reviews" value={formData.reviews} onChange={(e) => setFormData({ ...formData, reviews: e.target.value })} placeholder="Reviews" required />
-              <button className="save-btn" type="submit">Save</button>
-              <button className="cancel-btn" onClick={() => setShowModal(false)}>Cancel</button>
+              <button className="save-btn mx-1" type="submit">Save</button>
+              <button className="cancel-btn mx-1" onClick={() => setShowModal(false)}>Cancel</button>
             </form>
           </div>
         </div>

@@ -9,6 +9,8 @@ import PtHeader from "./components/ui/PtHeader"
 import { useParams } from "react-router-dom";
 import Navbar from "./components/navbar"
 import { BrowserRouter as Router, useLocation } from 'react-router-dom';
+import { matchPath } from "react-router-dom";
+
 
 import axios from 'axios'
 import { UserProvider } from './UserContext'
@@ -20,41 +22,64 @@ function MainLayout() {
   const { userId, setUserId } = useUser();
 
   useEffect(() => {
-    const userIdMatch = location.pathname.match(/\/patient\/([a-fA-F0-9]{24})/);
-    if (userIdMatch) {
-      setUserId(userIdMatch[1]);
-    }
+    const routes = [
+      '/admin/:userId',
+      '/admin-dashboard/:userId',
+      '/admin-reservations/:userId',
+      "/admin-beds/:userId",
+      '/admin-staff/:userId',
+      '/admin-treatment/:userId',
+      '/admin-profile/:userId',
+      '/patient/:userId',
+      '/patient-book-appointment/:userId',
+      '/patient-schedules/:userId',
+      '/patient-profile/:userId',
+    ];
 
-    if(!userId) {
-      const userIdMatch = location.pathname.match(/\/admin\/([a-fA-F0-9]{24})/);
-      if (userIdMatch) {
-        setUserId(userIdMatch[1]);
+    // Iterate over each route and check if userId is present
+    for (let route of routes) {
+      if (!userId) {
+        const userIdMatch = location.pathname.match(new RegExp(`^${route.replace(':userId', '([a-fA-F0-9]{24})')}$`));
+        if (userIdMatch) {
+          setUserId(userIdMatch[1]);  // Set userId from the matched URL
+          break; 
+        }
       }
     }
 
-  }, [location.pathname, setUserId]);
+  }, [location.pathname, setUserId, userId]); 
   
 
   const routeMap = {
     "/admin": { activeItem: "Dashboard", title: "Dashboard" },
     "/admin/:userId": { activeItem: "Dashboard", title: "Dashboard" },
-    "/admin-dashboard": { activeItem: "Dashboard", title: "Dashboard" },
-    "/admin-reservations": { activeItem: "Reservations", title: "Reservations" },
-    "/admin-beds": { activeItem: "Beds", title: "Beds Availability" },
-    "/admin-staff": { activeItem: "Staff", title: "Staff List" },
-    "/admin-treatment": { activeItem: "Treatment", title: "Treatment" },
-    "/admin-sales": { activeItem: "Sales", title: "Sales" },
-    "/admin-reports": { activeItem: "Reports", title: "Reports" },
-    "/admin-support": { activeItem: "Support", title: "Customer Support" },
-    "/admin-profile" :{activeItem:"Profile",title :"Profile"},
+    "/admin-dashboard/:userId": { activeItem: "Dashboard", title: "Dashboard" },
+    "/admin-reservations/:userId": { activeItem: "Reservations", title: "Reservations" },
+    "/admin-beds/:userId": { activeItem: "Beds", title: "Beds Availability" },
+    "/admin-staff/:userId": { activeItem: "Staff", title: "Staff List" },
+    "/admin-treatment/:userId": { activeItem: "Treatment", title: "Treatment" },
+    "/admin-sales/:userId": { activeItem: "Sales", title: "Sales" },
+    "/admin-reports/:userId": { activeItem: "Reports", title: "Reports" },
+    "/admin-support/:userId": { activeItem: "Support", title: "Customer Support" },
+    "/admin-profile/:userId" :{activeItem:"Profile",title :"Profile"},
 
     "/patient/:userId": { activeItem: "Dashboard", title: "Patient Dashboard" },
     "/patient-book-appointment/:userId": { activeItem: "Book-appointment", title: "Book Appointment" },
     "/patient-schedules/:userId": { activeItem: "Schedules", title: "Schedules" },
   };
 
-  const { activeItem = "Dashboard", title = "Dashboard" } = routeMap[location.pathname] || {};
 
+  const findRouteMatch = (pathname) => {
+    for (const [route, data] of Object.entries(routeMap)) {
+      if (matchPath(route.replace(":userId", "*"), pathname)) {
+        return data;
+      }
+    }
+    return { activeItem: "Dashboard", title: "Dashboard" }; 
+  };
+  
+  const { activeItem, title } = findRouteMatch(location.pathname);
+  
   const isAdminRoute = location.pathname.startsWith("/admin");
   const isPatientRoute = location.pathname.startsWith("/patient");
 

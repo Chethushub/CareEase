@@ -43,6 +43,7 @@ const Header = ({ date, onPreviousDate, onNextDate, totalReservations, onFilterC
         <div className="text-lg font-semibold text-gray-400 gap-2 flex">
           <button onClick={onPreviousDate}>&lt;</button>
           <span className="text-gray-600">{date.toDateString()}</span>
+          {console.log("Date in reservation header: ", date.toDateString())}
           <button onClick={onNextDate}>&gt;</button>
         </div>
 
@@ -60,7 +61,6 @@ const Header = ({ date, onPreviousDate, onNextDate, totalReservations, onFilterC
                 </option>
               ))
             }
-
           </select>
         </div>
 
@@ -86,9 +86,11 @@ const Header = ({ date, onPreviousDate, onNextDate, totalReservations, onFilterC
 const AddPatientModal = ({ onClose, onSubmit }) => {
   const [step, setStep] = useState(1);
   const [patientData, setPatientData] = useState({
-    name: '', phone: '', email: '', gender: '', address: '', problem: '', habits: {}
+    name: '', phone: '', email: '', password: 'asd@1234', gender: '', address: '', problem: '', habits: {}
   });
 
+  const [fetchedPatientsData, setfetchedPatientsData] = useState([]);
+  
   const handleNext = () => setStep(2);
   const handlePrev = () => setStep(1);
   const handleChange = (e) => setPatientData({ ...patientData, [e.target.name]: e.target.value });
@@ -96,27 +98,49 @@ const AddPatientModal = ({ onClose, onSubmit }) => {
     setPatientData({ ...patientData, habits: { ...patientData.habits, [e.target.name]: e.target.checked } });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    useEffect(() => {
+      const fetchPatientInfo = async () => {
+        try {
+          const response = await axios.get(`${BACKEND_URL}/api/patients`);  
+          console.log("fetchedPatientsData: ", response.data)
+          setfetchedPatientsData(response.data);
+        } catch (error) {
+          console.error("Error fetching patient profile:", error.message);
+        } 
+      };
+  
+      fetchPatientInfo();
+    }, []);
 
-    console.log('Patient data before submitting:', patientData);
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+  
+      console.log('Patient data before submitting:', patientData);
+  
+  
+      try {
+        const existingPatient = fetchedPatientsData.find((p) => p.email === patientData.email);
+  
+        if (existingPatient) {
+          console.log('Existing patient found:', existingPatient);
+          onSubmit(existingPatient._id, patientData.problem);
+        } else {
+          console.log('Existing patient was not found');
 
-    try {
-      const patientResponse = await axios.post(
-        `${BACKEND_URL}/api/patients`,
-        JSON.stringify(patientData),
-        { headers: { 'Content-Type': 'application/json' } }
-      );
-
-      console.log('Patient added successfully:', patientResponse.data);
-      onSubmit(patientResponse.data._id, patientResponse.data.problem)
-
-    } catch (error) {
-      console.error('Error adding patient:', error);
-    }
-
-    onClose()
-  };
+          const patientResponse = await axios.post(
+            `${BACKEND_URL}/api/patients`,
+            patientData, 
+            { headers: { 'Content-Type': 'application/json' } }
+          );
+  
+          console.log('Patient added successfully:', patientResponse.data);
+          onSubmit(patientResponse.data._id, patientData.problem);
+        }
+      } catch (error) {
+        console.error('Error adding patient:', error);
+      }
+      onClose();
+    };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-end">
@@ -160,52 +184,89 @@ const AddPatientModal = ({ onClose, onSubmit }) => {
 const Reservation = () => {
   const { userId } = useParams();
 
-  const [date, setDate] = useState(new Date('2024-11-10'));
-  const [appointments, setAppointments] = useState([]);
+  const [date, setDate] = useState(new Date());
 
+  useEffect(() => {
+      setDate(new Date()); 
+  }, []);
+  
+  const [appointments, setAppointments] = useState([]);
+  
   const [doctors, setdoctors] = useState(null);
   const [filters, setFilters] = useState({ doctor: '', status: '' });
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState({ doctor: '', time: '' });
-
-  useEffect(() => {
-    const fetchAppointments = async () => {
-      try {
-        const response = await axios.get(`${BACKEND_URL}/api/appointments`);
-        setAppointments(response.data);
-        console.log('Appointments details fetched successfully:', response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchAppointments();
-  }, []);
-
-  useEffect(() => {
-    const fetchDoctors = async () => {
-      try {
-        const response = await axios.get(`${BACKEND_URL}/api/doctors`);
-        setdoctors(response.data);
-        console.log('Doctor details fetched successfully:', response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchDoctors();
-  }, []);
-
-
-
-  const filteredAppointments = (appointments || []).filter((appt) => {
-    console.log(appt?.doctor?.name, appt.status);
   
-    return (
-      appt.date === date.toISOString().split('T')[0] &&
-      appt.doctor &&
-      (!filters.doctor || appt.doctor.name === filters.doctor) &&
-      (!filters.status || appt.status === filters.status)
-    );
-  });
+  const [admin, setAdmin] = useState([]);
+  
+  useEffect(() => {
+    const fetchAdmin = async () => {
+      try {
+        console.log("userId: ", userId);
+        const response = await axios.get(`${BACKEND_URL}/api/admins/${userId}`);
+        setAdmin(response.data);
+        console.log('Admin details fetched successfully:', response.data);
+      } catch (error) {
+        console.error(`Failed to fetch admin details for userId ${userId}:`, error);
+      }
+    };
+    fetchAdmin();
+  }, [userId]);
+
+  
+  useEffect(() => {
+    if (admin && admin.hospital) {
+      const AdminHospitalId = admin.hospital._id;
+      console.log("AdminHospitalId: ", AdminHospitalId);
+  
+      const fetchAppointments = async () => {
+        try {
+          const response = await axios.get(`${BACKEND_URL}/api/appointments`);
+          const sortAppointments = response.data.filter(
+            (appt) => appt?.hospital && appt.hospital._id === AdminHospitalId
+          );
+          
+          setAppointments(sortAppointments);
+          console.log('Appointments details fetched successfully:', sortAppointments);
+        } catch (error) {
+          console.error('Error fetching appointments:', error);
+        }
+      };
+  
+      const fetchDoctors = async () => {
+        try {
+          const response = await axios.get(`${BACKEND_URL}/api/doctors`);
+          const sortDoctors = response.data.filter(doctor => doctor.hospital._id === AdminHospitalId);
+
+          setdoctors(sortDoctors);
+          console.log('Doctor details fetched successfully:', sortDoctors);
+        } catch (error) {
+          console.error('Error fetching doctors:', error);
+        }
+      };
+  
+      fetchAppointments();
+      fetchDoctors();
+    }
+  }, [admin]);  
+  
+  
+
+
+
+  const filteredAppointments = Array.isArray(appointments)
+  ? appointments.filter((appt) => {
+      console.log(appt?.doctor?.name, appt.status);
+
+      return (
+        appt.date === date.toLocaleDateString('en-CA') &&
+        appt.doctor &&
+        (!filters.doctor || appt.doctor.name === filters.doctor) &&
+        (!filters.status || appt.status === filters.status)
+      );
+    })
+  : [];
+
   
 
   const totalReservations = () => filteredAppointments?.length || 0;
@@ -232,10 +293,11 @@ const Reservation = () => {
       doctor: doctorData._id,
       patient: patientId,
       time: selectedSlot.time,
-      date: date.toISOString().split('T')[0],
+      date: date.toLocaleDateString('en-CA'),
       type: doctorData.specialization,
       problem: problem,
-      status: 'Registered'
+      status: 'Registered',
+      hospital: doctorData.hospital._id
     };
 
     setShowAddModal(false);
@@ -250,7 +312,7 @@ const Reservation = () => {
       );
       setAppointments(prevAppointments => [...prevAppointments, response.data]);
 
-      const appointmentsResponse = await axios.get('BACKEND_URL/api/appointments');
+      const appointmentsResponse = await axios.get(`${BACKEND_URL}/api/appointments`);
       setAppointments(appointmentsResponse.data);
       console.log('Appointment added successfully:', response.data);
     } catch (error) {
@@ -261,8 +323,8 @@ const Reservation = () => {
   const handleFilterChange = (key, value) => setFilters({ ...filters, [key]: value });
 
   const toggleStatus = async (appointmentId, currentStatus) => {
-    if (currentStatus != "Finished") {
-      const statusOrder = ['Registered', 'Doing Treatment', 'Finished'];
+    if (currentStatus != "finished") {
+      const statusOrder = ['registered', 'doing treatment', 'finished'];
       const currentIndex = statusOrder.indexOf(currentStatus);
       const nextIndex = (currentIndex + 1) % statusOrder.length;
       const nextStatus = statusOrder[nextIndex];
@@ -320,16 +382,19 @@ const Reservation = () => {
                     (appt) => appt.time === time && appt.doctor?.name === doctor
                   );
 
+                  
+                  
                   return appointment ? (
                     <div key={idx} className="relative bg-gray-100 p-4 mb-2 rounded-md">
+                      {console.log("appointment date: ", appointment.date)}
                       <div
                         className={`absolute top-4 right-2 text-xs text-white px-2 py-1 rounded-full cursor-pointer 
-                        ${appointment.status === 'Finished' ? 'bg-green-500' :
-                            appointment.status === 'Doing Treatment' ? 'bg-yellow-500' :
-                              appointment.status === 'Registered' ? 'bg-blue-500' :
+                        ${appointment.status.toLowerCase() === 'finished' ? 'bg-green-500' :
+                            appointment.status.toLowerCase() === 'doing treatment' ? 'bg-yellow-500' :
+                              appointment.status.toLowerCase() === 'registered' ? 'bg-blue-500' :
                                 ''
                           }`}
-                        onClick={() => toggleStatus(appointment._id, appointment.status)}
+                        onClick={() => toggleStatus(appointment._id, appointment.status.toLowerCase())}
                       >
                         {appointment.status}
                       </div>

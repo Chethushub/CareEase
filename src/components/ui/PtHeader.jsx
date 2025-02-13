@@ -28,7 +28,8 @@ const Header = ({ title, patientId }) => {
       <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold md:font-bold text-gray-800 mx-2 cursor-pointer">{title}</h2>
 
       <div className="relative w-52 sm:w-50 lg:w-96 mr-4 ml-4">
-        <img
+        <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold md:font-bold text-gray-400 mx-2 cursor-pointer">Appointment Management</h3>
+        {/* <img
           src="/icons/search.svg"
           alt="Search Icon"
           className="absolute left-3 top-1/2 mr-4 transform -translate-y-1/2 w-5 h-5 text-gray-400"
@@ -37,17 +38,17 @@ const Header = ({ title, patientId }) => {
           type="text"
           placeholder="Search"
           className="!w-full h-10 !pl-10 pr-3 !rounded-full border  bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition !text-gray-800 !border-gray-300"
-        />
+        /> */}
       </div>
+
       <div className="flex items-center gap-4">
 
-
         <div className="flex items-center gap-2 md:gap-2 lg:gap-4">
-          <img
+          {/* <img
             src="/icons/Icons.svg"
             alt="Icons"
             className="w-6 h-6 hover:scale-110 transform transition duration-200 cursor-pointer"
-          />
+          /> */}
 
           <NavLink
             to={`/patient-profile/${patientId}`}

@@ -8,14 +8,26 @@ const BACKEND_URL = "http://localhost:5000";
 const BedsAvailability = () => {
   const { userId } = useParams();
 
+  // Data and search state
   const [bedData, setBedData] = useState([]);
-  const [selectedBed, setSelectedBed] = useState(null);
-  const [newPatientName, setNewPatientName] = useState("");
-  const [newAge, setNewAge] = useState("");
-  const [newProblem, setNewProblem] = useState("");
-  const [newDepartment, setNewDepartment] = useState("");
-  const [newStatus, setNewStatus] = useState(""); // new state for status
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Edit modal states
+  const [selectedBed, setSelectedBed] = useState(null);
+  const [editPatientName, setEditPatientName] = useState("");
+  const [editAge, setEditAge] = useState("");
+  const [editProblem, setEditProblem] = useState("");
+  const [editDepartment, setEditDepartment] = useState("");
+  const [editStatus, setEditStatus] = useState("");
+
+  // Add modal states
+  const [showAddBedModal, setShowAddBedModal] = useState(false);
+  const [newBedId, setNewBedId] = useState("");
+  const [newBedDepartment, setNewBedDepartment] = useState("");
+  const [newBedStatus, setNewBedStatus] = useState("Not Available");
+  const [newBedPatientName, setNewBedPatientName] = useState("");
+  const [newBedPatientAge, setNewBedPatientAge] = useState("");
+  const [newBedPatientProblem, setNewBedPatientProblem] = useState("");
 
   // Fetch bed data from backend
   useEffect(() => {
@@ -34,18 +46,18 @@ const BedsAvailability = () => {
     console.log("Updated bedData:", bedData);
   }, [bedData]);
 
-  // Update bed details (edit)
+  // Handle updating an existing bed
   const handleSaveDetails = async () => {
     if (!selectedBed) return;
 
     const updatedBed = {
-      department: newDepartment,
+      department: editDepartment,
       patient: {
-        name: newPatientName,
-        age: Number(newAge),
-        problem: newProblem,
+        name: editPatientName,
+        age: Number(editAge),
+        problem: editProblem,
       },
-      status: newStatus, // include the updated status
+      status: editStatus,
     };
 
     try {
@@ -53,7 +65,6 @@ const BedsAvailability = () => {
         `${BACKEND_URL}/api/beds/${selectedBed._id}`,
         updatedBed
       );
-      // Update local state with the updated bed
       setBedData((prevData) =>
         prevData.map((bed) =>
           bed._id === selectedBed._id ? response.data : bed
@@ -65,7 +76,38 @@ const BedsAvailability = () => {
     }
   };
 
-  // Filtered data based on search query
+  // Handle adding a new bed
+  const handleAddBed = async (e) => {
+    e.preventDefault();
+    const newBed = {
+      bedid: newBedId,
+      department: newBedDepartment,
+      status: newBedStatus,
+      patient: {
+        name: newBedPatientName,
+        age: newBedPatientAge ? Number(newBedPatientAge) : 0,
+        problem: newBedPatientProblem,
+      },
+      lastupdated: new Date(),
+    };
+
+    try {
+      const response = await axios.post(`${BACKEND_URL}/api/beds`, newBed);
+      setBedData([...bedData, response.data]);
+      setShowAddBedModal(false);
+      // Reset add bed form fields
+      setNewBedId("");
+      setNewBedDepartment("");
+      setNewBedStatus("Not Available");
+      setNewBedPatientName("");
+      setNewBedPatientAge("");
+      setNewBedPatientProblem("");
+    } catch (err) {
+      console.error("Error adding new bed:", err);
+    }
+  };
+
+  // Filter bed data based on search query
   const filteredData = bedData.filter((bed) => {
     return (
       bed.bedid.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -77,7 +119,7 @@ const BedsAvailability = () => {
     );
   });
 
-  // Export table to print (PDF export simulation)
+  // Print function (simulate PDF export)
   const handlePrint = () => {
     const printWindow = window.open("", "_blank");
     const printContent = `
@@ -173,7 +215,7 @@ const BedsAvailability = () => {
 
   return (
     <div className="p-6">
-      {/* Search and Export */}
+      {/* Search, Export and Add Bed Button */}
       <div className="flex justify-between items-center mb-6">
         <input
           type="text"
@@ -182,12 +224,20 @@ const BedsAvailability = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="border px-4 py-2 rounded w-1/3"
         />
-        <button
-          className="px-4 py-2 bg-gray-200 rounded"
-          onClick={handlePrint}
-        >
-          Export PDF
-        </button>
+        <div>
+          <button
+            className="px-4 py-2 bg-gray-200 rounded mr-2"
+            onClick={handlePrint}
+          >
+            Export PDF
+          </button>
+          <button
+            className="px-4 py-2 bg-green-500 text-white rounded"
+            onClick={() => setShowAddBedModal(true)}
+          >
+            Add Bed
+          </button>
+        </div>
       </div>
 
       {/* Summary Stats */}
@@ -272,16 +322,16 @@ const BedsAvailability = () => {
                     className="px-4 py-2 bg-blue-500 text-white rounded"
                     onClick={() => {
                       setSelectedBed(bed);
-                      // Ensure patient is an object
+                      // Prepopulate edit modal fields
                       const patient =
                         typeof bed.patient === "object" && bed.patient !== null
                           ? bed.patient
                           : { name: "", age: "", problem: "" };
-                      setNewPatientName(patient.name || "");
-                      setNewAge(patient.age || "");
-                      setNewProblem(patient.problem || "");
-                      setNewDepartment(bed.department);
-                      setNewStatus(bed.status.trim()); // Prepopulate status
+                      setEditPatientName(patient.name || "");
+                      setEditAge(patient.age || "");
+                      setEditProblem(patient.problem || "");
+                      setEditDepartment(bed.department);
+                      setEditStatus(bed.status.trim());
                     }}
                   >
                     Edit Bed Details
@@ -302,8 +352,8 @@ const BedsAvailability = () => {
               <label className="block text-gray-700">Patient Name</label>
               <input
                 type="text"
-                value={newPatientName}
-                onChange={(e) => setNewPatientName(e.target.value)}
+                value={editPatientName}
+                onChange={(e) => setEditPatientName(e.target.value)}
                 className="w-full border p-2 rounded"
               />
             </div>
@@ -311,8 +361,8 @@ const BedsAvailability = () => {
               <label className="block text-gray-700">Age</label>
               <input
                 type="number"
-                value={newAge}
-                onChange={(e) => setNewAge(e.target.value)}
+                value={editAge}
+                onChange={(e) => setEditAge(e.target.value)}
                 className="w-full border p-2 rounded"
               />
             </div>
@@ -320,8 +370,8 @@ const BedsAvailability = () => {
               <label className="block text-gray-700">Condition</label>
               <input
                 type="text"
-                value={newProblem}
-                onChange={(e) => setNewProblem(e.target.value)}
+                value={editProblem}
+                onChange={(e) => setEditProblem(e.target.value)}
                 className="w-full border p-2 rounded"
               />
             </div>
@@ -329,16 +379,16 @@ const BedsAvailability = () => {
               <label className="block text-gray-700">Department</label>
               <input
                 type="text"
-                value={newDepartment}
-                onChange={(e) => setNewDepartment(e.target.value)}
+                value={editDepartment}
+                onChange={(e) => setEditDepartment(e.target.value)}
                 className="w-full border p-2 rounded"
               />
             </div>
             <div className="mb-4">
               <label className="block text-gray-700">Status</label>
               <select
-                value={newStatus}
-                onChange={(e) => setNewStatus(e.target.value)}
+                value={editStatus}
+                onChange={(e) => setEditStatus(e.target.value)}
                 className="w-full border p-2 rounded"
               >
                 <option value="Occupied">Occupied</option>
@@ -362,6 +412,90 @@ const BedsAvailability = () => {
                 Save
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Bed Modal */}
+      {showAddBedModal && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded shadow w-96">
+            <h2 className="text-xl font-bold mb-4">Add New Bed</h2>
+            <form onSubmit={handleAddBed}>
+              <div className="mb-4">
+                <label className="block text-gray-700">Bed ID</label>
+                <input
+                  type="text"
+                  value={newBedId}
+                  onChange={(e) => setNewBedId(e.target.value)}
+                  className="w-full border p-2 rounded"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Department</label>
+                <input
+                  type="text"
+                  value={newBedDepartment}
+                  onChange={(e) => setNewBedDepartment(e.target.value)}
+                  className="w-full border p-2 rounded"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Status</label>
+                <select
+                  value={newBedStatus}
+                  onChange={(e) => setNewBedStatus(e.target.value)}
+                  className="w-full border p-2 rounded"
+                >
+                  <option value="Available">Available</option>
+                  <option value="Not Available">Not Available</option>
+                  <option value="Occupied">Occupied</option>
+                  <option value="Under Maintenance">Under Maintenance</option>
+                  <option value="Reserved">Reserved</option>
+                </select>
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Patient Name (optional)</label>
+                <input
+                  type="text"
+                  value={newBedPatientName}
+                  onChange={(e) => setNewBedPatientName(e.target.value)}
+                  className="w-full border p-2 rounded"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Patient Age (optional)</label>
+                <input
+                  type="number"
+                  value={newBedPatientAge}
+                  onChange={(e) => setNewBedPatientAge(e.target.value)}
+                  className="w-full border p-2 rounded"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Patient Condition (optional)</label>
+                <input
+                  type="text"
+                  value={newBedPatientProblem}
+                  onChange={(e) => setNewBedPatientProblem(e.target.value)}
+                  className="w-full border p-2 rounded"
+                />
+              </div>
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  className="px-4 py-2 bg-gray-200 rounded"
+                  onClick={() => setShowAddBedModal(false)}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded">
+                  Add Bed
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

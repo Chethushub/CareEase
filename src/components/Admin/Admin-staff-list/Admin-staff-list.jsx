@@ -14,21 +14,43 @@ export default function AdminStaffList() {
 
   const { userId } = useParams();
 
+      const [admin, setAdmin] = useState([]);
+      
+      useEffect(() => {
+        const fetchAdmin = async () => {
+          try {
+            console.log("userId: ", userId);
+            const response = await axios.get(`${BACKEND_URL}/api/admins/${userId}`);
+            setAdmin(response.data);
+            console.log('Admin details fetched successfully:', response.data);
+          } catch (error) {
+            console.error(`Failed to fetch admin details for userId ${userId}:`, error);
+          }
+        };
+        fetchAdmin();
+      }, [userId]);
+  
+       useEffect(() => {
+          if (admin && admin.hospital) {
+            const AdminHospitalId = admin.hospital._id;
+            console.log("AdminHospitalId: ", AdminHospitalId);
+        
+            const fetchDoctors = async () => {
+              try {
+                const response = await axios.get(`${BACKEND_URL}/api/doctors`);
 
-    useEffect(() => {
-      const fetchDoctors = async () => {
-        try {
-          const response = await axios.get(`${BACKEND_URL}/api/doctors`);
-          setDoctors(response.data);
-          console.log('Doctor details fetched successfully:', response.data);
-          console.log('Doctor hospital details: ', response.data.hospital);
-          console.log('Doctor hospital', response.data.hospital);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      fetchDoctors();
-    }, []);
+                const sortDoctors = response.data.filter(doctor => doctor.hospital._id === AdminHospitalId);
+                setDoctors(sortDoctors);
+                console.log('Doctor details fetched successfully:', sortDoctors);
+              } catch (error) {
+                console.error(error);
+              }
+            };
+
+            fetchDoctors();
+          }
+        }, [admin]);  
+
 
   const [showAddDoctorDrawer, setShowAddDoctorDrawer] = useState(false);
   const [showFilters, setShowFilters] = useState(false);

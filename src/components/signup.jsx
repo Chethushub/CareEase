@@ -91,7 +91,7 @@ const SignUp = () => {
                 
                 console.log(`${role} added successfully:`, response.data);
                 setSuccessMessage(`Sign-up successful as a ${role}. Redirecting...`);
-                // sendSignUpEmail(formData.email, formData.password, role);
+                sendSignUpEmail(formData.email, formData.password, role);
                 
                 setTimeout(() => navigate(role === 'admin' ? `/admin/${response.data._id}` : `/patient/${response.data._id}`), 2000);
             } catch (error) {

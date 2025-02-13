@@ -9,19 +9,46 @@ const BACKEND_URL = "http://localhost:5000";
 const BedOccupancyCard = ({ adminId }) => {
   const [bedData, setBedData] = useState([]);
 
-  useEffect(() => {
-    const fetchBedData = async () => {
-      try {
-        const response = await axios.get(`${BACKEND_URL}/api/beds`);
-        console.log("DB beds data:", response.data);
-        setBedData(response.data);
-      } catch (err) {
-        console.error("Error fetching bed data:", err);
-      }
-    };
+  
+      const [admin, setAdmin] = useState([]);
+      
+      useEffect(() => {
+        const fetchAdmin = async () => {
+          try {
+            console.log("userId: ", adminId);
+            const response = await axios.get(`${BACKEND_URL}/api/admins/${adminId}`);
+            setAdmin(response.data);
+            console.log('Admin details fetched successfully:', response.data);
+          } catch (error) {
+            console.error(`Failed to fetch admin details for userId ${adminId}:`, error);
+          }
+        };
+        fetchAdmin();
+      }, [adminId]);
+  
+       useEffect(() => {
+          if (admin && admin.hospital) {
+            const AdminHospitalId = admin.hospital._id;
+            console.log("AdminHospitalId: ", AdminHospitalId);
+        
+            const fetchBedData = async () => {
+              try {
+                const response = await axios.get(`${BACKEND_URL}/api/beds`);
+                const sortBeds = response.data.filter(bed => bed.hospital._id === AdminHospitalId);
+    
+                setBedData(sortBeds);
+                console.log('Beds details fetched successfully:', sortBeds);
+              } catch (err) {
+                console.error("Error fetching bed data:", err);
+              }
+            };
+        
+            fetchBedData();
+          }
+        }, [admin]);  
+        
+  
 
-    fetchBedData();
-  }, []);
 
   // Calculate the number of beds in each status
   const occupiedBeds = bedData.filter(item => item.status.toLowerCase() === 'occupied').length;
