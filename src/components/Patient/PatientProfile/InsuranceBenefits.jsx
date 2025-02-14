@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 const InsuranceBenefits = () => {
   const [benefits, setBenefits] = useState([]);
 
   useEffect(() => {
     const fetchBenefits = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/insurance");
+        const response = await fetch(`${BACKEND_URL}/api/insurance`);
         const data = await response.json();
         setBenefits(data);
       } catch (error) {

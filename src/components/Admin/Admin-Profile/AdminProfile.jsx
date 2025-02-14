@@ -4,6 +4,8 @@ import AdminProfileCard from "./AdminProfileCard";
 import UserManagement from "./UserManagement";
 import { useParams } from "react-router-dom";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 const AdminProfile = () => {
   const { userId } = useParams();
 
@@ -17,7 +19,7 @@ const AdminProfile = () => {
     const fetchAdminInfo = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:5000/api/admins/${userId}`);
+        const response = await fetch(`${BACKEND_URL}/api/admins/${userId}`);
           if (!response.ok) throw new Error("Server not responding");
           const data = await response.json();
           console.log("data: ", data)
@@ -36,7 +38,7 @@ const AdminProfile = () => {
 
   const handleSaveChanges = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/admins/admin-profile/", {
+      const response = await fetch(`${BACKEND_URL}/api/admins/admin-profile/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -3,7 +3,7 @@ import { FaUserPlus } from 'react-icons/fa';
 import axios from 'axios';
 import { motion } from "framer-motion";
 
-const BACKEND_URL = "http://localhost:5000"
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 
 const NewPatientsCard = ({ timeframe, onTimeframeChange, adminId }) => {
@@ -77,13 +77,18 @@ const NewPatientsCard = ({ timeframe, onTimeframeChange, adminId }) => {
 
     const patientAppointmentsMap = {};
 
-    filteredAppointments.forEach(appointment => {
+    filteredAppointments
+    .filter(appointment => appointment.patient && appointment.patient._id)
+    .forEach(appointment => {
       const patientId = appointment.patient._id;
+      
       if (!patientAppointmentsMap[patientId]) {
         patientAppointmentsMap[patientId] = 0;
       }
+      
       patientAppointmentsMap[patientId]++;
     });
+  
 
     const newPatientCount = Object.values(patientAppointmentsMap).filter(count => count === 1).length;
     const oldPatientCount = Object.values(patientAppointmentsMap).filter(count => count > 1).length;

@@ -4,7 +4,7 @@ import { FaChartLine } from "react-icons/fa";
 import axios from "axios";
 import { motion } from "framer-motion";
 
-const BACKEND_URL = "http://localhost:5000"
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 
 const PatientDepartmentsCard = ({adminId}) => {

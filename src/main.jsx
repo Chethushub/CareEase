@@ -26,7 +26,7 @@ function MainLayout() {
       '/admin/:userId',
       '/admin-dashboard/:userId',
       '/admin-reservations/:userId',
-      "/admin-beds/:userId",
+      '/admin-beds/:userId',
       '/admin-staff/:userId',
       '/admin-treatment/:userId',
       '/admin-profile/:userId',
@@ -35,19 +35,21 @@ function MainLayout() {
       '/patient-schedules/:userId',
       '/patient-profile/:userId',
     ];
-
-    // Iterate over each route and check if userId is present
+  
     for (let route of routes) {
-      if (!userId) {
-        const userIdMatch = location.pathname.match(new RegExp(`^${route.replace(':userId', '([a-fA-F0-9]{24})')}$`));
-        if (userIdMatch) {
-          setUserId(userIdMatch[1]);  // Set userId from the matched URL
-          break; 
+      const pattern = new RegExp(`^${route.replace(':userId', '([a-fA-F0-9]{24})')}$`);
+      const match = location.pathname.match(pattern);
+  
+      if (match) {
+        // Update userId if it has changed
+        if (userId !== match[1]) {
+          setUserId(match[1]);
         }
+        break;
       }
     }
-
-  }, [location.pathname, setUserId, userId]); 
+  }, [location.pathname, userId, setUserId]);
+  
   
 
   const routeMap = {

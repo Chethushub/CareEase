@@ -20,6 +20,8 @@ const dummyPatientData = {
   balance: "$450.00",
 };
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 const PatientProfile = () => {
   const [patientInfo, setPatientInfo] = useState(dummyPatientData);
   const [isEditing, setIsEditing] = useState(false);
@@ -50,8 +52,7 @@ const PatientProfile = () => {
     const fetchPatientInfo = async () => {
       try {
         setLoading(true);
-        // const response = await fetch("http://localhost:5000/api/patientProfile/");
-        const response = await fetch(`http://localhost:5000/api/patients/${userId}`);
+        const response = await fetch(`${BACKEND_URL}/api/patients/${userId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }

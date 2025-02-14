@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import { useParams } from "react-router-dom";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 const PatientAppointmentPage = () => {
   const { userId } = useParams();
 
@@ -41,7 +43,7 @@ const PatientAppointmentPage = () => {
   useEffect(() => {
     const fetchDoctorsData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/doctors");
+        const response = await fetch(`${BACKEND_URL}/api/doctors`);
         if (response.ok) {
           const data = await response.json();
           setDoctorsData(data);
@@ -114,7 +116,7 @@ const PatientAppointmentPage = () => {
     console.log("Request Payload:", JSON.stringify(requestBody));
   
     try {
-      const response = await fetch("http://localhost:5000/api/appointments/", {
+      const response = await fetch(`${BACKEND_URL}/api/appointments/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestBody),

@@ -6,7 +6,7 @@ import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 import axios from 'axios';
 
-const BACKEND_URL = "http://localhost:5000"
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const SignUp = () => {
     const [confirmPassword, setConfirmPassword] = useState('');

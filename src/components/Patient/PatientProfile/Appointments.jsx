@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 const Appointments = ({patientId}) => {
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/appointments");
+        const response = await fetch(`${BACKEND_URL}/api/appointments`);
         const data = await response.json(); 
 
         console.log("appoint data: ", data); 
-  
+
         const patientAppointments = data.filter(
           (appointment) =>
             appointment.patient &&

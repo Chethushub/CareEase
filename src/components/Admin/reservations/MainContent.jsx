@@ -3,7 +3,7 @@ import { FaUserMd, FaCheckCircle } from 'react-icons/fa';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
-const BACKEND_URL = "http://localhost:5000"
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const generateTimeSlots = (start, end, interval) => {
   const timeslots = [];

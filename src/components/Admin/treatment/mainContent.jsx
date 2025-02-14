@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./mainContent.css";
 
-const BASE_URL = "http://localhost:5000/api/treatments";
 import { useParams } from "react-router-dom";
 
-const BACKEND_URL = "http://localhost:5000"
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const BASE_URL = `${BACKEND_URL}/api/treatments`;
 
 const Treatments = () => {
   const { userId } = useParams();
@@ -44,7 +44,7 @@ const Treatments = () => {
                 try {
                   const response = await axios.get(`${BACKEND_URL}/api/treatments`);
   
-                  const sortTreatments = response.data.filter(treatment => treatment.hospital._id === AdminHospitalId);
+                  const sortTreatments = response.data.filter(treatment => treatment.hospital &&  treatment.hospital._id === AdminHospitalId);
                   setTreatments(sortTreatments);
                   setFilteredTreatments(sortTreatments);
                   console.log('Treatments details fetched successfully:', sortTreatments);

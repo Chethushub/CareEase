@@ -4,7 +4,7 @@ import { FaRupeeSign } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const BillsCard = ({ timeframe, onTimeframeChange, adminId }) => {
   const [billData, setBillData] = useState([]);

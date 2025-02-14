@@ -3,9 +3,9 @@ import axios from 'axios';
 import { FaStar } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
-const BASE_URL = 'http://localhost:5000/api/treatments';
 
-const BACKEND_URL = "http://localhost:5000"
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const BASE_URL = '${BACKEND_URL}/api/treatments';
 
 
 const TreatmentRatingsCard = ({ adminId }) => {
@@ -37,15 +37,18 @@ const TreatmentRatingsCard = ({ adminId }) => {
         const fetchTreatments = async () => {
           try {
             const response = await axios.get(`${BACKEND_URL}/api/treatments`);
-
-            const sortTreatments = response.data.filter(treatment => treatment.hospital._id === AdminHospitalId);
+        
+            const sortTreatments = response.data.filter(
+              treatment => treatment.hospital && treatment.hospital._id === AdminHospitalId
+            );
+        
             setTreatments(sortTreatments);
             console.log('Treatments details fetched successfully:', sortTreatments);
           } catch (error) {
             console.error(error);
           }
         };
-
+        
         fetchTreatments();
       }
     }, [admin]);  

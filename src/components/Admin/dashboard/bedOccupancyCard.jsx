@@ -4,13 +4,12 @@ import { FaBed } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const BedOccupancyCard = ({ adminId }) => {
   const [bedData, setBedData] = useState([]);
   const [admin, setAdmin] = useState({});
 
-  // Fetch admin details using adminId
   useEffect(() => {
     const fetchAdmin = async () => {
       try {
@@ -25,7 +24,6 @@ const BedOccupancyCard = ({ adminId }) => {
     fetchAdmin();
   }, [adminId]);
 
-  // Fetch bed data filtered by the admin's hospital
   useEffect(() => {
     if (admin?.hospital && admin.hospital._id) {
       const AdminHospitalId = admin.hospital._id;
@@ -48,10 +46,8 @@ const BedOccupancyCard = ({ adminId }) => {
     }
   }, [admin]);
 
-  // Helper to normalize a status string
   const normalizeStatus = (status) => status ? status.trim().toLowerCase() : '';
 
-  // Calculate counts with flexible matching
   const occupiedBeds = bedData.filter(item => {
     const status = normalizeStatus(item.status);
     return status === 'occupied' || status === 'not available';

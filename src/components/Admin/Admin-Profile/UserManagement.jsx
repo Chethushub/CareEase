@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 const UserManagement = ({adminInfo}) => {
   const [users, setUsers] = useState([]);
 
@@ -12,7 +14,7 @@ const UserManagement = ({adminInfo}) => {
     useEffect(() => {
       const fetchUserInfo = async () => {
         try {
-          const response = await fetch(`http://localhost:5000/api/admins/admin-profile`);
+          const response = await fetch(`${BACKEND_URL}/api/admins/admin-profile`);
             if (!response.ok) throw new Error("Server not responding");
             const data = await response.json();
 

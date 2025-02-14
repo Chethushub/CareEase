@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { FaCalendarAlt } from 'react-icons/fa';
 import axios from 'axios';
 
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const AppointmentsCard = ({ timeframe, onTimeframeChange, adminId }) => {
   const [appointments, setAppointments] = useState([]);
