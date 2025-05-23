@@ -8,11 +8,14 @@
 }
 
 .animated-wave-bg {
-  background: linear-gradient(270deg, #2648b6, #0aa171, #2648b6);
+  background: linear-gradient(270deg, #2a7ac5, #48bb78, #2a7ac5);
+  /* background: linear-gradient(270deg, #2648b6, #0aa171, #2648b6); */
   /* background: linear-gradient(270deg, #2347bc, #059669, #2347bc); */
   background-size: 200% 200%;
-  animation: waveFlow 12s linear infinite;
+  animation: waveFlow 20s linear infinite;
 }
+
+
 
 
 @keyframes scroll {
@@ -25,7 +28,7 @@
 }
 
 .animate-scroll {
-  animation: scroll 20s linear infinite;
+  animation: scroll 24s linear infinite;
   display: flex;
   width: max-content;
 }
