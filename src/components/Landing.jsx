@@ -8,7 +8,8 @@ const Landing = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <section className="bg-gradient-to-r from-blue-700 to-green-600 text-white py-20">
+      {/* <section className="bg-gradient-to-r from-blue-700 to-green-600 text-white py-20"> */}
+      <section className="animated-wave-bg text-white py-20">
         <div className="container mx-auto px-6 md:px-12 text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-4">Welcome to CareEase</h1>
           <p className="text-lg md:text-xl mb-6">Streamlining patient care and hospital management with innovative solutions.</p>
@@ -28,20 +29,57 @@ const Landing = () => {
         </div>
       </section>
 
-      <section id="features" className="container mx-auto py-16 px-6 md:px-12">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 text-center mb-8">Our Key Features</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            { title: "Real-Time Queue Updates", icon: <FaHeartbeat />, text: "Keep track of patient queues with live updates, reducing wait times and improving patient flow." },
-            { title: "Bed Availability Tracking", icon: <FaBed />, text: "Monitor and manage bed availability efficiently to ensure optimal usage and faster patient admissions." },
-            { title: "Online Appointment Scheduling", icon: <FaCalendarAlt />, text: "Allow patients to book appointments easily and receive reminders, enhancing the user experience." }
-          ].map((feature, index) => (
-            <div key={index} className="bg-white shadow-lg rounded-lg p-6 text-center hover:scale-105 hover:shadow-xl transition duration-300">
-              <div className="text-blue-600 text-4xl mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">{feature.title}</h3>
-              <p className="text-gray-600">{feature.text}</p>
-            </div>
-          ))}
+      <section id="features" className="overflow-hidden py-16 px-6 md:px-12 bg-gray-50">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 text-center mb-8">
+          Our Key Features
+        </h2>
+        <div className="relative group">
+          <div className="flex gap-8 w-max animate-scroll group-hover:[animation-play-state:paused]">
+            {[
+              {
+                title: "Real-Time Queue Updates",
+                icon: <FaHeartbeat />,
+                text: "Keep track of patient queues with live updates, reducing wait times and improving patient flow.",
+              },
+              {
+                title: "Bed Availability Tracking",
+                icon: <FaBed />,
+                text: "Monitor and manage bed availability efficiently to ensure optimal usage and faster patient admissions.",
+              },
+              {
+                title: "Online Appointment Scheduling",
+                icon: <FaCalendarAlt />,
+                text: "Allow patients to book appointments easily and receive reminders, enhancing the user experience.",
+              },
+              // Duplicate for infinite loop effect
+              {
+                title: "Real-Time Queue Updates",
+                icon: <FaHeartbeat />,
+                text: "Keep track of patient queues with live updates, reducing wait times and improving patient flow.",
+              },
+              {
+                title: "Bed Availability Tracking",
+                icon: <FaBed />,
+                text: "Monitor and manage bed availability efficiently to ensure optimal usage and faster patient admissions.",
+              },
+              {
+                title: "Online Appointment Scheduling",
+                icon: <FaCalendarAlt />,
+                text: "Allow patients to book appointments easily and receive reminders, enhancing the user experience.",
+              },
+            ].map((feature, index) => (
+              <div
+                key={index}
+                className="bg-white shadow-lg rounded-lg p-6 text-center hover:scale-105 hover:shadow-xl transition duration-300 min-w-[450px] max-w-[450px]"
+              >
+                <div className="text-blue-600 text-4xl mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600">{feature.text}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

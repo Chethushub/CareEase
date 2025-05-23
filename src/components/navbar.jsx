@@ -38,7 +38,7 @@ const Navbar = () => {
 
     return (
         <>
-            <nav className={`sticky top-0 z-10 transition-all duration-300 ${isScrolled ? 'bg-blue-900 bg-opacity-90 shadow-md' : 'bg-gradient-to-r from-blue-700 to-green-600'}`}>
+            <nav className={`sticky top-0 z-10 transition-all duration-300 ${isScrolled ? 'bg-blue-900 bg-opacity-90 shadow-md' : 'animated-wave-bg'}`}>
                 <div className="container mx-auto flex justify-between items-center p-2">
                     <NavLink to="/">
                         <div className=" flex items-center text-center cursor-pointer">
